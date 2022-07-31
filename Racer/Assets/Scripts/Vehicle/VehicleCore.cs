@@ -176,9 +176,32 @@ public class VehicleCore : MonoBehaviour
             Vector2 prev = hull[^1];
             foreach(var point in hull)
             {
-                Debug.DrawLine(prev, point, Color.red);
+                Debug.DrawLine(prev, point, Color.magenta);
                 prev = point;
             }
         }
+
+        // Draw a cross at the centre of gravity
+        float size = 0.25f;
+        Debug.DrawLine(
+            Rigidbody.worldCenterOfMass + new Vector2( size, 0),
+            Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
+            Color.red
+        );
+        Debug.DrawLine(
+            Rigidbody.worldCenterOfMass + new Vector2(0,  size),
+            Rigidbody.worldCenterOfMass + new Vector2(0, -size),
+            Color.red
+        );
+        Debug.DrawLine(
+           Rigidbody.worldCenterOfMass + new Vector2(0,  size),
+           Rigidbody.worldCenterOfMass + new Vector2(size, 0),
+           Color.red
+       );
+        Debug.DrawLine(
+           Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
+           Rigidbody.worldCenterOfMass + new Vector2(0, -size),
+           Color.red
+       );
     }
 }
