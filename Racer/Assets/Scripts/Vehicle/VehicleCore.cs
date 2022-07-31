@@ -182,26 +182,29 @@ public class VehicleCore : MonoBehaviour
         }
 
         // Draw a cross at the centre of gravity
-        float size = 0.25f;
-        Debug.DrawLine(
-            Rigidbody.worldCenterOfMass + new Vector2( size, 0),
-            Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
-            Color.red
-        );
-        Debug.DrawLine(
-            Rigidbody.worldCenterOfMass + new Vector2(0,  size),
-            Rigidbody.worldCenterOfMass + new Vector2(0, -size),
-            Color.red
-        );
-        Debug.DrawLine(
-           Rigidbody.worldCenterOfMass + new Vector2(0,  size),
-           Rigidbody.worldCenterOfMass + new Vector2(size, 0),
-           Color.red
-       );
-        Debug.DrawLine(
-           Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
-           Rigidbody.worldCenterOfMass + new Vector2(0, -size),
-           Color.red
-       );
+        if(Rigidbody != null)
+        {
+            float size = 0.25f;
+            Debug.DrawLine(
+                Rigidbody.worldCenterOfMass + new Vector2( size, 0),
+                Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
+                Color.red
+            );
+            Debug.DrawLine(
+                Rigidbody.worldCenterOfMass + new Vector2(0,  size),
+                Rigidbody.worldCenterOfMass + new Vector2(0, -size),
+                Color.red
+            );
+            Debug.DrawLine(
+               Rigidbody.worldCenterOfMass + new Vector2(0,  size),
+               Rigidbody.worldCenterOfMass + new Vector2(size, 0),
+               Color.red
+           );
+            Debug.DrawLine(
+               Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
+               Rigidbody.worldCenterOfMass + new Vector2(0, -size),
+               Color.red
+           );
+        }
     }
 }
