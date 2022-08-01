@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9061238551287476419}
   - component: {fileID: 1348453297463629462}
   - component: {fileID: 467118687262842423}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Vehicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
@@ -147,7 +147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51141bbcb5b32e747bf4ddb263d2a749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
+  TempChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
+  TempThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
+  TempWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
+  Rigidbody: {fileID: 0}
 --- !u!114 &467118687262842423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +164,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnergyCapacity: 100
-  Mass: -4
+  Mass: 1
   Collider: {fileID: 0}
   Rigidbody: {fileID: 0}

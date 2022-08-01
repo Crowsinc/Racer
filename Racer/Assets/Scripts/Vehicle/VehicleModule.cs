@@ -4,25 +4,31 @@ using UnityEngine;
 
 public class VehicleModule : MonoBehaviour
 {
-    // Module Statistics
+    /// <summary>
+    /// The amount of energy this module can store
+    /// </summary>
     public float EnergyCapacity = 0; 
+
+
+    /// <summary>
+    /// The mass (kg) of this module
+    /// </summary>
     public float Mass = 1;
 
-    // Shape Descriptors (optional)
+
+    /// <summary>
+    /// The polygon collider which describes the physical shape of the module
+    /// </summary>
     public PolygonCollider2D Collider;
-    public Rigidbody2D Rigidbody;
 
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
+    /// <summary>
+    /// A list of joints which attach external Rigidbodies to the module.
+    /// These will be attached to the VehicleCore when the module is added 
+    /// to a VehicleCore.
+    /// </summary>
+    public List<Joint2D> Attachments = new List<Joint2D>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void OnValidate()
     {

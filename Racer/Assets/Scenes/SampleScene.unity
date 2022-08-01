@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7.3064227
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 1999668984}
   - component: {fileID: 1999668983}
   m_Layer: 0
-  m_Name: Static Sprite
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,6 +340,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2079596614 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
+  m_PrefabInstance: {fileID: 3604211819831395722}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2079596621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079596614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 764b9b4b572146c458dee3592c6f1c2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TempChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
+  TempThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
+  TempWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
 --- !u!1001 &3604211819831395722
 PrefabInstance:
   m_ObjectHideFlags: 0
