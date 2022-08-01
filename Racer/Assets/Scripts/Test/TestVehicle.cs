@@ -40,7 +40,7 @@ public class TestVehicle : MonoBehaviour
                 if(a.TryActivate())
                 {
                     Debug.DrawLine(a.ActuationForcePosition, a.ActuationForcePosition + 0.1f * a.ActuationForce, Color.green, 0.01f);
-                    Debug.Log($"Actuator: {i} \t Linear Force: {a.LinearForce} \t Angular Force: {a.AngularForce}");
+                    Debug.Log($"Actuator: {i} \t Linear Acceleration: {a.LinearAcceleration} \t Angular Acceleration: {a.AngularAcceleration}");
                 }
                 i++;
             }

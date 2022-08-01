@@ -45,16 +45,29 @@ public class ActuatorModule : MonoBehaviour
     /// The angular force generated on the linked vehicle by this actuator.
     /// Mathematically, it is the force that is applied tangentially to the
     /// centre of mass and ultimately generates a torque force. It is the F
-    /// in 'Torque = F x r', where r is the moment arm vector. Also note
-    /// that 'Torque = Rotational Intertia * Angular Acceleration'
+    /// in 'Torque = F x r', where r is the moment arm vector.
     /// </summary>
     public Vector2 AngularForce { get; private set; }
 
 
     /// <summary>
+    /// The angular acceleration generated on the linked vehicle by this actuator,
+    /// as a result of the applied AngularForce. Counter-clockwise is positive. 
+    /// </summary>
+    public float AngularAcceleration { get; private set; }
+
+
+    /// <summary>   
     /// The linear force generated on the linked vehicle by this actuator
     /// </summary>
     public Vector2 LinearForce { get; private set; }
+
+
+    /// <summary>
+    /// The linear acceleration generated on the linked vehicle by this actuator,
+    /// as a result of the applied LinearForce.
+    /// </summary>
+    public Vector2 LinearAcceleration { get; private set; }
 
 
     /// <summary>
@@ -64,6 +77,7 @@ public class ActuatorModule : MonoBehaviour
 
 
     private bool _activated = false;
+
 
     /// <summary>
     /// Attempts to generate a force on the linked vehicle by activating the actuator. 
@@ -128,19 +142,28 @@ public class ActuatorModule : MonoBehaviour
         if (LinkedVehicle != null)
         {
             MomentArm = ActuationForcePosition - LinkedVehicle.Rigidbody.worldCenterOfMass;
-            Vector2 tangent = Vector2.Perpendicular(MomentArm).normalized;
             
-            // Angular force is everything normal to the moment arm
-            AngularForce = Vector2.Dot(-ActuationForce, tangent) * tangent;
+            // Angular force is everything normal to the moment arm so 
+            // project the actuation force onto the normal of the moment arm.
+            Vector2 tangent = Vector2.Perpendicular(MomentArm).normalized;
+            var scalarAngularForce = Vector2.Dot(-ActuationForce, tangent);
+            AngularForce = scalarAngularForce * tangent;
+            
+            var torque = scalarAngularForce * MomentArm.magnitude;
+            AngularAcceleration = torque / LinkedVehicle.Rigidbody.inertia;
 
             // Linear force is anything left over, not normal to the moment arm
             LinearForce = (-ActuationForce) - AngularForce;
+            LinearAcceleration = LinearForce / LinkedVehicle.Rigidbody.mass;
+            
         }
         else
         {
             MomentArm = Vector2.zero;
             AngularForce = Vector2.zero;
             LinearForce = Vector2.zero;
+            AngularAcceleration = 0.0f;
+            LinearAcceleration = Vector2.zero;
         }
     }
 
