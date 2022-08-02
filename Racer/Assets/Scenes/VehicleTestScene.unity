@@ -347,6 +347,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2713728722983898344, guid: 0d78d3e69bbc0814a9f87f62faf9ffbb, type: 3}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4094237006374959360, guid: 0d78d3e69bbc0814a9f87f62faf9ffbb, type: 3}
       propertyPath: m_Name
       value: Test Vehicle

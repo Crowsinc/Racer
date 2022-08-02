@@ -208,7 +208,7 @@ public class VehicleCore : MonoBehaviour
     }
 
 
-    void Start()
+    void Awake()
     {
         Hull = new List<Vector2>();
         Attachments = new List<Rigidbody2D>();
