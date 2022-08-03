@@ -4,16 +4,71 @@ using UnityEngine;
 
 public class VehicleCore : MonoBehaviour
 {
-    public GameObject ChassisPrefab; // Temp
 
-    // Vehicle Properties
+    /// <summary>
+    /// The total energy capacity of the vehicle
+    /// </summary>
     public float EnergyCapacity { get; private set; }
-    public float EnergyLevel { get; private set; }
 
-    // Vehicle Shape
-    private Rigidbody2D Rigidbody;
-    private CompositeCollider2D Collider;
-    bool TryBuildStructure(Dictionary<Vector2Int /* module offset */, GameObject /* module prefab */> design)
+    /// <summary>
+    /// The current energy level of the vehicle, from 0.0 to EnergyCapacity
+    /// </summary>
+    public float EnergyLevel 
+    {
+        get => _energyLevel;
+        set { _energyLevel = Mathf.Clamp(value, 0.0f, EnergyCapacity); } 
+    }
+    private float _energyLevel = 0.0f;
+
+
+    /// <summary>
+    /// The core rigidbody of the vehicle
+    /// </summary>
+    [HideInInspector]
+    public Rigidbody2D Rigidbody;
+
+
+    /// <summary>
+    /// The composite collider generated for the hull of the vehicle
+    /// </summary>
+    public CompositeCollider2D Collider { get; private set; }
+
+
+    /// <summary>
+    /// A counter-clockwise list of vertices outlining shape of the vehicle's collider in the world.
+    /// </summary>
+    public List<Vector2> Hull { get; private set; }
+
+
+    /// <summary>
+    /// A list of all actuators built into vehicle
+    /// </summary>
+    public List<ActuatorModule> Actuators { get; private set; }
+
+
+    /// <summary>
+    /// A list of all rigidbodies attached to the vehicle through joints
+    /// </summary>
+    public List<Rigidbody2D> Attachments { get; private set; }
+
+
+    /// <summary>
+    /// True if the vehicle has been built into a design, false otherwise.
+    /// </summary>
+    public bool IsBuilt { get; private set; }
+
+    /// <summary>
+    /// Generates the structure of the vehicle given the provided design.
+    /// </summary>
+    /// <param name="design">
+    /// A dictionary of prefabs that represent vehicle modules, keyed by their offset from the vehicle core at (0,0).
+    /// The prefabs should contain VehicleModule and/or ActuatorModule components to be useful, and must form a
+    /// fully connected mass. Note that the offset at (0,0) is reserved for the VehicleCore.
+    /// </param>
+    /// <returns> 
+    /// False if the provided design is does not meet the design pre-conditions, otherwise true.
+    /// </returns>
+    public bool TryBuildStructure(Dictionary<Vector2Int /* module offset */, GameObject /* module prefab */> design)
     {
         // Add ourselves to the design so our module properties are taken into account
         design[new Vector2Int(0, 0)] = gameObject; 
@@ -31,8 +86,8 @@ public class VehicleCore : MonoBehaviour
             var module = prefab == gameObject ? gameObject
                 : Instantiate(prefab, position, Quaternion.identity, transform);
 
-            // Register VehicleModule to the VehicleCore
-            if(module.TryGetComponent<VehicleModule>(out VehicleModule properties))
+            // Register VehicleModule to the vehicle
+            if (module.TryGetComponent<VehicleModule>(out VehicleModule properties))
             {
                 totalEnergyCapacity += properties.EnergyCapacity;
                 centreOfMass += properties.Mass * (Vector2)offset;
@@ -42,11 +97,14 @@ public class VehicleCore : MonoBehaviour
                 if (properties.Collider != null)
                 {
                     // Get the collider vertices relative to the VehicleCore, taking  
-                    // into account any local offsets of the collider within the prefab
-                    var localColliderOffset = properties.Collider.transform.position - position;
+                    // into account any transforms and local offsets of the collider
+                    var localColliderOffset = (Vector2)(properties.Collider.transform.position - position);
                     var localPoints = properties.Collider.points;
                     for (int i = 0; i < localPoints.Length; i++)
-                        localPoints[i] += offset + (Vector2)localColliderOffset;
+                    {
+                        localPoints[i] *= (Vector2)module.transform.localScale;
+                        localPoints[i] += offset + localColliderOffset;
+                    }
 
                     // Create our own collider to represent the module's collider
                     var polygonCollider = gameObject.AddComponent<PolygonCollider2D>();
@@ -60,23 +118,22 @@ public class VehicleCore : MonoBehaviour
                 else if(prefab != gameObject)
                     Debug.LogWarning($"Vehicle module at {offset} has no PolygonCollider2D");
 
-                // If the module has its own Rigidbody2D, then we need to attach it to the
-                // vehicle core with a joint, so that it acts in union with the vehicle. 
-                if (properties.Rigidbody != null && properties.Rigidbody != Rigidbody)
+                // If the module provides joints for attached Rigidbodies, then connect
+                // the joint onto the vehicle core so that it acts in union with the vehicle.
+                foreach (var joint in properties.Attachments)
                 {
-                    var joint = properties.Rigidbody.gameObject.AddComponent<RelativeJoint2D>();
                     joint.connectedBody = Rigidbody;
-                    joint.linearOffset = offset;
+                    Attachments.Add(joint.attachedRigidbody);
                 }
             }
             else Debug.LogError($"Vehicle module at {offset} has no VehicleModule component");
 
-            // TODO: ActuatorModule
+            // Register ActuatorModules to the vehicle
+            if (module.TryGetComponent<ActuatorModule>(out ActuatorModule actuator))
+                Actuators.Add(actuator);
         }
         
         // Merge all our module colliders together into one composite collider
-        Collider = gameObject.AddComponent<CompositeCollider2D>();
-        Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
         Collider.GenerateGeometry();
 
         // If we have more than one path, then the vehicle structure is not fully connected
@@ -92,89 +149,97 @@ public class VehicleCore : MonoBehaviour
         Rigidbody.mass = totalMass;
         Rigidbody.centerOfMass = centreOfMass / totalMass;
 
+        // Link all actuators to the vehicle, this must happen after
+        // all of the vehicles physical properties have been discovered.
+        foreach (var actuator in Actuators)
+            actuator.LinkedVehicle = this;
+
+        ResetVehicle();
+
+        IsBuilt = true;
         return true;
     }
 
-    void ClearStructure()
+
+    /// <summary>
+    /// Clears the vehicle structure design, leaving it as an empty VehicleCore
+    /// that is ready to be built again.
+    /// </summary>
+    public void ClearStructure()
     {
-        // Delete vehicle modules
-        for(int i = 0; i < transform.childCount; i++)
+        if (IsBuilt)
         {
-            var child = transform.GetChild(i);
-            if (child.GetComponent<VehicleModule>() != null)
-                Destroy(child.gameObject);
-        }
+            Hull?.Clear();
+            Actuators?.Clear();
+            Attachments?.Clear();
+
+            // Delete vehicle modules
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                var child = transform.GetChild(i);
+                if (child.GetComponent<VehicleModule>() != null)
+                    Destroy(child.gameObject);
+            }
  
-        // Clean up all colliders
-        if(Collider != null)
-        {
+            // Clean up the composite colliders
             var colliders = new List<PolygonCollider2D>();
             GetComponents<PolygonCollider2D>(colliders);
             for (int i = 0; i < colliders.Count; i++)
                 if (colliders[i].usedByComposite && colliders[i].composite == Collider)
                     Destroy(colliders[i]);
 
-            Destroy(Collider);
-            Collider = null;
+            // Reset vehicle properties
+            EnergyCapacity = 0;
+            Rigidbody.mass = 1;
+            Rigidbody.centerOfMass = Vector3.zero;
         }
 
-        // Reset vehicle properties
-        EnergyCapacity = 0;
-        Rigidbody.mass = 1;
-        Rigidbody.centerOfMass = Vector3.zero;
+        IsBuilt = false;
+        ResetVehicle();
     }
 
-    List<Vector2> GetHull()
+
+    /// <summary>
+    /// Resets vehicle statistics (EnergyLevel etc.) to their initial value 
+    /// </summary>
+    public void ResetVehicle()
     {
-        var path = new List<Vector2>();
-        Collider.GetPath(0, path);
-
-        // The path is local, so we need to transform it to the vehicle's transform
-        for(int i = 0; i < path.Count; i++)
-        {
-            var worldPoint = transform.position + transform.rotation * path[i];
-            path[i] = new Vector2(worldPoint.x, worldPoint.y);
-        }
-
-        return path;
+        EnergyLevel = EnergyCapacity;
     }
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
-        if(!TryGetComponent<Rigidbody2D>(out Rigidbody))
+        Hull = new List<Vector2>();
+        Attachments = new List<Rigidbody2D>();
+        Actuators = new List<ActuatorModule>();
+
+        Collider = gameObject.AddComponent<CompositeCollider2D>();
+        Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+
+        if (!TryGetComponent<Rigidbody2D>(out Rigidbody))
             Debug.LogError("VehicleCore failed to find a Rigidbody2D");
 
-
-        // TEMP
-        var design = new Dictionary<Vector2Int, GameObject>();
-        design.Add(new Vector2Int(-1, 0), ChassisPrefab);
-        design.Add(new Vector2Int(-2, 0), ChassisPrefab);
-        design.Add(new Vector2Int(-2, -1), ChassisPrefab);
-        for (int i = 0; i < 7; i ++)
-        {
-            design.Add(new Vector2Int(i, i), ChassisPrefab);
-            design.Add(new Vector2Int(i + 1, i), ChassisPrefab);
-        }
-
-        TryBuildStructure(design);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    void FixedUpdate()
     {
-        
+        // Update the vehicle hull
+        Hull.Clear();
+        Collider.GetPath(0, Hull);
+        for (int i = 0; i < Hull.Count; i++)
+            Hull[i] = (Vector2)transform.TransformPoint(Hull[i]);
     }
+
 
     void OnDrawGizmos()
     {
         // Draw the vehicle hull for debug purposes
-        if(Collider != null)
+        if(Hull?.Count > 0)
         {
-            List<Vector2> hull = GetHull();
-
-            Vector2 prev = hull[^1];
-            foreach(var point in hull)
+            Vector2 prev = Hull[^1];
+            foreach(var point in Hull)
             {
                 Debug.DrawLine(prev, point, Color.magenta);
                 prev = point;

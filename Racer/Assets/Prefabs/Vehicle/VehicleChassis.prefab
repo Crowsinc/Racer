@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4826293192980317663}
   - component: {fileID: 6820571646227126507}
   - component: {fileID: 6760783270837197127}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: VehicleChassis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,5 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnergyCapacity: 40
+  Mass: 1
   Collider: {fileID: 6820571646227126507}
   Rigidbody: {fileID: 0}
