@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -30, y: 0}
+  LocalActuationForce: {x: -80, y: 0}
   LocalActuationPosition: {x: -0.5, y: 0}
   LinkedVehicle: {fileID: 0}
-  EnergyPerSecond: 1
+  EnergyPerSecond: 20
