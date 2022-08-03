@@ -132,30 +132,121 @@ public class ActuatorModule : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Finds all acceleration effects of the actuator onto the linked vehicle at a particular reference point.
+    /// The acceleration values may not be accurate unless the reference point is the centre of mass or is a
+    /// valid point to take moments about (contact points etc.).
+    /// </summary>
+    /// <param name="referencePoint">
+    /// The point of reference on the linked vehicle, from which all relative accelerations are calculated.
+    /// </param>
+    /// <returns></returns>
+    public (float angularAcceleration, Vector2 linearAcceleration) FindKinematicEffects(Vector2 referencePoint)
+    {
+        if (LinkedVehicle == null)
+        {
+            Debug.LogError("Trying to find kinematic effects with no linked vehicle.");
+            return (0, Vector2.zero);
+        }
+
+        FindPhysicsCharacteristics(
+            LinkedVehicle.Rigidbody.mass,
+            LinkedVehicle.Rigidbody.inertia,
+            referencePoint,
+            out _,
+            out _,
+            out float angularAcceleration,
+            out _,
+            out Vector2 linearAcceleration
+        );
+
+        return (angularAcceleration, linearAcceleration);
+    }
+
+
+    /// <summary>
+    /// Find all physical effects and characteristics of an actuator
+    /// </summary>
+    /// <param name="mass">
+    /// The mass of the structure onto which the actuator is attached.
+    /// </param>
+    /// <param name="rotationalInertia">
+    /// The rotational inertia of the structure onto which the actuator is attached.
+    /// </param>
+    /// <param name="referencePoint">
+    /// The point of reference, on the structure, from which all relative forces 
+    /// and accelerations are calculated.
+    /// </param>
+    /// <param name="momentArm">
+    /// The moment arm from the reference point to the actuator.
+    /// </param>
+    /// <param name="angularForce">
+    /// The anuglar force applied by the actuator at 100%. 
+    /// This is the force that is normal to the moment arm.
+    /// </param>
+    /// <param name="angularAcceleration">
+    /// The angular acceleration applied by the actuator at 100%.
+    /// </param>
+    /// <param name="linearForce">
+    /// The linear force applied by the actuator at 100%. 
+    /// This is all left over non-angular forces.
+    /// </param>
+    /// <param name="linearAcceleration">
+    /// The linear acceleration applied by the actuator at 100%.
+    /// </param>
+    private void FindPhysicsCharacteristics(
+        float mass,
+        float rotationalInertia,
+        Vector2 referencePoint,
+        out Vector2 momentArm,
+        out Vector2 angularForce,
+        out float angularAcceleration,
+        out Vector2 linearForce,
+        out Vector2 linearAcceleration
+    )
+    {
+        momentArm = ActuationForcePosition - referencePoint;
+
+        // Angular force is everything normal to the moment arm so 
+        // project the actuation force onto the normal of the moment arm.
+        Vector2 tangent = Vector2.Perpendicular(momentArm).normalized;
+        var scalarAngularForce = Vector2.Dot(-ActuationForce, tangent);
+        angularForce = scalarAngularForce * tangent;
+
+        var torque = scalarAngularForce * momentArm.magnitude;
+        angularAcceleration = torque / rotationalInertia;
+
+        // Linear force is anything left over, not normal to the moment arm
+        linearForce = (-ActuationForce) - angularForce;
+        linearAcceleration = linearForce / mass;
+    }
+
+
     void FixedUpdate()
     {
         _activated = false;
         ActuationForce = transform.TransformDirection(LocalActuationForce);
         ActuationForcePosition = transform.position + transform.TransformDirection(LocalActuationPosition);
 
-        // Update 
+        // Update physical effects of the actuator
         if (LinkedVehicle != null)
         {
-            MomentArm = ActuationForcePosition - LinkedVehicle.Rigidbody.worldCenterOfMass;
-            
-            // Angular force is everything normal to the moment arm so 
-            // project the actuation force onto the normal of the moment arm.
-            Vector2 tangent = Vector2.Perpendicular(MomentArm).normalized;
-            var scalarAngularForce = Vector2.Dot(-ActuationForce, tangent);
-            AngularForce = scalarAngularForce * tangent;
-            
-            var torque = scalarAngularForce * MomentArm.magnitude;
-            AngularAcceleration = torque / LinkedVehicle.Rigidbody.inertia;
+            FindPhysicsCharacteristics(
+                LinkedVehicle.Rigidbody.mass,
+                LinkedVehicle.Rigidbody.inertia,
+                LinkedVehicle.Rigidbody.worldCenterOfMass,
+                out Vector2 momentArm,
+                out Vector2 angularForce,
+                out float angularAcceleration,
+                out Vector2 linearForce,
+                out Vector2 linearAcceleration
+            );
 
-            // Linear force is anything left over, not normal to the moment arm
-            LinearForce = (-ActuationForce) - AngularForce;
-            LinearAcceleration = LinearForce / LinkedVehicle.Rigidbody.mass;
-            
+            MomentArm = momentArm;
+            AngularForce = angularForce;
+            AngularAcceleration = angularAcceleration;
+            LinearForce = linearForce;
+            LinearAcceleration = linearAcceleration;
         }
         else
         {
