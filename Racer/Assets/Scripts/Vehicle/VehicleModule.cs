@@ -24,7 +24,7 @@ public class VehicleModule : MonoBehaviour
 
     /// <summary>
     /// An optional predicate function for validating the placement of this module onto 
-    /// a vehicle building grid usingt per module restrictions. For example, a jet 
+    /// a vehicle building grid using per module restrictions. For example, a jet 
     /// module could be made which can only be placed if nothing is placed infront
     /// or behind it. Such restrictions would need to be re-checked any time the grid
     /// is going to be updated. 

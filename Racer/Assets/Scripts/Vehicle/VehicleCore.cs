@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,22 +65,22 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public bool IsBuilt { get; private set; }
 
-
+    
     /// <summary>
-    /// Generates the structure of the vehicle given the provided design.
+    /// Generates the given design of the vehicle onto the VehicleCore.
     /// </summary>
     /// <param name="design">
-    /// A dictionary of prefabs that represent vehicle modules, keyed by their offset from the vehicle core at (0,0).
-    /// The prefabs should contain VehicleModule and/or ActuatorModule components to be useful, and must form a
-    /// fully connected mass. Note that the offset at (0,0) is reserved for the VehicleCore.
+    /// A dictionary of ModuleSchematics, describing a prefab that is to be placed as a vehicle module.
+    /// Each ModuleSchematic is keyed by its positional offset from the VehicleCore. As such, the offset
+    /// (0,0) will be reserved for the vehicle core and ignored. 
     /// </param>
     /// <returns> 
-    /// False if the provided design is does not meet the design pre-conditions, otherwise true.
+    /// False if the provided design is not fully connected, otherwise true.
     /// </returns>
-    public bool TryBuildStructure(Dictionary<Vector2Int /* module offset */, GameObject /* module prefab */> design)
+    public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design)
     {
         // Add ourselves to the design so our module properties are taken into account
-        design[new Vector2Int(0, 0)] = gameObject; 
+        design[new Vector2Int(0, 0)] = new ModuleSchematic(gameObject);
 
         ClearStructure();
 
@@ -87,12 +88,15 @@ public class VehicleCore : MonoBehaviour
         float totalEnergyCapacity = 0.0f;
         Vector2 centreOfMass = Vector2.zero;
 
-        foreach (var (offset, prefab) in design)
+        foreach (var (offset, (prefab, rotation)) in design)
         {
             // Instantiate new vehicle module, unless this is the core
             var position = transform.position + new Vector3(offset.x, offset.y);
             var module = prefab == gameObject ? gameObject
                 : Instantiate(prefab, position, Quaternion.identity, transform);
+
+            // Rotate module to desired orientation
+            module.transform.rotation = Quaternion.Euler(0, 0, rotation);
 
             // Register VehicleModule to the vehicle
             if (module.TryGetComponent<VehicleModule>(out VehicleModule properties))
@@ -280,5 +284,46 @@ public class VehicleCore : MonoBehaviour
                Color.red
            );
         }
+    }
+}
+
+/// <summary>
+/// Defines information about a prefab that is to be built onto a VehicleCore as
+/// a vehicle module. A struct is used so that it can be easily extended with more
+/// necessary data as time moves on.
+/// </summary>
+public struct ModuleSchematic
+{
+    /// <summary>
+    /// The prefab which implements a vehicle module. 
+    /// </summary>
+    public GameObject Prefab { get; private set; }
+
+    /// <summary>
+    /// The rotation (degrees) the prefab when placed onto the vehicle. 
+    /// </summary>
+    public float Rotation { get; private set; }
+
+    /// <summary>
+    /// Constructs the schematic
+    /// </summary>
+    /// <param name="prefab"> 
+    /// The prefab which implements a vehicle module.
+    /// The prefab should contain a VehicleModule and/or ActuatorModule.
+    /// </param>
+    /// <param name="rotation">
+    /// The rotation (degrees) utilized when placing the module onto the VehicleCore.
+    /// This allows modules to be placed with different orientations.
+    /// </param>
+    public ModuleSchematic(GameObject prefab, float rotation = 0.0f)
+    {
+        Prefab = prefab;
+        Rotation = rotation;
+    }
+
+    public void Deconstruct(out GameObject prefab, out float rotation)
+    {
+        prefab = Prefab;
+        rotation = Rotation;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,13 +16,14 @@ public class TestVehicle : MonoBehaviour
         if (!TryGetComponent<VehicleCore>(out _core))
             Debug.LogError("Vehicle does not have a core");
 
-        var design = new Dictionary<Vector2Int, GameObject>();
-        design.Add(new Vector2Int(-1, 0), TempChassisPrefab);
-        design.Add(new Vector2Int(-2, 0), TempChassisPrefab);
-        design.Add(new Vector2Int(-2, -1), TempChassisPrefab);
-        design.Add(new Vector2Int(-3, 0), TempThrusterPrefab);
-        design.Add(new Vector2Int(0, -1), TempWheelPrefab);
-        design.Add(new Vector2Int(-2, -2), TempWheelPrefab);
+        var design = new Dictionary<Vector2Int, ModuleSchematic>();
+        design.Add(new Vector2Int(-1, 0), new ModuleSchematic(TempChassisPrefab));
+        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(TempChassisPrefab));
+        design.Add(new Vector2Int(-2, -1), new ModuleSchematic(TempChassisPrefab));
+        design.Add(new Vector2Int(-3, 0), new ModuleSchematic(TempThrusterPrefab));
+        design.Add(new Vector2Int(0, -1), new ModuleSchematic(TempWheelPrefab));
+        design.Add(new Vector2Int(-2, -2), new ModuleSchematic(TempWheelPrefab));
+        design.Add(new Vector2Int(1, 0), new ModuleSchematic(TempWheelPrefab, 90));
 
         if (!_core.TryBuildStructure(design))
             Debug.LogError("Vehicle design was invalid");
