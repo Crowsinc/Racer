@@ -80,7 +80,7 @@ public class ActuatorModule : MonoBehaviour
     /// True if the actuator has already been activated for this fixed update tick.
     /// False otherwise.
     /// </summary>
-    public bool Activated { get; private set; }
+    private bool _activated = false;
 
 
     /// <summary>
@@ -101,7 +101,7 @@ public class ActuatorModule : MonoBehaviour
     /// </returns>
     public bool TryActivate(float proportion = 1.0f, bool forced = false)
     {
-        if(Activated)
+        if(_activated)
         {
             Debug.LogWarning("Actuator has already been activated this fixed update");
             return false;
@@ -130,7 +130,7 @@ public class ActuatorModule : MonoBehaviour
         // NOTE: we apply the opposite force onto the vehicle (Newton's Third Law)
         LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ActuationForcePosition);
 
-        Activated = true;
+        _activated = true;
 
         return true;
     }
@@ -228,7 +228,7 @@ public class ActuatorModule : MonoBehaviour
 
     void FixedUpdate()
     {
-        Activated = false;
+        _activated = false;
         ActuationForce = transform.TransformDirection(LocalActuationForce);
         ActuationForcePosition = transform.position + transform.TransformDirection(LocalActuationPosition);
 
@@ -261,7 +261,6 @@ public class ActuatorModule : MonoBehaviour
             LinearAcceleration = Vector2.zero;
         }
     }
-
 
     void OnValidate()
     {
