@@ -10,6 +10,7 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public float EnergyCapacity { get; private set; }
 
+
     /// <summary>
     /// The current energy level of the vehicle, from 0.0 to EnergyCapacity
     /// </summary>
@@ -47,6 +48,12 @@ public class VehicleCore : MonoBehaviour
 
 
     /// <summary>
+    /// A list of all modules built into this vehicle. 
+    /// </summary>
+    public List<VehicleModule> Modules { get; private set; }
+
+
+    /// <summary>
     /// A list of all rigidbodies attached to the vehicle through joints
     /// </summary>
     public List<Rigidbody2D> Attachments { get; private set; }
@@ -56,6 +63,7 @@ public class VehicleCore : MonoBehaviour
     /// True if the vehicle has been built into a design, false otherwise.
     /// </summary>
     public bool IsBuilt { get; private set; }
+
 
     /// <summary>
     /// Generates the structure of the vehicle given the provided design.
@@ -114,6 +122,8 @@ public class VehicleCore : MonoBehaviour
 
                     // Old collider is no longer necessary
                     properties.Collider.enabled = false;
+
+                    Modules.Add(properties);
                 }
                 else if(prefab != gameObject)
                     Debug.LogWarning($"Vehicle module at {offset} has no PolygonCollider2D");
@@ -172,6 +182,7 @@ public class VehicleCore : MonoBehaviour
             Hull?.Clear();
             Actuators?.Clear();
             Attachments?.Clear();
+            Modules?.Clear();
 
             // Delete vehicle modules
             for (int i = 0; i < transform.childCount; i++)
@@ -213,6 +224,7 @@ public class VehicleCore : MonoBehaviour
         Hull = new List<Vector2>();
         Attachments = new List<Rigidbody2D>();
         Actuators = new List<ActuatorModule>();
+        Modules = new List<VehicleModule>();
 
         Collider = gameObject.AddComponent<CompositeCollider2D>();
         Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
