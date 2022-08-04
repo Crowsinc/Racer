@@ -76,7 +76,11 @@ public class ActuatorModule : MonoBehaviour
     public float EnergyPerSecond = 1.0f;
 
 
-    private bool _activated = false;
+    /// <summary>
+    /// True if the actuator has already been activated for this fixed update tick.
+    /// False otherwise.
+    /// </summary>
+    public bool Activated { get; private set; }
 
 
     /// <summary>
@@ -97,9 +101,9 @@ public class ActuatorModule : MonoBehaviour
     /// </returns>
     public bool TryActivate(float proportion = 1.0f, bool forced = false)
     {
-        if(_activated)
+        if(Activated)
         {
-            Debug.LogWarning("Actuator has already been activated this update");
+            Debug.LogWarning("Actuator has already been activated this fixed update");
             return false;
         }
 
@@ -124,9 +128,9 @@ public class ActuatorModule : MonoBehaviour
         LinkedVehicle.EnergyLevel = Mathf.Max(0, LinkedVehicle.EnergyLevel - requiredEnergy);
 
         // NOTE: we apply the opposite force onto the vehicle (Newton's Third Law)
-        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ActuationForcePosition); 
+        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ActuationForcePosition);
 
-        _activated = true;
+        Activated = true;
 
         return true;
     }
@@ -224,7 +228,7 @@ public class ActuatorModule : MonoBehaviour
 
     void FixedUpdate()
     {
-        _activated = false;
+        Activated = false;
         ActuationForce = transform.TransformDirection(LocalActuationForce);
         ActuationForcePosition = transform.position + transform.TransformDirection(LocalActuationPosition);
 
