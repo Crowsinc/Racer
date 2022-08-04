@@ -161,7 +161,7 @@ public class VehicleCore : MonoBehaviour
         if(Collider.pathCount > 1)
         {
             Debug.LogError($"Vehicle structure is not fully connected ({Collider.pathCount} Sections)");
-            ClearStructure();
+            //ClearStructure();
             return false;
         }
 

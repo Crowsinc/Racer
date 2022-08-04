@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class TestVehicle : MonoBehaviour
 {
-    public GameObject TempChassisPrefab;
-    public GameObject TempThrusterPrefab;
-    public GameObject TempWheelPrefab;
+    public GameObject ChassisPrefab;
+    public GameObject HeavyChassisPrefab;
+    public GameObject ThrusterPrefab;
+    public GameObject JetPrefab;
+    public GameObject SolidWheelPrefab;
+    public GameObject SuspensionWheelPrefab;
 
     private VehicleCore _core;
 
@@ -17,13 +20,16 @@ public class TestVehicle : MonoBehaviour
             Debug.LogError("Vehicle does not have a core");
 
         var design = new Dictionary<Vector2Int, ModuleSchematic>();
-        design.Add(new Vector2Int(-1, 0), new ModuleSchematic(TempChassisPrefab));
-        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(TempChassisPrefab));
-        design.Add(new Vector2Int(-2, -1), new ModuleSchematic(TempChassisPrefab));
-        design.Add(new Vector2Int(-3, 0), new ModuleSchematic(TempThrusterPrefab));
-        design.Add(new Vector2Int(0, -1), new ModuleSchematic(TempWheelPrefab));
-        design.Add(new Vector2Int(-2, -2), new ModuleSchematic(TempWheelPrefab));
-        design.Add(new Vector2Int(1, 0), new ModuleSchematic(TempWheelPrefab, 90));
+        design.Add(new Vector2Int(-1, 0), new ModuleSchematic(HeavyChassisPrefab));
+        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(ChassisPrefab));
+        design.Add(new Vector2Int(-3, 0), new ModuleSchematic(ChassisPrefab));
+        design.Add(new Vector2Int(-4, 0), new ModuleSchematic(ChassisPrefab));
+        design.Add(new Vector2Int(-1, 1), new ModuleSchematic(JetPrefab));
+        design.Add(new Vector2Int(-5, 0), new ModuleSchematic(ThrusterPrefab));
+        design.Add(new Vector2Int(-2, -1), new ModuleSchematic(SuspensionWheelPrefab));
+        design.Add(new Vector2Int(0, -1), new ModuleSchematic(SuspensionWheelPrefab));
+        design.Add(new Vector2Int(1, 0), new ModuleSchematic(SolidWheelPrefab, 90));
+        design.Add(new Vector2Int(-4, -1), new ModuleSchematic(SolidWheelPrefab));
 
         if (!_core.TryBuildStructure(design))
             Debug.LogError("Vehicle design was invalid");
@@ -34,16 +40,48 @@ public class TestVehicle : MonoBehaviour
         if(Input.GetMouseButton(0))
         {
             Debug.Log($"Energy Left: {_core.EnergyLevel}/{_core.EnergyCapacity}");
-            int i = 0;
             foreach (var a in _core.Actuators)
             {
                 if(a.TryActivate())
-                {
                     Debug.DrawLine(a.ActuationForcePosition, a.ActuationForcePosition + 0.1f * a.ActuationForce, Color.green, 0.01f);
-                    Debug.Log($"Actuator: {i} \t Linear Acceleration: {a.LinearAcceleration} \t Angular Acceleration: {a.AngularAcceleration}");
-                }
-                i++;
             }
+        }
+
+        // Draw the vehicle hull for debug purposes
+        if (_core.Hull?.Count > 0)
+        {
+            Vector2 prev = _core.Hull[^1];
+            foreach (var point in _core.Hull)
+            {
+                Debug.DrawLine(prev, point, Color.magenta);
+                prev = point;
+            }
+        }
+
+        // Draw a cross at the centre of gravity
+        if (_core.Rigidbody != null)
+        {
+            float size = 0.25f;
+            Debug.DrawLine(
+                _core.Rigidbody.worldCenterOfMass + new Vector2(size, 0),
+                _core.Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
+                Color.red
+            );
+            Debug.DrawLine(
+                _core.Rigidbody.worldCenterOfMass + new Vector2(0, size),
+                _core.Rigidbody.worldCenterOfMass + new Vector2(0, -size),
+                Color.red
+            );
+            Debug.DrawLine(
+               _core.Rigidbody.worldCenterOfMass + new Vector2(0, size),
+               _core.Rigidbody.worldCenterOfMass + new Vector2(size, 0),
+               Color.red
+           );
+            Debug.DrawLine(
+               _core.Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
+               _core.Rigidbody.worldCenterOfMass + new Vector2(0, -size),
+               Color.red
+           );
         }
     }
 }

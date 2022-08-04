@@ -53,7 +53,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Name
-      value: Test Vehicle
+      value: Test Vehicle Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8798700702011435603, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Constraints
@@ -78,6 +78,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 764b9b4b572146c458dee3592c6f1c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TempChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
-  TempThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
-  TempWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
+  ChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
+  HeavyChassisPrefab: {fileID: 7624775858267870645, guid: 256e03067f1eccc4b931e177f4c5b967, type: 3}
+  ThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
+  JetPrefab: {fileID: 3133470596941498217, guid: 6c8b49e9dce23e948a31bd9a60143e19, type: 3}
+  SolidWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
+  SuspensionWheelPrefab: {fileID: 2154514071067287247, guid: ac49c16f934b6f54e92e81b0c6d269b7, type: 3}

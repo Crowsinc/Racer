@@ -42,11 +42,11 @@ public class VehicleModule : MonoBehaviour
 
 
     /// <summary>
-    /// A list of joints which attach external Rigidbodies to the module.
+    /// A list of anchored joints which attach external Rigidbodies to the module.
     /// These will be attached to the VehicleCore when the module is added 
     /// to a VehicleCore.
     /// </summary>
-    public List<Joint2D> Attachments = new List<Joint2D>();
+    public List<AnchoredJoint2D> Attachments = new List<AnchoredJoint2D>();
 
 
     void OnValidate()
