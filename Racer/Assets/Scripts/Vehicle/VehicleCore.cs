@@ -96,7 +96,8 @@ public class VehicleCore : MonoBehaviour
                 : Instantiate(prefab, position, Quaternion.identity, transform);
 
             // Rotate module to desired orientation
-            module.transform.rotation = Quaternion.Euler(0, 0, rotation);
+            var rotationQuat = Quaternion.Euler(0, 0, rotation);
+            module.transform.rotation = rotationQuat;
 
             // Register VehicleModule to the vehicle
             if (module.TryGetComponent<VehicleModule>(out VehicleModule properties))
@@ -110,11 +111,12 @@ public class VehicleCore : MonoBehaviour
                 {
                     // Get the collider vertices relative to the VehicleCore, taking  
                     // into account any transforms and local offsets of the collider
-                    var localColliderOffset = (Vector2)(properties.Collider.transform.position - position);
-                    var localPoints = properties.Collider.points;
+                    Vector2 localColliderOffset = properties.Collider.transform.position - position;
+                    Vector2 localColliderScale = properties.Collider.transform.localScale;
+                    Vector2[] localPoints = properties.Collider.points;
                     for (int i = 0; i < localPoints.Length; i++)
                     {
-                        localPoints[i] *= (Vector2)module.transform.localScale;
+                        localPoints[i] = rotationQuat * (localColliderScale * localPoints[i]);
                         localPoints[i] += offset + localColliderOffset;
                     }
 
@@ -138,6 +140,11 @@ public class VehicleCore : MonoBehaviour
                 {
                     joint.connectedBody = Rigidbody;
                     Attachments.Add(joint.attachedRigidbody);
+
+                    // NOTE: we treat the set connectedAnchor value (as set in the editor) as
+                    // an offset from center of the rigidbody that holds the joint (i.e. the attachment). 
+                    Vector2 localBodyOffset = joint.attachedRigidbody.transform.position - module.transform.position;
+                    joint.connectedAnchor = (offset + localBodyOffset) + joint.connectedAnchor;
                 }
             }
             else Debug.LogError($"Vehicle module at {offset} has no VehicleModule component");
