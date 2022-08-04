@@ -177,33 +177,30 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public void ClearStructure()
     {
-        if (IsBuilt)
+        Hull?.Clear();
+        Actuators?.Clear();
+        Attachments?.Clear();
+        Modules?.Clear();
+
+        // Delete vehicle modules
+        for (int i = 0; i < transform.childCount; i++)
         {
-            Hull?.Clear();
-            Actuators?.Clear();
-            Attachments?.Clear();
-            Modules?.Clear();
-
-            // Delete vehicle modules
-            for (int i = 0; i < transform.childCount; i++)
-            {
-                var child = transform.GetChild(i);
-                if (child.GetComponent<VehicleModule>() != null)
-                    Destroy(child.gameObject);
-            }
- 
-            // Clean up the composite colliders
-            var colliders = new List<PolygonCollider2D>();
-            GetComponents<PolygonCollider2D>(colliders);
-            for (int i = 0; i < colliders.Count; i++)
-                if (colliders[i].usedByComposite && colliders[i].composite == Collider)
-                    Destroy(colliders[i]);
-
-            // Reset vehicle properties
-            EnergyCapacity = 0;
-            Rigidbody.mass = 1;
-            Rigidbody.centerOfMass = Vector3.zero;
+            var child = transform.GetChild(i);
+            if (child.GetComponent<VehicleModule>() != null)
+                Destroy(child.gameObject);
         }
+ 
+        // Clean up the composite colliders
+        var colliders = new List<PolygonCollider2D>();
+        GetComponents<PolygonCollider2D>(colliders);
+        for (int i = 0; i < colliders.Count; i++)
+            if (colliders[i].usedByComposite && colliders[i].composite == Collider)
+                Destroy(colliders[i]);
+
+        // Reset vehicle properties
+        EnergyCapacity = 0;
+        Rigidbody.mass = 1;
+        Rigidbody.centerOfMass = Vector3.zero;
 
         IsBuilt = false;
         ResetVehicle();
