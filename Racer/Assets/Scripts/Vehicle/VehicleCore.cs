@@ -252,46 +252,6 @@ public class VehicleCore : MonoBehaviour
             Hull[i] = (Vector2)transform.TransformPoint(Hull[i]);
     }
 
-
-    void OnDrawGizmos()
-    {
-        // Draw the vehicle hull for debug purposes
-        if(Hull?.Count > 0)
-        {
-            Vector2 prev = Hull[^1];
-            foreach(var point in Hull)
-            {
-                Debug.DrawLine(prev, point, Color.magenta);
-                prev = point;
-            }
-        }
-
-        // Draw a cross at the centre of gravity
-        if(Rigidbody != null)
-        {
-            float size = 0.25f;
-            Debug.DrawLine(
-                Rigidbody.worldCenterOfMass + new Vector2( size, 0),
-                Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
-                Color.red
-            );
-            Debug.DrawLine(
-                Rigidbody.worldCenterOfMass + new Vector2(0,  size),
-                Rigidbody.worldCenterOfMass + new Vector2(0, -size),
-                Color.red
-            );
-            Debug.DrawLine(
-               Rigidbody.worldCenterOfMass + new Vector2(0,  size),
-               Rigidbody.worldCenterOfMass + new Vector2(size, 0),
-               Color.red
-           );
-            Debug.DrawLine(
-               Rigidbody.worldCenterOfMass + new Vector2(-size, 0),
-               Rigidbody.worldCenterOfMass + new Vector2(0, -size),
-               Color.red
-           );
-        }
-    }
 }
 
 /// <summary>
