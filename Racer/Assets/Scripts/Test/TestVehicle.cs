@@ -41,10 +41,7 @@ public class TestVehicle : MonoBehaviour
         {
             Debug.Log($"Energy Left: {_core.EnergyLevel}/{_core.EnergyCapacity}");
             foreach (var a in _core.Actuators)
-            {
-                if(a.TryActivate())
-                    Debug.DrawLine(a.ActuationForcePosition, a.ActuationForcePosition + 0.1f * a.ActuationForce, Color.green, 0.01f);
-            }
+                a.TryActivate(1.0f, true);
         }
 
         // Draw the vehicle hull for debug purposes
