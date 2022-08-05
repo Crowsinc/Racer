@@ -7,7 +7,13 @@ public class VehicleModule : MonoBehaviour
     /// <summary>
     /// The amount of energy this module can store
     /// </summary>
-    public float EnergyCapacity = 0; 
+    public float EnergyCapacity = 0;
+
+
+    /// <summary>
+    /// The cost of buying this module
+    /// </summary>
+    public float Cost = 0;
 
 
     /// <summary>
