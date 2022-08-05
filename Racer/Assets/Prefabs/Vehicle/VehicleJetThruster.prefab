@@ -345,8 +345,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4286607665382392215}
-  - component: {fileID: 5541673992597886914}
   - component: {fileID: 6888949381720243787}
+  - component: {fileID: 5541673992597886914}
   - component: {fileID: 7011759647688323487}
   - component: {fileID: 6897264028096929904}
   m_Layer: 0
@@ -377,23 +377,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5541673992597886914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3133470596941498217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnergyCapacity: 0
-  Mass: 10
-  Size: {x: 3, y: 1}
-  Collider: {fileID: 6888949381720243787}
-  Attachments: []
 --- !u!60 &6888949381720243787
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -432,6 +415,24 @@ PolygonCollider2D:
       - {x: 0.60216916, y: -0.2539598}
       - {x: 1.2510922, y: -0.2518435}
       - {x: 1.7537287, y: 0.0004587844}
+--- !u!114 &5541673992597886914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3133470596941498217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cost: 120
+  EnergyCapacity: 0
+  Mass: 10
+  Size: {x: 3, y: 1}
+  Collider: {fileID: 6888949381720243787}
+  Attachments: []
 --- !u!114 &7011759647688323487
 MonoBehaviour:
   m_ObjectHideFlags: 0

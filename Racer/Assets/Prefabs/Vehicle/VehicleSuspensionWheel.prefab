@@ -395,8 +395,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Cost: 80
   EnergyCapacity: 0
-  Mass: 1
+  Mass: 4
   Size: {x: 1, y: 2}
   Collider: {fileID: 2055665847356100098}
   Attachments:
