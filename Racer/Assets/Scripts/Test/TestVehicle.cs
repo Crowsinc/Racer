@@ -7,6 +7,8 @@ public class TestVehicle : MonoBehaviour
 {
     public GameObject ChassisPrefab;
     public GameObject HeavyChassisPrefab;
+    public GameObject EnergyTankPrefab;
+    public GameObject PropellerPrefab;
     public GameObject ThrusterPrefab;
     public GameObject JetPrefab;
     public GameObject SolidWheelPrefab;
@@ -21,13 +23,14 @@ public class TestVehicle : MonoBehaviour
 
         var design = new Dictionary<Vector2Int, ModuleSchematic>();
         design.Add(new Vector2Int(-1, 0), new ModuleSchematic(HeavyChassisPrefab));
-        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(ChassisPrefab));
+        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(EnergyTankPrefab));
         design.Add(new Vector2Int(-3, 0), new ModuleSchematic(ChassisPrefab));
         design.Add(new Vector2Int(-4, 0), new ModuleSchematic(ChassisPrefab));
         design.Add(new Vector2Int(-1, 1), new ModuleSchematic(JetPrefab));
         design.Add(new Vector2Int(-5, 0), new ModuleSchematic(ThrusterPrefab));
         design.Add(new Vector2Int(-2, -1), new ModuleSchematic(SuspensionWheelPrefab));
         design.Add(new Vector2Int(0, -1), new ModuleSchematic(SuspensionWheelPrefab));
+        design.Add(new Vector2Int(-4, 1), new ModuleSchematic(PropellerPrefab,90));
         design.Add(new Vector2Int(1, 0), new ModuleSchematic(SolidWheelPrefab, 90));
         design.Add(new Vector2Int(-4, -1), new ModuleSchematic(SolidWheelPrefab));
 

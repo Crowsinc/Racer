@@ -80,6 +80,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
   HeavyChassisPrefab: {fileID: 7624775858267870645, guid: 256e03067f1eccc4b931e177f4c5b967, type: 3}
+  EnergyTankPrefab: {fileID: 3093684643717674156, guid: b08c3e8cd48071c438059d2beda283f6, type: 3}
+  PropellerPrefab: {fileID: 5131346333664289848, guid: 9a94027da4abc5847901771486f4d129, type: 3}
   ThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
   JetPrefab: {fileID: 3133470596941498217, guid: 6c8b49e9dce23e948a31bd9a60143e19, type: 3}
   SolidWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
