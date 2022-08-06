@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class VehicleCore : MonoBehaviour
 {
+    /// <summary>
+    /// Game feel value which scales the strength of aerodynamic drag on the vehicle.
+    /// </summary>
+    public float AerodynamicDragCoefficient = 0.75f;
+
 
     /// <summary>
     /// The total energy capacity of the vehicle
@@ -15,10 +20,10 @@ public class VehicleCore : MonoBehaviour
     /// <summary>
     /// The current energy level of the vehicle, from 0.0 to EnergyCapacity
     /// </summary>
-    public float EnergyLevel 
+    public float EnergyLevel
     {
         get => _energyLevel;
-        set { _energyLevel = Mathf.Clamp(value, 0.0f, EnergyCapacity); } 
+        set { _energyLevel = Mathf.Clamp(value, 0.0f, EnergyCapacity); }
     }
     private float _energyLevel = 0.0f;
 
@@ -65,7 +70,7 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public bool IsBuilt { get; private set; }
 
-    
+
     /// <summary>
     /// Generates the given design of the vehicle onto the VehicleCore.
     /// </summary>
@@ -131,7 +136,7 @@ public class VehicleCore : MonoBehaviour
 
                     Modules.Add(properties);
                 }
-                else if(prefab != gameObject)
+                else if (prefab != gameObject)
                     Debug.LogWarning($"Vehicle module at {offset} has no PolygonCollider2D");
 
                 // If the module provides joints for attached Rigidbodies, then connect
@@ -153,12 +158,12 @@ public class VehicleCore : MonoBehaviour
             if (module.TryGetComponent<ActuatorModule>(out ActuatorModule actuator))
                 Actuators.Add(actuator);
         }
-        
+
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
 
         // If we have more than one path, then the vehicle structure is not fully connected
-        if(Collider.pathCount > 1)
+        if (Collider.pathCount > 1)
         {
             Debug.LogError($"Vehicle structure is not fully connected ({Collider.pathCount} Sections)");
             ClearStructure();
@@ -204,7 +209,7 @@ public class VehicleCore : MonoBehaviour
             if (child.GetComponent<VehicleModule>() != null)
                 Destroy(child.gameObject);
         }
- 
+
         // Clean up the composite colliders
         var colliders = new List<PolygonCollider2D>();
         GetComponents<PolygonCollider2D>(colliders);
@@ -254,8 +259,65 @@ public class VehicleCore : MonoBehaviour
         Collider.GetPath(0, Hull);
         for (int i = 0; i < Hull.Count; i++)
             Hull[i] = (Vector2)transform.TransformPoint(Hull[i]);
+
+
+        // Calculate aerodynamic drag
+        // The aerodynamic drag formula is:
+        // Fd = 0.5 * rho * v^2 * C * A,
+        // where:
+        //   rho = air density
+        //   v = relative velocity
+        //   C = drag coefficient
+        //   A = drag area
+        //
+        // Unity's linear drag equation, v = v * (1 - drag), is too simple to 
+        // implement proper aerodynamic drag, which is proportional to the square
+        // of the velocity. So instead we set the rigidbody linear drag to 0 and
+        // apply our own drag force. This will be a simplified version which acts 
+        // on the centre of mass and removes air density.The drag coefficient will 
+        // be a vehicle parameter set during game balancing to introduce the correct
+        // game feel. The drag area will be approximated on fly for each hull segment via:
+        //
+        // drag area = sum(segment area * clamp(1.0 - dot(segment normal, vehicle velocity), 0, 1))
+        //
+        // Hull segments which are perpendicular to the vehicle velocity will have their
+        // full area considered, while those which are parralel or on the opposite side
+        // of the vehicle will be ignored. Note that we care about the opposite velocity
+        // of the drag for the vector dot product, which is why we are using the vehicle
+        // velocity.
+
+        // Velocity of vehicle, assuming zero wind speed.
+        var velocityDir = Rigidbody.velocity.normalized;
+        var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
+
+        // Find drag area
+        float dragArea = 0.0f;
+        Vector2 prevPoint = Hull[^1];
+        foreach (Vector2 currPoint in Hull)
+        {
+            // The hull is in counter-clockwise order but we want the segment
+            // to be clockwise so that Vector2.perpendicular() gives us the
+            // outer facing normals of the vehicle hull.
+            var segment = prevPoint - currPoint;
+            var outerNormal = Vector2.Perpendicular(segment).normalized;
+            
+            dragArea += segment.magnitude * Mathf.Clamp01(Vector2.Dot(outerNormal, velocityDir));
+
+            prevPoint = currPoint;
+        }
+
+        // NOTE: we invert the force direction here, to make it drag (-0.5f)
+        var aerodynamicDragForce = -0.5f * AerodynamicDragCoefficient * dragArea * velocitySqr;
+
+        Rigidbody.drag = 0.0f;
+        Rigidbody.AddForce(aerodynamicDragForce);
     }
 
+
+    void OnValidate()
+    {
+        AerodynamicDragCoefficient = Mathf.Max(AerodynamicDragCoefficient, 0);
+    }
 }
 
 /// <summary>
@@ -291,6 +353,7 @@ public struct ModuleSchematic
         Prefab = prefab;
         Rotation = rotation;
     }
+
 
     public void Deconstruct(out GameObject prefab, out float rotation)
     {
