@@ -55,6 +55,12 @@ public class VehicleModule : MonoBehaviour
     public List<AnchoredJoint2D> Attachments = new List<AnchoredJoint2D>();
 
 
+    /// <summary>
+    /// The vehicle that this module is linked/attached to
+    /// </summary>
+    public VehicleCore LinkedVehicle = null;
+
+
     void OnValidate()
     {
         Mass = Mathf.Max(Mass, 1.0f);
