@@ -161,7 +161,7 @@ public class VehicleCore : MonoBehaviour
         if(Collider.pathCount > 1)
         {
             Debug.LogError($"Vehicle structure is not fully connected ({Collider.pathCount} Sections)");
-            //ClearStructure();
+            ClearStructure();
             return false;
         }
 
@@ -174,6 +174,10 @@ public class VehicleCore : MonoBehaviour
         // all of the vehicles physical properties have been discovered.
         foreach (var actuator in Actuators)
             actuator.LinkedVehicle = this;
+
+        // Link all vehicle modules to the vehicle
+        foreach (var module in Modules)
+            module.LinkedVehicle = this;
 
         ResetVehicle();
 
