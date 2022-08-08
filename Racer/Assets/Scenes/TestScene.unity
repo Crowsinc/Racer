@@ -272,6 +272,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 1567524544}
+--- !u!1 &1683152026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4094237006374959360, guid: 0d78d3e69bbc0814a9f87f62faf9ffbb, type: 3}
+  m_PrefabInstance: {fileID: 1690795966}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1683152027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683152026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3acd70685b78784794342c5bdb76b29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleTiltAngle: 0
+  currentSpeed: 0
+  isGrounded: 0
 --- !u!1001 &1690795966
 PrefabInstance:
   m_ObjectHideFlags: 0
