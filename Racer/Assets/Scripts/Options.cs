@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.PlayerLoop;
 
 public class Options : MonoBehaviour
 {
 
 	public List<ResItem> resolutions = new List<ResItem>();
+
+	public Toggle fullscreenTog;
 	
 	private int selectedRes;
 
@@ -15,7 +18,31 @@ public class Options : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+	    fullscreenTog.isOn = Screen.fullScreen;
+
+	    int i = 0;
+	    bool resFound = false;
+	    while (i < resolutions.Count && resFound == false)
+	    {
+		    if (Screen.width == resolutions[i].horizontal && Screen.height == resolutions[i].vertical)
+		    {
+			    selectedRes = i;
+			    resFound = true;
+			    refreshLabel();
+		    }
+		    i += 1;
+	    }
+
+	    if (!resFound)
+	    {
+		    ResItem newRes = new ResItem();
+		    newRes.horizontal = Screen.width;
+		    newRes.vertical = Screen.height;
+		    
+		    resolutions.Add(newRes);
+		    selectedRes = resolutions.Count - 1;
+		    refreshLabel();
+	    }
     }
 
     // Update is called once per frame
@@ -51,7 +78,7 @@ public class Options : MonoBehaviour
 
 	public void ApplyGraphics()
 	{
-		
+		Screen.SetResolution(resolutions[selectedRes].horizontal, resolutions[selectedRes].vertical, fullscreenTog.isOn);
 	}
 }
 
