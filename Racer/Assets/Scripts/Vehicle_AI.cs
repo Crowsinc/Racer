@@ -16,6 +16,8 @@ public class Vehicle_AI : MonoBehaviour
     private Rigidbody2D _leftTippingPoint;
     private Rigidbody2D _rightTippingPoint;
 
+    private bool _startSimulation = false;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -32,6 +34,7 @@ public class Vehicle_AI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!_startSimulation) return;
         var center = Vector2.Lerp(_leftTippingPoint.position, _rightTippingPoint.position, 0.5f).x;
         var counterClockwiseForce = (_rb.worldCenterOfMass.x - _leftTippingPoint.position.x) / (center - _leftTippingPoint.position.x);
         var clockwiseForce = ( _rightTippingPoint.position.x - _rb.worldCenterOfMass.x) / (_rightTippingPoint.position.x - center);
@@ -42,6 +45,11 @@ public class Vehicle_AI : MonoBehaviour
         Debug.Log(clockwiseForce);
         _actuator[0].TryActivate(proportion: clockwiseForce);
 
+    }
+
+    public void StartSimulation()
+    {
+        _startSimulation = !_startSimulation;
     }
 
     private void OnDrawGizmos()
