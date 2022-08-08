@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8432881200776735965}
   - component: {fileID: 6316957983269079857}
   - component: {fileID: 4856767601489058795}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: EnergyTank
   m_TagString: Untagged
   m_Icon: {fileID: 0}

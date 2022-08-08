@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6727406937457003453}
   - component: {fileID: 1171447812353665673}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 9034258520050537694}
   - component: {fileID: 4444987303252126757}
   - component: {fileID: 8334997359131464188}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}

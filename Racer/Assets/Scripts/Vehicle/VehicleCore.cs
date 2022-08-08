@@ -33,7 +33,7 @@ public class VehicleCore : MonoBehaviour
     /// <summary>
     /// The composite collider generated for the hull of the vehicle
     /// </summary>
-    public CompositeCollider2D Collider { get; private set; }
+    public CompositeCollider2D Collider { get; set; }
 
 
     /// <summary>

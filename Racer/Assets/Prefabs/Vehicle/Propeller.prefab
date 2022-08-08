@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1320353277008905741}
   - component: {fileID: 2309944398160023620}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 8918917842448196127}
   - component: {fileID: 4758518223659593155}
   - component: {fileID: 1066405130391982916}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Propeller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5888092421255742928}
   - component: {fileID: 7000438625449959983}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Blades
   m_TagString: Untagged
   m_Icon: {fileID: 0}
