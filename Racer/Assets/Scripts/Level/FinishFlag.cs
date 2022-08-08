@@ -18,5 +18,9 @@ public class FinishFlag : MonoBehaviour
         {
             sc.WinRace();
         }
+        else if (collision.CompareTag("Opponent"))
+        {
+            sc.LoseRace();
+        }
     }
 }

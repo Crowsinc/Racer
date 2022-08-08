@@ -13,11 +13,15 @@ public class SimulationController : MonoBehaviour
     public GameObject winUI;
 
     public Transform raceProgressBar;
+    [HideInInspector]
+    public GameObject opponentVehicle;
+    [HideInInspector]
     public Vector3 raceFinishPoint;
 
     private bool inBuildMode = true;
     private CameraFollow cameraFollow;
     private float raceDistance;
+    private GameObject opponentInstance;
 
     private void Awake()
     {
@@ -44,6 +48,8 @@ public class SimulationController : MonoBehaviour
         buildModeUI.SetActive(true);
         buildModeGrid.SetActive(true);
         raceUI.SetActive(false);
+
+        Destroy(opponentVehicle);
     }
 
     /// <summary>
@@ -59,7 +65,8 @@ public class SimulationController : MonoBehaviour
         raceUI.SetActive(true);
 
         raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
-        Debug.Log(raceDistance);
+
+        opponentInstance = Instantiate(opponentVehicle, buildModeCamPos.position, Quaternion.identity);
     }
 
     /// <summary>
@@ -69,5 +76,10 @@ public class SimulationController : MonoBehaviour
     {
         raceUI.SetActive(false);
         winUI.SetActive(true);
+    }
+
+    public void LoseRace()
+    {
+        //TODO
     }
 }
