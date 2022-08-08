@@ -8,6 +8,7 @@ public class SimulationController : MonoBehaviour
     public VehicleCore playerVehicle;
 
     public GameObject buildModeUI;
+    public GameObject buildModeGrid;
     public GameObject raceUI;
     public GameObject winUI;
 
@@ -41,6 +42,7 @@ public class SimulationController : MonoBehaviour
         cameraFollow.Target = buildModeCamPos;
 
         buildModeUI.SetActive(true);
+        buildModeGrid.SetActive(true);
         raceUI.SetActive(false);
     }
 
@@ -53,6 +55,7 @@ public class SimulationController : MonoBehaviour
         cameraFollow.Target = playerVehicle.transform;
 
         buildModeUI.SetActive(false);
+        buildModeGrid.SetActive(true);
         raceUI.SetActive(true);
 
         raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
