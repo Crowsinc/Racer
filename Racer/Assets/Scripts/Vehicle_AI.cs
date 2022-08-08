@@ -13,7 +13,8 @@ public class Vehicle_AI : MonoBehaviour
     private VehicleCore _core;
     private List<ActuatorModule> _actuator;
 
-    private List<Rigidbody2D> _wheel;
+    private Rigidbody2D _leftTippingPoint;
+    private Rigidbody2D _rightTippingPoint;
 
     private void Awake()
     {
@@ -24,43 +25,30 @@ public class Vehicle_AI : MonoBehaviour
     private void Start()
     {
         _actuator = _core.Actuators;
-        _wheel = _core.Attachments;
-        Time.timeScale = 0.1f;
+        _leftTippingPoint = _core.Attachments[1];
+        _rightTippingPoint = _core.Attachments[0];
+        Time.timeScale = 0.4f;
     }
 
     private void FixedUpdate()
     {
-        UpdateVariables();
-        _actuator[0].TryActivate();
+        var center = Vector2.Lerp(_leftTippingPoint.position, _rightTippingPoint.position, 0.5f).x;
+        var counterClockwiseForce = (_rb.worldCenterOfMass.x - _leftTippingPoint.position.x) / (center - _leftTippingPoint.position.x);
+        var clockwiseForce = ( _rightTippingPoint.position.x - _rb.worldCenterOfMass.x) / (_rightTippingPoint.position.x - center);
+        if (clockwiseForce >= 1)
+            clockwiseForce = 1.0f;
+        else if (clockwiseForce <= 0)
+            clockwiseForce = 0.0f;
+        Debug.Log(clockwiseForce);
+        _actuator[0].TryActivate(proportion: clockwiseForce);
 
-        
-    }
-
-    private void UpdateVariables()
-    {
-        vehicleTiltAngle = transform.rotation.eulerAngles.z;
-        currentSpeed = _rb.velocity.magnitude;
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.name == "Terrain")
-        {
-            isGrounded = true;
-        }
-    } 
-
-    private void OnCollisionExit2D(Collision2D other)
-    {
-        if (other.gameObject.name == "Terrain")
-        {
-            isGrounded = false;
-        }
     }
 
     private void OnDrawGizmos()
     {
         float size = 0.25f;
+        if (_rb == null) return;
+
         Debug.DrawLine(
             _rb.worldCenterOfMass + new Vector2(size, 0),
             _rb.worldCenterOfMass + new Vector2(-size, 0),
@@ -83,13 +71,11 @@ public class Vehicle_AI : MonoBehaviour
        );
 
 
-        Vector2 pos = _wheel[1].position;
-        Vector2 pos1 = _wheel[0].position;
-        var center = Vector2.Lerp(pos, pos1, 0.5f);
+        Vector2 pos = _leftTippingPoint.position;
+        Vector2 pos1 = _rightTippingPoint.position;
 
         Debug.DrawLine(pos, pos + new Vector2(0, 5), Color.blue);
         Debug.DrawLine(pos1, pos1 + new Vector2(0, 5), Color.blue);
-        Debug.DrawLine(_rb.worldCenterOfMass, _rb.worldCenterOfMass + new Vector2(0, 5), Color.green);
 
     }
 }
