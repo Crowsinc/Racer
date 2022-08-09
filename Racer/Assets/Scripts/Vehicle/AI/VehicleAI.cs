@@ -26,10 +26,7 @@ public class VehicleAI : MonoBehaviour
 
     private void Start()
     {
-        _actuator = _core.Actuators;
-        _leftTippingPoint = _core.Attachments[1];
-        _rightTippingPoint = _core.Attachments[0];
-        Time.timeScale = 0.4f;
+      // Moved to startSimulation()   
     }
 
     private void FixedUpdate()
@@ -50,6 +47,19 @@ public class VehicleAI : MonoBehaviour
     public void StartSimulation()
     {
         _startSimulation = !_startSimulation;
+    
+        if(_startSimulation)
+        {
+            if (!_core.IsBuilt)
+                Debug.LogError("Cannot start simulation before the vehicle is built");
+
+
+            // Need to get this here because there is no guarantee that the vehicle is created by start()
+            _actuator = _core.Actuators;
+            _leftTippingPoint = _core.Attachments[1];
+            _rightTippingPoint = _core.Attachments[0];
+            Time.timeScale = 0.4f;
+        }
     }
 
     private void OnDrawGizmos()

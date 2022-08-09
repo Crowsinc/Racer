@@ -66,8 +66,12 @@ public class SimulationController : MonoBehaviour
 
         raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
 
-        opponentInstance = Instantiate(opponentVehicle, buildModeCamPos.position, Quaternion.identity);
+        //opponentInstance = Instantiate(opponentVehicle, buildModeCamPos.position, Quaternion.identity);
+        opponentInstance = Instantiate(opponentVehicle, new Vector3(-4, 3, 0), Quaternion.identity);
 
+        // Build the opponent
+        if(opponentInstance.TryGetComponent<TestVehicle>(out var test))
+            test.Build();
 
         // Start the AI simulation
         // TODO: Luke feel free to change this to whatever fits your code better!
