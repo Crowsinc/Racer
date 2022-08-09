@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelId: 1
   terrain: {fileID: 3751650358320115858, guid: 4441a7ce423e213448037c01a200e3cd, type: 3}
-  opponentVehicle: {fileID: 4094237006374959360, guid: 886d869a12b6e7348b8981756238608e, type: 3}
+  opponentVehicle: {fileID: 1800276209104778206, guid: 386e393f4f45e8b44a6b4cefa0ca2c57, type: 3}
   budget: 1000
