@@ -40,7 +40,8 @@ public class TestVehicle : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(Input.GetMouseButton(0))
+        
+        if(Input.GetMouseButton(1)) // right click pressed
         {
             Debug.Log($"Energy Left: {_core.EnergyLevel}/{_core.EnergyCapacity}");
             foreach (var a in _core.Actuators)

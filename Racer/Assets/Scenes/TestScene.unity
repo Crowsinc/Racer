@@ -31349,15 +31349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3202a1f7dac4cb4f8272ad11773e5ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildModeCamPos: {fileID: 1898344580}
-  playerVehicle: {fileID: 5549826102840261000}
-  buildModeUI: {fileID: 773162643}
-  buildModeGrid: {fileID: 70451257}
-  raceUI: {fileID: 1495715875}
-  winUI: {fileID: 1233391753}
-  raceProgressBar: {fileID: 1817601886}
-  opponentVehicle: {fileID: 0}
-  raceFinishPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &1233391753
 GameObject:
   m_ObjectHideFlags: 0
@@ -31748,6 +31739,7 @@ GameObject:
   - component: {fileID: 5549826102840261000}
   - component: {fileID: 6469935118353068329}
   - component: {fileID: 1726753256}
+  - component: {fileID: 7826029816207006634}
   m_Layer: 30
   m_Name: Test Vehicle Variant
   m_TagString: Player
@@ -31767,6 +31759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51141bbcb5b32e747bf4ddb263d2a749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AerodynamicDragCoefficient: 0.75
   Rigidbody: {fileID: 0}
 --- !u!114 &6469935118353068329
 MonoBehaviour:
@@ -31786,6 +31779,7 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 0}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!212 &7246878343080236093
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -31853,3 +31847,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7826029816207006634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094237006155280549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f60ea6847e28044e87c04ce38e24081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleTiltAngle: 0
+  currentSpeed: 0
+  isGrounded: 0

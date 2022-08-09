@@ -133,6 +133,7 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 6427048407652222509}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!1 &308758740282918262
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,6 +351,7 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 6571844148975172088}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!1 &1017456034932031456
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,6 +973,7 @@ MonoBehaviour:
   Collider: {fileID: 6180608226044329575}
   Attachments:
   - {fileID: 6849403128164419674}
+  LinkedVehicle: {fileID: 0}
 --- !u!1 &2267687791972315726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,6 +1031,7 @@ MonoBehaviour:
   Attachments:
   - {fileID: 7662784002036470054}
   - {fileID: 7130701812465694416}
+  LinkedVehicle: {fileID: 0}
 --- !u!114 &3466233828534465897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1139,6 +1143,7 @@ MonoBehaviour:
   Size: {x: 3, y: 1}
   Collider: {fileID: 7617079424061656212}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!114 &5947098019719701898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,6 +1188,7 @@ GameObject:
   - component: {fileID: 4434510612791809185}
   - component: {fileID: 5945838638862529268}
   - component: {fileID: 5066266340189862485}
+  - component: {fileID: 4325908201461422709}
   - component: {fileID: 4527132390647992369}
   - component: {fileID: 4579524565142124332}
   - component: {fileID: 278744979539622343}
@@ -1339,6 +1345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51141bbcb5b32e747bf4ddb263d2a749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AerodynamicDragCoefficient: 0.75
   Rigidbody: {fileID: 4192345716957924913}
 --- !u!114 &5066266340189862485
 MonoBehaviour:
@@ -1358,6 +1365,22 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 0}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
+--- !u!114 &4325908201461422709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2834605914230520793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f60ea6847e28044e87c04ce38e24081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vehicleTiltAngle: 0
+  currentSpeed: 0
+  isGrounded: 0
 --- !u!66 &4527132390647992369
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -2198,6 +2221,7 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 4610440287813549338}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!1 &4235094822790112059
 GameObject:
   m_ObjectHideFlags: 0
@@ -2251,6 +2275,7 @@ MonoBehaviour:
   Collider: {fileID: 6109127803412090337}
   Attachments:
   - {fileID: 4892265082969169871}
+  LinkedVehicle: {fileID: 0}
 --- !u!1 &4379713561873626064
 GameObject:
   m_ObjectHideFlags: 0
@@ -2694,6 +2719,7 @@ MonoBehaviour:
   Attachments:
   - {fileID: 2915352423981808480}
   - {fileID: 2542124688996710799}
+  LinkedVehicle: {fileID: 0}
 --- !u!114 &4799714902381068309
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3603,6 +3629,7 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 523737287406055464}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!1 &7344333630019268366
 GameObject:
   m_ObjectHideFlags: 0
@@ -3657,6 +3684,7 @@ MonoBehaviour:
   Size: {x: 1, y: 1}
   Collider: {fileID: 3243508522385613881}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!114 &4770085553755299383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4005,6 +4033,7 @@ MonoBehaviour:
   Size: {x: 1, y: 3}
   Collider: {fileID: 2042620878130624857}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!114 &3817566424555307224
 MonoBehaviour:
   m_ObjectHideFlags: 0
