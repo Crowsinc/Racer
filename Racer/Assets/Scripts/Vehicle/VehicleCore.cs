@@ -6,6 +6,12 @@ using UnityEngine;
 public class VehicleCore : MonoBehaviour
 {
     /// <summary>
+    /// If set to true, the vehicle will discover its own rigidbody properties, actuators and attachments on start().
+    /// </summary>
+    public bool Pregenerated = false;
+
+
+    /// <summary>
     /// Game feel value which scales the strength of aerodynamic drag on the vehicle.
     /// </summary>
     public float AerodynamicDragCoefficient = 0.75f;
@@ -36,9 +42,10 @@ public class VehicleCore : MonoBehaviour
 
 
     /// <summary>
-    /// The composite collider generated for the hull of the vehicle
+    /// The composite collider for the hull of the vehicle
     /// </summary>
-    public CompositeCollider2D Collider { get; set; }
+    [HideInInspector]
+    public CompositeCollider2D Collider;
 
 
     /// <summary>
@@ -80,7 +87,7 @@ public class VehicleCore : MonoBehaviour
     /// (0,0) will be reserved for the vehicle core and ignored. 
     /// </param>
     /// <returns> 
-    /// False if the provided design is not fully connected, otherwise true.
+    /// False if the provided design is not fully connected or has holes, otherwise true.
     /// </returns>
     public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design)
     {
@@ -162,10 +169,10 @@ public class VehicleCore : MonoBehaviour
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
 
-        // If we have more than one path, then the vehicle structure is not fully connected
-        if (Collider.pathCount > 1)
+        // Validate our vehicles hull to make sure
+        if (Collider.pathCount != 1)
         {
-            Debug.LogError($"Vehicle structure is not fully connected ({Collider.pathCount} Sections)");
+            Debug.LogError($"Vehicle hull is not fully connected ({Collider.pathCount} Sections)");
             ClearStructure();
             return false;
         }
@@ -188,6 +195,54 @@ public class VehicleCore : MonoBehaviour
 
         IsBuilt = true;
         return true;
+    }
+
+
+    /// <summary>
+    /// Self-analysis of rigidbody properties, actuators and attachments.
+    /// </summary>
+    private void Discover()
+    {
+        Modules.Clear();
+        Actuators.Clear();
+        Attachments.Clear();
+
+        float totalMass = 0.0f;
+        float totalEnergyCapacity = 0.0f;
+        Vector2 centreOfMass = Vector2.zero;
+
+        // register modules
+        var modules = gameObject.GetComponentsInChildren<VehicleModule>(false);
+        foreach (var module in modules)
+        {
+            Vector2 moduleOffset = module.gameObject.transform.position - transform.position;
+
+            totalEnergyCapacity += module.EnergyCapacity;
+            centreOfMass += module.Mass * moduleOffset;
+            totalMass += module.Mass;
+
+            module.LinkedVehicle = this;
+            Modules.Add(module);
+
+            foreach (var attachment in module.Attachments)
+                Attachments.Add(attachment.attachedRigidbody);
+        }
+
+        Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+        EnergyCapacity = totalEnergyCapacity;
+        Rigidbody.mass = totalMass;
+        Rigidbody.centerOfMass = centreOfMass / totalMass;
+
+        // Register actuators
+        var actuators = gameObject.GetComponentsInChildren<ActuatorModule>(false);
+        foreach (var actuator in actuators)
+        {
+            actuator.LinkedVehicle = this;
+            Actuators.Add(actuator);
+        }
+
+        ResetVehicle();
+        IsBuilt = true;
     }
 
 
@@ -243,12 +298,21 @@ public class VehicleCore : MonoBehaviour
         Actuators = new List<ActuatorModule>();
         Modules = new List<VehicleModule>();
 
-        Collider = gameObject.AddComponent<CompositeCollider2D>();
-        Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
-
         if (!TryGetComponent<Rigidbody2D>(out Rigidbody))
             Debug.LogError("VehicleCore failed to find a Rigidbody2D");
 
+        if (Pregenerated)
+        {
+            if (TryGetComponent<CompositeCollider2D>(out Collider) && Collider.pathCount == 1)
+                Discover();
+            else
+                Debug.LogError("Pre-generated VehicleCore does not have a suitable hull (CompositeCollider2D with 1 path)");
+        }
+        else
+        {
+            Collider = gameObject.AddComponent<CompositeCollider2D>();
+            Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+        }
     }
 
 
@@ -300,7 +364,7 @@ public class VehicleCore : MonoBehaviour
             // outer facing normals of the vehicle hull.
             var segment = prevPoint - currPoint;
             var outerNormal = Vector2.Perpendicular(segment).normalized;
-            
+
             dragArea += segment.magnitude * Mathf.Clamp01(Vector2.Dot(outerNormal, velocityDir));
 
             prevPoint = currPoint;
