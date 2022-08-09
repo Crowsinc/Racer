@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4939466732840705419}
   - component: {fileID: 6165320677644211372}
   - component: {fileID: 7059383011597786535}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: HeavyChassis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
