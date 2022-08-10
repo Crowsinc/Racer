@@ -3,7 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VehicleAI : MonoBehaviour
+public class ForwardGoal : AIGoal
+{
+    public override List<Tuple<ActuatorModule, float>> GenerateActions()
+    {
+        var actions = new List<Tuple<ActuatorModule, float>>();
+        foreach(var actuator in Actuators)
+        {
+            if(actuator.LinearAcceleration.x > 0)
+                actions.Add(new Tuple<ActuatorModule, float>(actuator, 1f));
+        }
+        return actions;
+    }
+
+    public override float Plan()
+    {
+        return 1.0f;
+    }
+}
+
+/*
+ public class VehicleAI : MonoBehaviour
 {
     public float vehicleTiltAngle;
     public float currentSpeed;
@@ -97,3 +117,4 @@ public class VehicleAI : MonoBehaviour
 
     }
 }
+ */
