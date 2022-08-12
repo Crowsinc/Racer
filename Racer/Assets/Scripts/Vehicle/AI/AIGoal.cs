@@ -36,6 +36,13 @@ public abstract class AIGoal : MonoBehaviour
 
 
     /// <summary>
+    /// Runs when the AI controller begins simulating. 
+    /// The Vehicle member is set before this runs. 
+    /// </summary>
+    public virtual void Begin() { }
+
+
+    /// <summary>
     /// Ran once per FixedUpdate to determine the priority of the AI goal.
     /// </summary>
     /// <returns>
