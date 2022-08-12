@@ -20,6 +20,11 @@ public class AIController : MonoBehaviour
             Debug.LogError("AIController is not attached to a vehicle!");
      
         _goals = GetComponents<AIGoal>();
+
+        // Set vehicle in case it hasnt been set yet by the AIGoal.
+        // This can happen if the awake() function is overriden. 
+        foreach (var goal in _goals)
+            goal.Vehicle = _vehicle;
     }
 
     // Update is called once per frame

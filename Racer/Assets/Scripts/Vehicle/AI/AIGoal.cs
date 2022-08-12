@@ -8,7 +8,7 @@ public abstract class AIGoal : MonoBehaviour
     /// <summary>
     /// The vehicle that the AIGoal is attached to
     /// </summary>
-    protected VehicleCore Vehicle;
+    public VehicleCore Vehicle;
 
     // Vehicle Shortcuts
 
