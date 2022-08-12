@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.PlayerLoop;
+using UnityEngine.Audio;
+
 
 public class Options : MonoBehaviour
 {
@@ -15,6 +16,13 @@ public class Options : MonoBehaviour
 	private int selectedRes;
 
 	public TMP_Text resLabel;
+
+	public AudioMixer Mixer;
+
+	public TMP_Text masterVolLabel, musicVolLabel, SFXVolLabel;
+	public Slider masterVolSlider, musicVolSlider, SFXVolSlider;
+	
+	
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +51,16 @@ public class Options : MonoBehaviour
 		    selectedRes = resolutions.Count - 1;
 		    refreshLabel();
 	    }
+
+	    float vol = 0f;
+	    Mixer.GetFloat("MasterVol", out vol);
+	    masterVolSlider.value = UnRubberBandVolume(vol);
+	    
+	    Mixer.GetFloat("MusicVol", out vol);
+	    musicVolSlider.value = UnRubberBandVolume(vol);
+	    
+	    Mixer.GetFloat("SFXVol", out vol);
+	    SFXVolSlider.value = UnRubberBandVolume(vol);
     }
 
     // Update is called once per frame
@@ -79,6 +97,58 @@ public class Options : MonoBehaviour
 	public void ApplyGraphics()
 	{
 		Screen.SetResolution(resolutions[selectedRes].horizontal, resolutions[selectedRes].vertical, fullscreenTog.isOn);
+	}
+
+	public void SetMasterVol()
+	{
+		masterVolLabel.text = Mathf.RoundToInt(masterVolSlider.value + 80).ToString();
+
+		var application = RubberBandVolume(masterVolSlider.value);
+		
+		Mixer.SetFloat("MasterVol", application);
+		
+		PlayerPrefs.SetFloat("MasterVol", application);
+	}
+	
+	public void SetMusicVol()
+	{
+		musicVolLabel.text = Mathf.RoundToInt(musicVolSlider.value + 80).ToString();
+
+		var application = RubberBandVolume(musicVolSlider.value);
+		
+		Mixer.SetFloat("MusicVol", application);
+		
+		PlayerPrefs.SetFloat("MusicVol", application);
+	}
+	
+	public void SetSFXVol()
+	{
+		SFXVolLabel.text = Mathf.RoundToInt(SFXVolSlider.value + 80).ToString();
+
+		var application = RubberBandVolume(SFXVolSlider.value);
+		
+		Mixer.SetFloat("SFXVol", application);
+		
+		PlayerPrefs.SetFloat("SFXVol", application);
+	}
+
+	public float RubberBandVolume(float volumeSlider)
+	{
+		var value = -20 + 40 * (volumeSlider + 80) / 100;
+		
+		if (value <= -20)
+		{
+			value = -80;
+		}
+
+		return value;
+	}
+
+	public float UnRubberBandVolume(float volumeValue)
+	{
+		var value = -80 + 100 * (volumeValue + 20) / 40;
+		
+		return value;
 	}
 }
 
