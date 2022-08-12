@@ -45,10 +45,15 @@ public class SimulationController : MonoBehaviour
         inBuildMode = true;
         cameraFollow.Target = buildModeCamPos;
 
+        // Change UI
         buildModeUI.SetActive(true);
         buildModeGrid.SetActive(true);
         raceUI.SetActive(false);
 
+        // Freeze player vehicle
+        playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+
+        // Destroy opponent vehicle
         Destroy(opponentVehicle);
     }
 
@@ -60,9 +65,13 @@ public class SimulationController : MonoBehaviour
         inBuildMode = false;
         cameraFollow.Target = playerVehicle.transform;
 
+        // Change UI
         buildModeUI.SetActive(false);
-        buildModeGrid.SetActive(true);
+        buildModeGrid.SetActive(false);
         raceUI.SetActive(true);
+
+        // Unfreeze player vehicle
+        playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
         raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
 
