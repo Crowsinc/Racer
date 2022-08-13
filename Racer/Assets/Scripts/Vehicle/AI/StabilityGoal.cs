@@ -6,15 +6,41 @@ using UnityEngine;
 public class StabilityGoal : AIGoal
 {
     /// <summary>
-    /// The length of area samples to determine the slope of the ground
-    /// </summary>
-    public float SampleLength = 2.0f;
-
-    /// <summary>
     /// The maximum amount of angle deviation from the ground slope 
     /// allowed before stability becomes a max priority goal of the vehicle.
     /// </summary>
     public float MaxDeviation = 12.5f;
+
+
+    /// <summary>
+    /// The length of the area that will be sampled underneath the 
+    /// centre of mass to determine the slope of the ground.
+    /// </summary>
+    public float SampleArea = 2.0f;
+
+
+    /// <summary>
+    /// An offset from the centre of mass of the vehicle, 
+    /// which defines where the sample area will begin. 
+    /// A positive offset means the vehicle will consider
+    /// the ground ahead of its path. 
+    /// </summary>
+    public float SampleOffset = 2.0f;
+
+
+    /// <summary>
+    /// Smooths out ground sampling to help filter out noise or
+    /// transient changes in ground slope (e.g. the edge of a cliff)
+    /// </summary>
+    public bool SampleSmoothing = true;
+
+    
+    /// <summary>
+    /// The smoothing factor (0,1) to use when sample smoothing is turned on.
+    /// </summary>
+    public float SmoothingFactor = 0.03f;
+
+    private float _groundSlope = 0.0f;
 
     private int _mapMask = 0;
     private int _maxRayDistance = 1000;
@@ -40,18 +66,28 @@ public class StabilityGoal : AIGoal
 
     public override float Plan()
     {
-        var ray = Physics2D.Raycast(CentreOfMass, Vector2.down, _maxRayDistance, _mapMask);
-        if (ray.collider != null)
+        var step = new Vector2(SampleArea * 0.5f, 0);
+        var offset = new Vector2(SampleOffset, 0);
+
+        // Sample the ground
+        var leftRay = Physics2D.Raycast(CentreOfMass + offset - step, Vector2.down, _maxRayDistance, _mapMask);
+        var rightRay = Physics2D.Raycast(CentreOfMass + offset + step, Vector2.down, _maxRayDistance, _mapMask);
+
+        if (leftRay.collider != null && rightRay.collider != null)
         {
-            var step = new Vector2(0.5f * SampleLength, 0.0f);
+            // Determine the slope of the ground
 
-            var left = ray.collider.ClosestPoint(ray.point - step);
-            var right = ray.collider.ClosestPoint(ray.point + step);
+            var sampleVector = rightRay.point - leftRay.point;
+            var sampleSlope = Mathf.Rad2Deg * Mathf.Atan(sampleVector.y / sampleVector.x);
 
-            var groundVector = right - left;
-            var groundSlope = Mathf.Rad2Deg * Mathf.Atan(groundVector.y / groundVector.x);
+            if(SampleSmoothing)
+                // Apply smoothing through an exponential moving average approximation
+                _groundSlope = SmoothingFactor * sampleSlope + (1.0f - SmoothingFactor) * _groundSlope;
+            else
+                _groundSlope = sampleSlope;
 
-            _targetAngularAcceleration = groundSlope - Rigidbody.rotation;
+
+            _targetAngularAcceleration = _groundSlope - Rigidbody.rotation;
         }
         else _targetAngularAcceleration = -Rigidbody.rotation;
 
@@ -81,4 +117,9 @@ public class StabilityGoal : AIGoal
         return actions;
     }
 
+
+    void OnValidate()
+    {
+        SmoothingFactor = Mathf.Clamp01(SmoothingFactor);
+    }
 }
