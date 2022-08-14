@@ -9,8 +9,15 @@ public class StabilityGoal : AIGoal
     /// The maximum amount of angle deviation from the ground slope 
     /// allowed before stability becomes a max priority goal of the vehicle.
     /// </summary>
-    public float MaxDeviation = 12.5f;
+    public float MaxDeviation = 8.0f;
 
+
+    /// <summary>
+    /// The number of seconds through out which corrective actions will be distributed.
+    /// As the reaction time approaches zero, the required acceleration of each thruster
+    /// approaches infinity as corrective actions cannot be applied instantaneously. 
+    /// </summary>
+    public float ReactionTime = 0.2f;
 
     /// <summary>
     /// The length of the area that will be sampled underneath the 
@@ -45,7 +52,7 @@ public class StabilityGoal : AIGoal
     private int _mapMask = 0;
     private int _maxRayDistance = 1000;
     
-    private float _targetAngularAcceleration;
+    private float _targetAcceleration;
     private List<ActuatorModule> _rankedActuators;
 
     void Awake()
@@ -56,10 +63,13 @@ public class StabilityGoal : AIGoal
 
     public override void Begin()
     {
-        // Sort actuators from best to worst in terms of their angular effects. 
+        // Sort actuators from best to worst. We consider an actuator to be good if
+        // it has a high ratio of angular to linear effects. That is, it can rotate
+        // the vehicle without also moving it linearly. 
         _rankedActuators = new List<ActuatorModule>(Actuators);
         _rankedActuators.Sort(
-            (a, b) => Mathf.Abs(b.AngularAcceleration).CompareTo(Mathf.Abs(a.AngularAcceleration))
+            (a, b) => Mathf.Abs(b.AngularAcceleration/b.LinearAcceleration.magnitude)
+            .CompareTo(Mathf.Abs(a.AngularAcceleration/a.LinearAcceleration.magnitude))
         );
     }
 
@@ -73,6 +83,10 @@ public class StabilityGoal : AIGoal
         var leftRay = Physics2D.Raycast(CentreOfMass + offset - step, Vector2.down, _maxRayDistance, _mapMask);
         var rightRay = Physics2D.Raycast(CentreOfMass + offset + step, Vector2.down, _maxRayDistance, _mapMask);
 
+        Debug.DrawLine(CentreOfMass, rightRay.point, Color.yellow);
+        Debug.DrawLine(CentreOfMass, leftRay.point, Color.yellow);
+
+        float targetDisplacement = 0.0f;
         if (leftRay.collider != null && rightRay.collider != null)
         {
             // Determine the slope of the ground
@@ -87,11 +101,21 @@ public class StabilityGoal : AIGoal
                 _groundSlope = sampleSlope;
 
 
-            _targetAngularAcceleration = _groundSlope - Rigidbody.rotation;
+            targetDisplacement = _groundSlope - Rigidbody.rotation;
         }
-        else _targetAngularAcceleration = -Rigidbody.rotation;
+        else targetDisplacement = -Rigidbody.rotation;
 
-        return Mathf.Clamp01(Mathf.Abs(_targetAngularAcceleration) / MaxDeviation);
+
+        // Use an equation of motion to solve for the acceleration required to meet our target displacement.
+        // s = ut + 0.5 * at^2 => a = 2(s - ut)/t^2
+        // Where...
+        //  s = target angular displacement
+        //  u = current angular velocity
+        //  t = the time over which we are accelerating
+        //  a = resulting angular acceleration
+        _targetAcceleration = 2.0f * (targetDisplacement - Rigidbody.angularVelocity * ReactionTime) / (ReactionTime * ReactionTime);
+
+        return Mathf.Clamp01(Mathf.Abs(targetDisplacement) / MaxDeviation);
     }
 
 
@@ -104,11 +128,11 @@ public class StabilityGoal : AIGoal
         // pick the most effective choice of actuators.
         foreach(var actuator in _rankedActuators)
         {
-            float requiredProportion = _targetAngularAcceleration / actuator.AngularAcceleration;
+            float requiredProportion = _targetAcceleration / actuator.AngularAcceleration;
             if(requiredProportion > 0.0f) // Negative proportion => wrong direction
             {
                 requiredProportion = Mathf.Clamp01(requiredProportion);
-                _targetAngularAcceleration -= requiredProportion * actuator.AngularAcceleration;
+                _targetAcceleration -= requiredProportion * actuator.AngularAcceleration;
 
                 actions.Add(new Tuple<ActuatorModule, float>(actuator, requiredProportion));
             }
