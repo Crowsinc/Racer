@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class ForwardGoal : AIGoal
 {
+    private float _targetAcceleration = 100f;
+    private List<ActuatorModule> _rankedActuators;
+    public override void Begin()
+    {
+        _rankedActuators = new List<ActuatorModule>(Actuators);
+        _rankedActuators.Sort((a, b) => b.LinearAcceleration.magnitude.CompareTo(a.LinearAcceleration.magnitude));
+        // _rankedActuators.Sort((a, b) => b.LinearAcceleration.x.CompareTo(a.LinearAcceleration.x));
+    }
+
     public override List<Tuple<ActuatorModule, float>> GenerateActions()
     {
         var actions = new List<Tuple<ActuatorModule, float>>();
