@@ -13,6 +13,8 @@ public class LevelInitialiser : MonoBehaviour
 
         // Creating terrain
         Instantiate(selectedLevel.terrain, Vector3.zero, Quaternion.identity);
+
+        GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().opponentVehicle = selectedLevel.opponentVehicle;
     }
 
     // Find level in collection that matches id

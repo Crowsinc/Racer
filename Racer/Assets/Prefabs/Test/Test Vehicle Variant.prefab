@@ -53,11 +53,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Name
-      value: Test Vehicle
+      value: Test Vehicle Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8798700702011435603, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Constraints
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
@@ -66,6 +66,31 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
   m_PrefabInstance: {fileID: 6895673272699315899}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &-7056227834379844356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094237006374959360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ceea6bc816cb5140afc027a0a883d3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Simulate: 0
+--- !u!114 &-3335642566566691070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094237006374959360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f83f9d616f45e79409b8b1cd89420438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2079596621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,6 +103,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 764b9b4b572146c458dee3592c6f1c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TempChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
-  TempThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
-  TempWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
+  ChassisPrefab: {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
+  HeavyChassisPrefab: {fileID: 7624775858267870645, guid: 256e03067f1eccc4b931e177f4c5b967, type: 3}
+  EnergyTankPrefab: {fileID: 3093684643717674156, guid: b08c3e8cd48071c438059d2beda283f6, type: 3}
+  PropellerPrefab: {fileID: 5131346333664289848, guid: 9a94027da4abc5847901771486f4d129, type: 3}
+  ThrusterPrefab: {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
+  JetPrefab: {fileID: 3133470596941498217, guid: 6c8b49e9dce23e948a31bd9a60143e19, type: 3}
+  SolidWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
+  SuspensionWheelPrefab: {fileID: 2154514071067287247, guid: ac49c16f934b6f54e92e81b0c6d269b7, type: 3}
+--- !u!114 &-636354477281449576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094237006374959360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47902327575ef3448810b7dea2002c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -6,7 +6,7 @@ public class Level : MonoBehaviour
 {
     public int levelId;
     public GameObject terrain;
-    // public Vehicle opponentVehicle;
+    public GameObject opponentVehicle;
     public float budget;
 
     public void SetHighScore(float score)

@@ -3,7 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Vehicle_AI : MonoBehaviour
+public class ForwardGoal : AIGoal
+{
+    public override List<Tuple<ActuatorModule, float>> GenerateActions()
+    {
+        var actions = new List<Tuple<ActuatorModule, float>>();
+        foreach(var actuator in Actuators)
+        {
+            if(actuator.LinearAcceleration.x > 0)
+                actions.Add(new Tuple<ActuatorModule, float>(actuator, 1f));
+        }
+        return actions;
+    }
+
+    public override float Plan()
+    {
+        return 1.0f;
+    }
+}
+
+/*
+ public class VehicleAI : MonoBehaviour
 {
     public float vehicleTiltAngle;
     public float currentSpeed;
@@ -26,49 +46,40 @@ public class Vehicle_AI : MonoBehaviour
 
     private void Start()
     {
-        _actuator = _core.Actuators;
-
-        _leftTippingPoint = _core.Attachments[1];
-        _rightTippingPoint = _core.Attachments[0];
-        Time.timeScale = 0.5f;
+      // Moved to startSimulation()   
     }
 
     private void FixedUpdate()
     {
         if (!_startSimulation) return;
-
         var center = Vector2.Lerp(_leftTippingPoint.position, _rightTippingPoint.position, 0.5f).x;
-
         var counterClockwiseForce = (_rb.worldCenterOfMass.x - _leftTippingPoint.position.x) / (center - _leftTippingPoint.position.x);
-        var clockwiseForce = ( _rightTippingPoint.position.x - _rb.worldCenterOfMass.x) / (_rightTippingPoint.position.x - center);
-
+        var clockwiseForce = (_rightTippingPoint.position.x - _rb.worldCenterOfMass.x) / (_rightTippingPoint.position.x - center);
         if (clockwiseForce >= 1)
             clockwiseForce = 1.0f;
         else if (clockwiseForce <= 0)
             clockwiseForce = 0.0f;
+        Debug.Log(clockwiseForce);
+        _actuator[0].TryActivate(proportion: clockwiseForce);
 
-        if (counterClockwiseForce >= 1)
-            counterClockwiseForce = 1.0f;
-        else if (counterClockwiseForce <= 0)
-            counterClockwiseForce = 0.0f;
-
-        foreach (var actuator in _actuator)
-        {
-            if (actuator.AngularAcceleration < 0)
-            {
-                Debug.Log(clockwiseForce);
-                actuator.TryActivate(proportion: clockwiseForce);
-            }
-            else
-            {
-                actuator.TryActivate(proportion: counterClockwiseForce);
-            }
-        }
     }
 
     public void StartSimulation()
     {
         _startSimulation = !_startSimulation;
+    
+        if(_startSimulation)
+        {
+            if (!_core.IsBuilt)
+                Debug.LogError("Cannot start simulation before the vehicle is built");
+
+
+            // Need to get this here because there is no guarantee that the vehicle is created by start()
+            _actuator = _core.Actuators;
+            _leftTippingPoint = _core.Attachments[1];
+            _rightTippingPoint = _core.Attachments[0];
+            Time.timeScale = 0.4f;
+        }
     }
 
     private void OnDrawGizmos()
@@ -106,3 +117,4 @@ public class Vehicle_AI : MonoBehaviour
 
     }
 }
+ */
