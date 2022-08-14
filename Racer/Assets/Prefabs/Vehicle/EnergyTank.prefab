@@ -127,9 +127,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 21300000, guid: a4d8334fed320e044b8dce1eee648d8f, type: 3}
   Cost: 80
   EnergyCapacity: 600
   Mass: 1
   Size: {x: 1, y: 1}
   Collider: {fileID: 6316957983269079857}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
