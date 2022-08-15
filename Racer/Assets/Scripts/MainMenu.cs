@@ -8,7 +8,7 @@ public class MainMenu : MonoBehaviour
     public string levelSelect;
 
     public GameObject optionsScreen;
-    
+    public GameObject levelSelectScreen;
     
     // Start is called before the first frame update
     void Start()
@@ -24,7 +24,12 @@ public class MainMenu : MonoBehaviour
     
     public void PlayGame()
     {
-        SceneManager.LoadScene(levelSelect);
+        levelSelectScreen.SetActive(true);
+    }
+    
+    public void GoBack()
+    {
+        levelSelectScreen.SetActive(false);
     }
 
     public void OpenOptions()
