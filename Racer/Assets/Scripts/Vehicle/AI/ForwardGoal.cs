@@ -39,7 +39,8 @@ public class ForwardGoal : AIGoal
 
     public override float Plan()
     {
-        _targetAcceleration = 2.0f * (targetSpeed - Rigidbody.angularVelocity * reactionTime) / (reactionTime * reactionTime);
-        return 0.9f;
+        _targetAcceleration = 2.0f * ((targetSpeed * reactionTime) - Rigidbody.velocity.magnitude * reactionTime) / (reactionTime * reactionTime);
+        //_targetAcceleration = 2.0f * ((targetSpeed * reactionTime) - Rigidbody.velocity.x * reactionTime) / (reactionTime * reactionTime);
+        return 0.99f;
     }
 }
