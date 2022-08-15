@@ -13,6 +13,7 @@ public class BuildModeUIController : MonoBehaviour
 
     private GameObject _currentTab;
     private ModuleCollection _moduleCollection;
+    private float draggableYDisplacement;
 
     private void Awake()
     {
@@ -21,35 +22,30 @@ public class BuildModeUIController : MonoBehaviour
 
         _moduleCollection = GameObject.FindGameObjectWithTag("GameController").GetComponent<ModuleCollection>();
 
-        for (int i = 0; i < _moduleCollection.wheels.Count; i++)
-        {
-            CreateDraggable(i, wheelsUi.transform, _moduleCollection.wheels[i].GetComponent<VehicleModule>().sprite);
-        }
-
-        for (int i = 0; i < _moduleCollection.energy.Count; i++)
-        {
-            CreateDraggable(i, energyUi.transform, _moduleCollection.energy[i].GetComponent<VehicleModule>().sprite);
-        }
-
-        for (int i = 0; i < _moduleCollection.chassis.Count; i++)
-        {
-            CreateDraggable(i, chassisUi.transform, _moduleCollection.chassis[i].GetComponent<VehicleModule>().sprite);
-        }
-
-        for (int i = 0; i < _moduleCollection.actuators.Count; i++)
-        {
-            CreateDraggable(i, actuatorUi.transform, _moduleCollection.actuators[i].GetComponent<VehicleModule>().sprite);
-        }
+        CreateDraggable(wheelsUi.transform, _moduleCollection.wheels);
+        CreateDraggable(energyUi.transform, _moduleCollection.energy);
+        CreateDraggable(chassisUi.transform, _moduleCollection.chassis);
+        CreateDraggable(actuatorUi.transform, _moduleCollection.actuators);
+        
     }
 
-    private void CreateDraggable(int i, Transform uiParent, Sprite sprite)
+    private void CreateDraggable(Transform uiParent, List<GameObject> modulesList)
     {
-        GameObject draggable = Instantiate(draggablePrefab, uiParent);
-        draggable.transform.Translate(Vector3.down * i * 50f);
-        Image draggableImage = draggable.GetComponent<Image>();
-        draggableImage.sprite = sprite;
-        draggableImage.preserveAspect = true;
-        draggableImage.SetNativeSize();
+        draggableYDisplacement = 0f;
+        for (int i = 0; i < modulesList.Count; i++)
+        {
+            GameObject draggable = Instantiate(draggablePrefab, uiParent);
+            //draggableYDisplacement += (modulesList[i].GetComponent<VehicleModule>().Size.y) * 100f;
+            //draggable.transform.Translate(Vector3.down * draggableYDisplacement + Vector3.down * (modulesList[i].GetComponent<VehicleModule>().Size.y/2) * 100f);
+
+            draggable.transform.Translate(Vector3.down * i * 100f);
+            Image draggableImage = draggable.GetComponent<Image>();
+            draggableImage.sprite = modulesList[i].GetComponent<VehicleModule>().sprite;
+            draggable.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, draggableImage.sprite.rect.height / 2f);
+            draggable.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, draggableImage.sprite.rect.width / 2f);
+            draggableImage.preserveAspect = true;
+            //draggableImage.SetNativeSize();
+        }
     }
 
     public void SwitchTab(string tabTypes)
