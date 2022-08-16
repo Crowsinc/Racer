@@ -433,6 +433,7 @@ MonoBehaviour:
   Size: {x: 3, y: 1}
   Collider: {fileID: 6888949381720243787}
   Attachments: []
+  LinkedVehicle: {fileID: 0}
 --- !u!114 &7011759647688323487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,7 +446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -300, y: 0}
+  LocalActuationForce: {x: -800, y: 0}
   LocalActuationPosition: {x: -1.25, y: 0}
   LinkedVehicle: {fileID: 0}
   EnergyPerSecond: 80

@@ -820,7 +820,9 @@ GameObject:
   - component: {fileID: 7867377462120413939}
   - component: {fileID: 8783049274949661266}
   - component: {fileID: 2317800685804858003}
-  - component: {fileID: 5691194920460830823}
+  - component: {fileID: 7409397497713474351}
+  - component: {fileID: 5271135345438308646}
+  - component: {fileID: 4114423304403713378}
   m_Layer: 30
   m_Name: Opponent
   m_TagString: Untagged
@@ -1008,7 +1010,7 @@ MonoBehaviour:
   JetPrefab: {fileID: 3133470596941498217, guid: 6c8b49e9dce23e948a31bd9a60143e19, type: 3}
   SolidWheelPrefab: {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
   SuspensionWheelPrefab: {fileID: 2154514071067287247, guid: ac49c16f934b6f54e92e81b0c6d269b7, type: 3}
---- !u!114 &5691194920460830823
+--- !u!114 &7409397497713474351
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1017,12 +1019,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 1800276209104778206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f60ea6847e28044e87c04ce38e24081, type: 3}
+  m_Script: {fileID: 11500000, guid: ed71eab3ee15fc54faa911d4ea4190b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vehicleTiltAngle: 0
-  currentSpeed: 0
-  isGrounded: 0
+  _running: 0
+--- !u!114 &5271135345438308646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800276209104778206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df01c8d34fdea9e45831649f42b95bad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Vehicle: {fileID: 0}
+  targetSpeed: 1000
+  reactionTime: 0.2
+--- !u!114 &4114423304403713378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800276209104778206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 265a0bf319c6acc4fa97bf0237316754, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Vehicle: {fileID: 0}
+  MaxDeviation: 8
+  ReactionTime: 0.2
+  SampleArea: 2
+  SampleOffset: 2
+  SampleSmoothing: 1
+  SmoothingFactor: 0.03
 --- !u!1 &2331525934865343067
 GameObject:
   m_ObjectHideFlags: 0
