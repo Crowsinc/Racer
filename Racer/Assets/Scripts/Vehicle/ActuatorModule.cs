@@ -12,9 +12,9 @@ public class ActuatorModule : MonoBehaviour
 
 
     /// <summary>
-    /// The origin position of the actuation and constant forces, relative to the centre of the module
+    /// The origin position of the actuation force, relative to the centre of the module
     /// </summary>
-    public Vector2 LocalForcePosition = Vector2.zero;
+    public Vector2 LocalActuationPosition = Vector2.zero;
 
 
     /// <summary>
@@ -55,9 +55,9 @@ public class ActuatorModule : MonoBehaviour
 
 
     /// <summary>
-    /// The position of the actuation and constant forces in the world 
+    /// The origin position of the actuation force in the world 
     /// </summary>
-    public Vector2 ForcePosition { get; private set; }
+    public Vector2 ActuationPosition { get; private set; }
 
 
     /// <summary>
@@ -165,7 +165,7 @@ public class ActuatorModule : MonoBehaviour
         LinkedVehicle.EnergyLevel = Mathf.Max(0, LinkedVehicle.EnergyLevel - requiredEnergy);
 
         // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
-        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ForcePosition);
+        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ActuationPosition);
 
         _locked = true;
 
@@ -248,7 +248,7 @@ public class ActuatorModule : MonoBehaviour
     {
         var reactionForce = -ActuationForce;
 
-        momentArm = ForcePosition - referencePoint;
+        momentArm = ActuationPosition - referencePoint;
 
         // Angular force is everything normal to the moment arm so 
         // project the actuation force onto the normal of the moment arm.
@@ -271,7 +271,7 @@ public class ActuatorModule : MonoBehaviour
         _locked = false;
 
         ActuationForce = transform.TransformDirection(LocalActuationForce);
-        ForcePosition = transform.position + transform.TransformDirection(LocalForcePosition);
+        ActuationPosition = transform.position + transform.TransformDirection(LocalActuationPosition);
 
         // Update physical effects of the actuator
         if (LinkedVehicle != null)
