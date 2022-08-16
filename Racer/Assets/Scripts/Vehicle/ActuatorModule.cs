@@ -1,32 +1,63 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ActuatorModule : MonoBehaviour
 {
-
     /// <summary>
-    /// The force the actuator applies, local to the module
+    /// The force the actuator applies to the world when activated at 100% proportion
     /// </summary>
     public Vector2 LocalActuationForce = Vector2.zero;
 
 
     /// <summary>
-    /// The position of the actuation force, local to the centre of the module
+    /// The origin position of the actuation and constant forces, relative to the centre of the module
     /// </summary>
-    public Vector2 LocalActuationPosition = Vector2.zero;
+    public Vector2 LocalForcePosition = Vector2.zero;
 
 
     /// <summary>
-    /// The force the actuator applies on the world
+    /// The energy drain per second while the actuator is activated at 100% proportion.
+    /// </summary>
+    public float ActivationCost = 1.0f;
+
+
+    /// <summary>
+    ///  The energy drain per second while the actuator is NOT actuated. 
+    /// </summary>
+    public float IdleCost = 0.0f;
+
+
+    /// <summary>
+    /// If true, allows the actuator to be activated with a proportion from [0,1]; 
+    /// otherwise, the actuator can only be completely on or off. 
+    /// </summary>
+    public bool ProportionalControl = true;
+         
+
+    /// <summary>
+    /// If true, allows AI to control the actuator
+    /// </summary>
+    public bool AIControllable = true;
+
+
+    /// <summary>
+    /// Set to true to disable the use of the actuator.
+    /// </summary>
+    public bool Disable = false;
+
+
+    /// <summary>
+    /// The force the actuator applies on the world when activated
     /// </summary>
     public Vector2 ActuationForce { get; private set; }
 
 
     /// <summary>
-    /// The position of the actuation force in the world 
+    /// The position of the actuation and constant forces in the world 
     /// </summary>
-    public Vector2 ActuationForcePosition { get; private set; }
+    public Vector2 ForcePosition { get; private set; }
 
 
     /// <summary>
@@ -69,12 +100,6 @@ public class ActuatorModule : MonoBehaviour
     /// </summary>
     public Vector2 LinearAcceleration { get; private set; }
 
-
-    /// <summary>
-    /// Amount of energy consumed by the actuator (at 100%) per second
-    /// </summary>
-    public float EnergyPerSecond = 1.0f;
-
     
     /// <summary>
     /// True if the actuator has been activated, false otherwise.
@@ -93,6 +118,8 @@ public class ActuatorModule : MonoBehaviour
     /// <param name="proportion"> 
     /// The proportion [0.0,1.0] of the actuation force which will be applied. 
     /// The energy consumption is adjusted proportionally as well. 
+    /// If proportional control is set to false for this actuator, 
+    /// then a proportion of 1.0f will always be applied.
     /// </param>
     /// <param name="forced">
     /// If set to true, the actuator will always run regardless as along 
@@ -103,6 +130,9 @@ public class ActuatorModule : MonoBehaviour
     /// </returns>
     public bool TryActivate(float proportion = 1.0f, bool forced = false)
     {
+        if (Disable)
+            return false;
+
         if(_locked)
         {
             Debug.LogWarning("Actuator has already been activated this fixed update");
@@ -115,8 +145,12 @@ public class ActuatorModule : MonoBehaviour
             return false;
         }
 
-        proportion = Mathf.Clamp01(proportion);
-        var requiredEnergy = proportion * EnergyPerSecond * Time.deltaTime;
+        if(ProportionalControl)
+            proportion = Mathf.Clamp01(proportion);
+        else
+            proportion = 1.0f;
+
+        var requiredEnergy = proportion * ActivationCost * Time.fixedDeltaTime;
 
         // Fail to activate the actuator if we don't have enough energy. If force is set to true,
         // then always activate the actuator as long as the vehicle has any energy left. This can
@@ -129,8 +163,8 @@ public class ActuatorModule : MonoBehaviour
 
         LinkedVehicle.EnergyLevel = Mathf.Max(0, LinkedVehicle.EnergyLevel - requiredEnergy);
 
-        // NOTE: we apply the opposite force onto the vehicle (Newton's Third Law)
-        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ActuationForcePosition);
+        // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
+        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ForcePosition);
 
         _locked = true;
 
@@ -211,19 +245,21 @@ public class ActuatorModule : MonoBehaviour
         out Vector2 linearAcceleration
     )
     {
-        momentArm = ActuationForcePosition - referencePoint;
+        var reactionForce = -ActuationForce;
+
+        momentArm = ForcePosition - referencePoint;
 
         // Angular force is everything normal to the moment arm so 
         // project the actuation force onto the normal of the moment arm.
         Vector2 tangent = Vector2.Perpendicular(momentArm).normalized;
-        var scalarAngularForce = Vector2.Dot(-ActuationForce, tangent);
+        var scalarAngularForce = Vector2.Dot(reactionForce, tangent);
         angularForce = scalarAngularForce * tangent;
 
         var torque = scalarAngularForce * momentArm.magnitude;
         angularAcceleration = torque / rotationalInertia;
 
         // Linear force is anything left over, not normal to the moment arm
-        linearForce = (-ActuationForce) - angularForce;
+        linearForce = reactionForce - angularForce;
         linearAcceleration = linearForce / mass;
     }
 
@@ -234,11 +270,13 @@ public class ActuatorModule : MonoBehaviour
         _locked = false;
 
         ActuationForce = transform.TransformDirection(LocalActuationForce);
-        ActuationForcePosition = transform.position + transform.TransformDirection(LocalActuationPosition);
+        ForcePosition = transform.position + transform.TransformDirection(LocalForcePosition);
 
         // Update physical effects of the actuator
         if (LinkedVehicle != null)
         {
+            LinkedVehicle.EnergyLevel -= IdleCost * Time.fixedDeltaTime;
+
             FindPhysicsCharacteristics(
                 LinkedVehicle.Rigidbody.mass,
                 LinkedVehicle.Rigidbody.inertia,
@@ -269,6 +307,7 @@ public class ActuatorModule : MonoBehaviour
 
     void OnValidate()
     {
-        EnergyPerSecond = Mathf.Max(EnergyPerSecond, 0);
+        ActivationCost = Mathf.Max(ActivationCost, 0);
+        IdleCost = Mathf.Max(IdleCost, 0);
     }
 }
