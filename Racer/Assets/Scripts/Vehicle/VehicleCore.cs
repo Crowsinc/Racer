@@ -293,13 +293,17 @@ public class VehicleCore : MonoBehaviour
         // the joint onto the vehicle core so that it acts in union with the vehicle.
         foreach (var joint in module.Attachments)
         {
-            joint.connectedBody = Rigidbody;
             Attachments.Add(joint.attachedRigidbody);
 
-            // NOTE: we treat the set connectedAnchor value (as set in the editor) as
-            // an offset from center of the rigidbody that holds the joint (i.e. the attachment). 
-            Vector2 localBodyOffset = joint.attachedRigidbody.transform.position - module.transform.position;
-            joint.connectedAnchor = (offset + localBodyOffset) + joint.connectedAnchor;
+            if(joint.connectedBody == null)
+            {
+                joint.connectedBody = Rigidbody;
+
+                // NOTE: we treat the set connectedAnchor value (as set in the editor) as
+                // an offset from center of the rigidbody that holds the joint (i.e. the attachment). 
+                Vector2 localBodyOffset = joint.attachedRigidbody.transform.position - module.transform.position;
+                joint.connectedAnchor = (offset + localBodyOffset) + joint.connectedAnchor;
+            }
         }
     }
 

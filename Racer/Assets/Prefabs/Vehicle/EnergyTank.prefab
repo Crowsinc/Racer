@@ -128,8 +128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Cost: 80
-  EnergyCapacity: 600
+  EnergyCapacity: 6000
   Mass: 1
   Size: {x: 1, y: 1}
   Collider: {fileID: 6316957983269079857}
   Attachments: []
+  LinkedVehicle: {fileID: 0}

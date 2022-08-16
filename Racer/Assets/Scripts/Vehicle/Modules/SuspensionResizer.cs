@@ -17,7 +17,7 @@ public class SuspensionResizer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (SliderJoint != null && SuspensionObject != null)
+        if (SliderJoint != null && SuspensionObject != null && SliderJoint.enabled)
         {
             SuspensionObject.transform.localScale = new Vector2(
                 SuspensionObject.transform.localScale.x,

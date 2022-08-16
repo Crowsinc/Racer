@@ -447,9 +447,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalActuationForce: {x: -800, y: 0}
-  LocalActuationPosition: {x: -1.25, y: 0}
+  LocalForcePosition: {x: 0, y: 0}
+  ActivationCost: 1
+  IdleCost: 0
+  ProportionalControl: 1
+  AIControllable: 1
+  Enabled: 1
   LinkedVehicle: {fileID: 0}
-  EnergyPerSecond: 80
 --- !u!114 &6897264028096929904
 MonoBehaviour:
   m_ObjectHideFlags: 0
