@@ -5,72 +5,97 @@ using UnityEngine.UI;
 
 public class BuildModeUIController : MonoBehaviour
 { 
-    public GameObject wheelsUi;
-    public GameObject energyUi;
-    public GameObject chassisUi;
-    public GameObject actuatorUi;
-    public GameObject draggablePrefab;
+    // Containers for menu modules
+    public GameObject wheelsHolder;
+    public GameObject energyHolder;
+    public GameObject chassisHolder;
+    public GameObject actuatorHolder;
+    public Transform draggableHolder;
+
+    public RectTransform initalPlacement; // Rect in UI space for the initial placement
 
     private GameObject _currentTab;
     private ModuleCollection _moduleCollection;
-    private float draggableYDisplacement;
+    private float moduleYDisplacement;
 
     private void Awake()
     {
         // Initial tab
-        _currentTab = wheelsUi;
+        _currentTab = wheelsHolder;
+        EnableUI(_currentTab);
 
+        // Get list of modules
         _moduleCollection = GameObject.FindGameObjectWithTag("GameController").GetComponent<ModuleCollection>();
 
-        CreateDraggable(wheelsUi.transform, _moduleCollection.wheels);
-        CreateDraggable(energyUi.transform, _moduleCollection.energy);
-        CreateDraggable(chassisUi.transform, _moduleCollection.chassis);
-        CreateDraggable(actuatorUi.transform, _moduleCollection.actuators);
+        // Create menu modules
+        CreateMenuModule(wheelsHolder.transform, _moduleCollection.wheels);
+        CreateMenuModule(energyHolder.transform, _moduleCollection.energy);
+        CreateMenuModule(chassisHolder.transform, _moduleCollection.chassis);
+        CreateMenuModule(actuatorHolder.transform, _moduleCollection.actuators);
         
     }
 
-    private void CreateDraggable(Transform uiParent, List<GameObject> modulesList)
+    /// <summary>
+    /// Creates a menu modules for each module in modulesList
+    /// </summary>
+    /// <param name="moduleHolder">Parent holder for the menu modules</param>
+    /// <param name="modulesList">List of modules to be created</param>
+    private void CreateMenuModule(Transform moduleHolder, List<GameObject> modulesList)
     {
-        draggableYDisplacement = 0f;
+        moduleYDisplacement = initalPlacement.position.y;
         for (int i = 0; i < modulesList.Count; i++)
         {
-            GameObject draggable = Instantiate(draggablePrefab, uiParent);
-            //draggableYDisplacement += (modulesList[i].GetComponent<VehicleModule>().Size.y) * 100f;
-            //draggable.transform.Translate(Vector3.down * draggableYDisplacement + Vector3.down * (modulesList[i].GetComponent<VehicleModule>().Size.y/2) * 100f);
+            // Get module from list
+            GameObject module = modulesList[i];
 
-            draggable.transform.Translate(Vector3.down * i * 100f);
-            Image draggableImage = draggable.GetComponent<Image>();
-            draggableImage.sprite = modulesList[i].GetComponent<VehicleModule>().sprite;
-            draggable.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, draggableImage.sprite.rect.height / 2f);
-            draggable.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, draggableImage.sprite.rect.width / 2f);
-            draggableImage.preserveAspect = true;
-            //draggableImage.SetNativeSize();
+            // Calculate y displacement from half of the module's height
+            moduleYDisplacement -= (modulesList[i].GetComponent<VehicleModule>().Size.y / 2);
+
+            // Instantiate menu module into world space from canvas space
+            Vector3 spawnPoint = new Vector3(initalPlacement.position.x, moduleYDisplacement, 0);
+            GameObject menuModule = Instantiate(module, Camera.main.ScreenToWorldPoint(spawnPoint), Quaternion.identity, moduleHolder);
+            menuModule.transform.Translate(Vector3.back * menuModule.transform.position.z);
+            moduleYDisplacement -= (module.GetComponent<VehicleModule>().Size.y / 2) + 50f;
+
+            // Add menu module component
+            menuModule.AddComponent<MenuModule>();
+            menuModule.GetComponent<MenuModule>().SetModuleHolder(draggableHolder);
+            
+            // TODO: disable vehicle module functions
         }
     }
 
+    /// <summary>
+    /// Function called by UI buttons to change module tab
+    /// </summary>
+    /// <param name="tabTypes">String of tab to change to</param>
     public void SwitchTab(string tabTypes)
     {
         switch (tabTypes)
         {
             case "Wheels":
-                EnableUI(wheelsUi);
+                EnableUI(wheelsHolder);
                 break;
             case "Energy":
-                EnableUI(energyUi);
+                EnableUI(energyHolder);
                 break;
             case "Chassis":
-                EnableUI(chassisUi);
+                EnableUI(chassisHolder);
                 break;
             case "Actuator":
-                EnableUI(actuatorUi);
+                EnableUI(actuatorHolder);
                 break;
         }
     }
 
-    private void EnableUI(GameObject ui)
+    /// <summary>
+    /// Disables the current module menu and enables the new one
+    /// </summary>
+    /// <param name="menu">Menu to be enabled</param>
+    private void EnableUI(GameObject menu)
     {
         _currentTab.SetActive(false);
-        ui.SetActive(true);
-        _currentTab = ui;
+        menu.SetActive(true);
+        _currentTab = menu;
     }
 }
