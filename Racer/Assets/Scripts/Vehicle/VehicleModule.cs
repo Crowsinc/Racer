@@ -58,6 +58,7 @@ public class VehicleModule : MonoBehaviour
     /// <summary>
     /// The vehicle that this module is linked/attached to
     /// </summary>
+    [HideInInspector]
     public VehicleCore LinkedVehicle = null;
 
 

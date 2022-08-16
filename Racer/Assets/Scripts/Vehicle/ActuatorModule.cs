@@ -63,6 +63,7 @@ public class ActuatorModule : MonoBehaviour
     /// <summary>
     /// The vehicle that this actuator is linked/attached to
     /// </summary>
+    [HideInInspector]
     public VehicleCore LinkedVehicle = null;
 
 
