@@ -58,8 +58,10 @@ public class BuildModeUIController : MonoBehaviour
 
             // Add menu module component
             menuModule.AddComponent<MenuModule>();
-            
+            menuModule.GetComponent<MenuModule>().originalPrefab = module;
+
             // TODO: disable vehicle module functions
+            menuModule.GetComponent<VehicleModule>().Freeze();
         }
     }
 

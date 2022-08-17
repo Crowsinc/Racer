@@ -7,6 +7,7 @@ public class DraggableModule : MonoBehaviour
     , IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
     private VehicleConstructor _vehicleConstructor;
+    public GameObject originalPrefab;
     private void Awake()
     {
         _vehicleConstructor = GameObject.FindGameObjectWithTag("GameController").GetComponent<VehicleConstructor>();
@@ -19,7 +20,7 @@ public class DraggableModule : MonoBehaviour
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        bool successful = _vehicleConstructor.TryAddModule(gameObject);
+        bool successful = _vehicleConstructor.TryAddModule(gameObject, originalPrefab);
         if (!successful)
         {
             Destroy(gameObject);

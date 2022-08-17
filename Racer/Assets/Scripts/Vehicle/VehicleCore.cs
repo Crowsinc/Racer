@@ -266,6 +266,7 @@ public class VehicleCore : MonoBehaviour
             // Get the collider vertices relative to the VehicleCore, taking  
             // into account any transforms and local offsets of the collider
             Vector2 localColliderOffset = module.Collider.transform.position - module.transform.position;
+            localColliderOffset += module.Collider.offset;
             Vector2 localColliderScale = module.Collider.transform.localScale;
             Vector2[] localPoints = module.Collider.points;
             for (int i = 0; i < localPoints.Length; i++)

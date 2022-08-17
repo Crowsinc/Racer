@@ -20,15 +20,16 @@ public class VehicleConstructor : MonoBehaviour
         return _design;
     }
 
-    public bool TryAddModule(GameObject module)
+    public bool TryAddModule(GameObject module, GameObject original)
     {
         Vector2Int localPos = ModuleWorldPosToLocalPos(module.transform.position);
+        Debug.Log(localPos);
         // Overlapping other module
         if (localPos == Vector2Int.zero || takenCoords.Contains(localPos)){
             return false;
         }
 
-        _design.Add(localPos, new ModuleSchematic(module));
+        _design.Add(localPos, new ModuleSchematic(original));
         for (int i = 0; i < module.GetComponent<VehicleModule>().Size.x; i++)
         {
             for (int j = 0; j < module.GetComponent<VehicleModule>().Size.y; j++)
