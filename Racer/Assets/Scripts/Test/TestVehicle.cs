@@ -39,8 +39,10 @@ public class TestVehicle : MonoBehaviour
         design.Add(new Vector2Int(-5, 0), new ModuleSchematic(ThrusterPrefab));
         design.Add(new Vector2Int(-2, -1), new ModuleSchematic(SuspensionWheelPrefab));
         design.Add(new Vector2Int(0, -1), new ModuleSchematic(SuspensionWheelPrefab));
-        design.Add(new Vector2Int(-4, 1), new ModuleSchematic(PropellerPrefab, 90));
-        design.Add(new Vector2Int(1, 0), new ModuleSchematic(SolidWheelPrefab, 90));
+        design.Add(new Vector2Int(-4, 1), new ModuleSchematic(ThrusterPrefab, 270));
+        design.Add(new Vector2Int(1, 0), new ModuleSchematic(ChassisPrefab));
+        design.Add(new Vector2Int(2, 0), new ModuleSchematic(ThrusterPrefab, 180));
+        design.Add(new Vector2Int(1, -1), new ModuleSchematic(ThrusterPrefab, 90));
         design.Add(new Vector2Int(-4, -1), new ModuleSchematic(SolidWheelPrefab));
 
         if (!_core.TryBuildStructure(design))
@@ -55,7 +57,7 @@ public class TestVehicle : MonoBehaviour
             Debug.Log($"Energy Left: {_core.EnergyLevel}/{_core.EnergyCapacity}");
             foreach (var a in _core.Actuators)
                 if (a.TryActivate(1.0f, true))
-                    Debug.DrawLine(a.ActuationForcePosition, a.ActuationForcePosition + a.ActuationForce * 0.1f, Color.green);
+                    Debug.DrawLine(a.ActuationPosition, a.ActuationPosition + a.ActuationForce * 0.1f, Color.green);
         }
 
         // Draw the vehicle hull for debug purposes

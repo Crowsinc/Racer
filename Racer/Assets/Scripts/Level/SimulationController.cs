@@ -25,6 +25,9 @@ public class SimulationController : MonoBehaviour
     private GameObject opponentInstance;
     private VehicleConstructor _vehicleConstructor;
 
+    private AIController _playerAI;
+    private AIController _opponentAI;
+
     private void Awake()
     {
         cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
@@ -38,7 +41,7 @@ public class SimulationController : MonoBehaviour
 
     private void Update()
     {
-        raceProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance,0), 1, 1);
+        raceProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance, 0), 1, 1);
     }
 
     /// <summary>
@@ -86,18 +89,18 @@ public class SimulationController : MonoBehaviour
         //opponentInstance = Instantiate(opponentVehicle, new Vector3(-4, 3, 0), Quaternion.identity);
 
         // Build the opponent
-        //if(opponentInstance.TryGetComponent<TestVehicle>(out var test))
-         //   test.Build();
+        if (opponentInstance.TryGetComponent<TestVehicle>(out var test))
+            test.Build();
 
         // Start the AI simulation
         // TODO: Luke feel free to change this to whatever fits your code better!
-        //if (opponentInstance.TryGetComponent<VehicleAI>(out var opponentAI))
-        //    opponentAI.StartSimulation();
-        //else
-         //   Debug.LogError("Opponent vehicle has no AI");
-    
-        if(playerVehicle.gameObject.TryGetComponent<VehicleAI>(out var playerAI))
-            playerAI.StartSimulation();
+        if (opponentInstance.TryGetComponent<AIController>(out _opponentAI))
+            _opponentAI.Simulate = true;
+        else
+            Debug.LogError("Opponent vehicle has no AI");
+
+        if (playerVehicle.gameObject.TryGetComponent<AIController>(out _playerAI))
+            _playerAI.Simulate = true;
         else
             Debug.LogError("Player vehicle has no AI");
     }
@@ -109,6 +112,9 @@ public class SimulationController : MonoBehaviour
     {
         raceUI.SetActive(false);
         winUI.SetActive(true);
+
+        _playerAI.Simulate = false;
+        _opponentAI.Simulate = false;
     }
 
     public void LoseRace()

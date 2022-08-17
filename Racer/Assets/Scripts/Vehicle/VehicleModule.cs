@@ -58,7 +58,23 @@ public class VehicleModule : MonoBehaviour
     /// <summary>
     /// The vehicle that this module is linked/attached to
     /// </summary>
+    [HideInInspector]
     public VehicleCore LinkedVehicle = null;
+
+
+    /// <summary>
+    /// Turns the module into a static elements by disabling all joints and bodies
+    /// </summary>
+    public void Freeze()
+    {
+        var joints = GetComponentsInChildren<Joint2D>();
+        foreach (var j in joints)
+            j.enabled = false;
+
+        var bodies = GetComponentsInChildren<Rigidbody2D>();
+        foreach (var b in bodies)
+            b.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
 
 
     void OnValidate()

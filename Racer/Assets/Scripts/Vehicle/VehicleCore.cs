@@ -6,6 +6,12 @@ using UnityEngine;
 public class VehicleCore : MonoBehaviour
 {
     /// <summary>
+    /// If set to true, the vehicle will discover its own rigidbody properties, colliders, actuators and attachments on start().
+    /// </summary>
+    public bool Pregenerated = false;
+
+
+    /// <summary>
     /// Game feel value which scales the strength of aerodynamic drag on the vehicle.
     /// </summary>
     public float AerodynamicDragCoefficient = 0.75f;
@@ -36,9 +42,10 @@ public class VehicleCore : MonoBehaviour
 
 
     /// <summary>
-    /// The composite collider generated for the hull of the vehicle
+    /// The composite collider for the hull of the vehicle
     /// </summary>
-    public CompositeCollider2D Collider { get; set; }
+    [HideInInspector]
+    public CompositeCollider2D Collider;
 
 
     /// <summary>
@@ -80,7 +87,8 @@ public class VehicleCore : MonoBehaviour
     /// (0,0) will be reserved for the vehicle core and ignored. 
     /// </param>
     /// <returns> 
-    /// False if the provided design is not fully connected, otherwise true.
+    /// False if the provided design has an invalid hull, otherwise true.
+    /// A hull is considered invalid if it isn't fully connected or has holes. 
     /// </returns>
     public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design)
     {
@@ -97,75 +105,35 @@ public class VehicleCore : MonoBehaviour
         {
             // Instantiate new vehicle module, unless this is the core
             var position = transform.position + new Vector3(offset.x, offset.y);
-            var module = prefab == gameObject ? gameObject
+            var instance = prefab == gameObject ? gameObject
                 : Instantiate(prefab, position, Quaternion.identity, transform);
 
             // Rotate module to desired orientation
-            var rotationQuat = Quaternion.Euler(0, 0, rotation);
-            module.transform.rotation = rotationQuat;
+            instance.transform.rotation = Quaternion.Euler(0, 0, rotation);
 
             // Register VehicleModule to the vehicle
-            if (module.TryGetComponent<VehicleModule>(out VehicleModule properties))
+            if (instance.TryGetComponent<VehicleModule>(out VehicleModule module))
             {
-                totalEnergyCapacity += properties.EnergyCapacity;
-                centreOfMass += properties.Mass * (Vector2)offset;
-                totalMass += properties.Mass;
+                totalEnergyCapacity += module.EnergyCapacity;
+                centreOfMass += module.Mass * (Vector2)offset;
+                totalMass += module.Mass;
 
-                // If the module has a collider, then absorb it into the vehicle core
-                if (properties.Collider != null)
-                {
-                    // Get the collider vertices relative to the VehicleCore, taking  
-                    // into account any transforms and local offsets of the collider
-                    Vector2 localColliderOffset = properties.Collider.transform.position - position + new Vector3(properties.Collider.offset.x, properties.Collider.offset.y, 0);
-                    Vector2 localColliderScale = properties.Collider.transform.localScale;
-                    Vector2[] localPoints = properties.Collider.points;
-                    for (int i = 0; i < localPoints.Length; i++)
-                    {
-                        localPoints[i] = rotationQuat * (localColliderScale * localPoints[i]);
-                        localPoints[i] += offset + localColliderOffset;
-                    }
-
-                    // Create our own collider to represent the module's collider
-                    var polygonCollider = gameObject.AddComponent<PolygonCollider2D>();
-                    polygonCollider.points = localPoints;
-                    polygonCollider.pathCount = 1;
-                    polygonCollider.usedByComposite = true;
-
-                    // Old collider is no longer necessary
-                    properties.Collider.enabled = false;
-
-                    Modules.Add(properties);
-                }
-                else if (prefab != gameObject)
-                    Debug.LogWarning($"Vehicle module at {offset} has no PolygonCollider2D");
-
-                // If the module provides joints for attached Rigidbodies, then connect
-                // the joint onto the vehicle core so that it acts in union with the vehicle.
-                foreach (var joint in properties.Attachments)
-                {
-                    joint.connectedBody = Rigidbody;
-                    Attachments.Add(joint.attachedRigidbody);
-
-                    // NOTE: we treat the set connectedAnchor value (as set in the editor) as
-                    // an offset from center of the rigidbody that holds the joint (i.e. the attachment). 
-                    Vector2 localBodyOffset = joint.attachedRigidbody.transform.position - module.transform.position;
-                    joint.connectedAnchor = (offset + localBodyOffset) + joint.connectedAnchor;
-                }
+                RegisterModule(module);
             }
             else Debug.LogError($"Vehicle module at {offset} has no VehicleModule component");
 
             // Register ActuatorModules to the vehicle
-            if (module.TryGetComponent<ActuatorModule>(out ActuatorModule actuator))
+            if (instance.TryGetComponent<ActuatorModule>(out ActuatorModule actuator))
                 Actuators.Add(actuator);
         }
 
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
 
-        // If we have more than one path, then the vehicle structure is not fully connected
-        if (Collider.pathCount > 1)
+        // Validate our vehicles hull to make sure
+        if (Collider.pathCount != 1)
         {
-            Debug.LogError($"Vehicle structure is not fully connected ({Collider.pathCount} Sections)");
+            Debug.LogError($"Vehicle hull is invalid ({Collider.pathCount} Sections)");
             ClearStructure();
             return false;
         }
@@ -180,10 +148,6 @@ public class VehicleCore : MonoBehaviour
         foreach (var actuator in Actuators)
             actuator.LinkedVehicle = this;
 
-        // Link all vehicle modules to the vehicle
-        foreach (var module in Modules)
-            module.LinkedVehicle = this;
-
         ResetVehicle();
 
         IsBuilt = true;
@@ -191,6 +155,53 @@ public class VehicleCore : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Self-analysis of rigidbody properties, colliders, actuators and attachments.
+    /// </summary>
+    private void Discover()
+    {
+        Modules.Clear();
+        Actuators.Clear();
+        Attachments.Clear();
+
+        float totalMass = 0.0f;
+        float totalEnergyCapacity = 0.0f;
+        Vector2 centreOfMass = Vector2.zero;
+
+        // register modules
+        var modules = gameObject.GetComponentsInChildren<VehicleModule>(false);
+        foreach (var module in modules)
+        {
+            Vector2 offset = module.transform.position - transform.position;
+
+            totalEnergyCapacity += module.EnergyCapacity;
+            centreOfMass += module.Mass * offset;
+            totalMass += module.Mass;
+
+            RegisterModule(module);
+        }
+
+        Collider.GenerateGeometry();
+        if (Collider.pathCount != 1)
+            Debug.LogError($"Pre-generated vehicle hull is invalid ({Collider.pathCount} Sections)");
+
+        EnergyCapacity = totalEnergyCapacity;
+        Rigidbody.mass = totalMass;
+        Rigidbody.centerOfMass = centreOfMass / totalMass;
+
+        // Register actuators
+        var actuators = gameObject.GetComponentsInChildren<ActuatorModule>(false);
+        foreach (var actuator in actuators)
+        {
+            actuator.LinkedVehicle = this;
+            Actuators.Add(actuator);
+        }
+
+        ResetVehicle();
+        IsBuilt = true;
+    }
+
+  
     /// <summary>
     /// Clears the vehicle structure design, leaving it as an empty VehicleCore
     /// that is ready to be built again.
@@ -236,6 +247,67 @@ public class VehicleCore : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Registers a vehicle module onto the vehicle core
+    /// </summary>
+    /// <param name="module"> 
+    /// The module to register 
+    /// </param>
+    /// <param name="generateCollider"> 
+    /// True, if the collider for this module should be generated automatically 
+    /// </param>
+    private void RegisterModule(VehicleModule module)
+    {
+        Vector2 offset = module.transform.position - transform.position;
+        
+        // If the module has a collider, then absorb it into the vehicle core
+        if (module.Collider != null)
+        {
+            // Get the collider vertices relative to the VehicleCore, taking  
+            // into account any transforms and local offsets of the collider
+            Vector2 localColliderOffset = module.Collider.transform.position - module.transform.position;
+            Vector2 localColliderScale = module.Collider.transform.localScale;
+            Vector2[] localPoints = module.Collider.points;
+            for (int i = 0; i < localPoints.Length; i++)
+            {
+                localPoints[i] = module.transform.rotation * (localColliderScale * localPoints[i]);
+                localPoints[i] += offset + localColliderOffset;
+            }
+
+            // Create our own collider to represent the module's collider
+            var polygonCollider = gameObject.AddComponent<PolygonCollider2D>();
+            polygonCollider.points = localPoints;
+            polygonCollider.pathCount = 1;
+            polygonCollider.usedByComposite = true;
+
+            // Old collider is no longer necessary
+            module.Collider.enabled = false;
+        }
+        else if (module.gameObject != gameObject)
+            Debug.LogWarning($"Vehicle module at {offset} has no PolygonCollider2D");
+
+        module.LinkedVehicle = this;
+        Modules.Add(module);
+
+        // If the module provides joints for attached Rigidbodies, then connect
+        // the joint onto the vehicle core so that it acts in union with the vehicle.
+        foreach (var joint in module.Attachments)
+        {
+            Attachments.Add(joint.attachedRigidbody);
+
+            if(joint.connectedBody == null)
+            {
+                joint.connectedBody = Rigidbody;
+
+                // NOTE: we treat the set connectedAnchor value (as set in the editor) as
+                // an offset from center of the rigidbody that holds the joint (i.e. the attachment). 
+                Vector2 localBodyOffset = joint.attachedRigidbody.transform.position - module.transform.position;
+                joint.connectedAnchor = (offset + localBodyOffset) + joint.connectedAnchor;
+            }
+        }
+    }
+
+
     void Awake()
     {
         Hull = new List<Vector2>();
@@ -243,11 +315,17 @@ public class VehicleCore : MonoBehaviour
         Actuators = new List<ActuatorModule>();
         Modules = new List<VehicleModule>();
 
-        Collider = gameObject.AddComponent<CompositeCollider2D>();
-        Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+        if (!TryGetComponent<Rigidbody2D>(out Rigidbody))
+            Debug.LogError("VehicleCore failed to find a Rigidbody2D");
 
-        Rigidbody = GetComponentInChildren<Rigidbody2D>();
+        if(!TryGetComponent<CompositeCollider2D>(out Collider))
+        {
+            Collider = gameObject.AddComponent<CompositeCollider2D>();
+            Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
+        }
 
+        if (Pregenerated)
+            Discover();
     }
 
 
@@ -299,7 +377,7 @@ public class VehicleCore : MonoBehaviour
             // outer facing normals of the vehicle hull.
             var segment = prevPoint - currPoint;
             var outerNormal = Vector2.Perpendicular(segment).normalized;
-            
+
             dragArea += segment.magnitude * Mathf.Clamp01(Vector2.Dot(outerNormal, velocityDir));
 
             prevPoint = currPoint;
