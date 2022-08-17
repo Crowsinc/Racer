@@ -9,9 +9,9 @@ public class MenuModule : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private bool _clicked = false;
 
     // Set module holder
-    public void SetModuleHolder(Transform moduleHolder)
+    private void Awake()
     {
-        _moduleHolder = moduleHolder;
+        _moduleHolder = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().buildModeModuleHolder.transform;
     }
 
     public void OnPointerDown(PointerEventData eventData)

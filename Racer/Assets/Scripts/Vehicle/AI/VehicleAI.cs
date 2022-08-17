@@ -40,7 +40,8 @@ public class VehicleAI : MonoBehaviour
         else if (clockwiseForce <= 0)
             clockwiseForce = 0.0f;
         Debug.Log(clockwiseForce);
-        _actuator[0].TryActivate(proportion: clockwiseForce);
+        if (_actuator.Count > 0)
+            _actuator[0].TryActivate(proportion: clockwiseForce);
 
     }
 

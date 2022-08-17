@@ -116,7 +116,7 @@ public class VehicleCore : MonoBehaviour
                 {
                     // Get the collider vertices relative to the VehicleCore, taking  
                     // into account any transforms and local offsets of the collider
-                    Vector2 localColliderOffset = properties.Collider.transform.position - position;
+                    Vector2 localColliderOffset = properties.Collider.transform.position - position + new Vector3(properties.Collider.offset.x, properties.Collider.offset.y, 0);
                     Vector2 localColliderScale = properties.Collider.transform.localScale;
                     Vector2[] localPoints = properties.Collider.points;
                     for (int i = 0; i < localPoints.Length; i++)
@@ -246,8 +246,7 @@ public class VehicleCore : MonoBehaviour
         Collider = gameObject.AddComponent<CompositeCollider2D>();
         Collider.geometryType = CompositeCollider2D.GeometryType.Polygons;
 
-        if (!TryGetComponent<Rigidbody2D>(out Rigidbody))
-            Debug.LogError("VehicleCore failed to find a Rigidbody2D");
+        Rigidbody = GetComponentInChildren<Rigidbody2D>();
 
     }
 

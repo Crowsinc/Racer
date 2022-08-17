@@ -10,7 +10,6 @@ public class BuildModeUIController : MonoBehaviour
     public GameObject energyHolder;
     public GameObject chassisHolder;
     public GameObject actuatorHolder;
-    public Transform draggableHolder;
 
     public RectTransform initalPlacement; // Rect in UI space for the initial placement
 
@@ -59,7 +58,6 @@ public class BuildModeUIController : MonoBehaviour
 
             // Add menu module component
             menuModule.AddComponent<MenuModule>();
-            menuModule.GetComponent<MenuModule>().SetModuleHolder(draggableHolder);
             
             // TODO: disable vehicle module functions
         }

@@ -9,6 +9,7 @@ public class SimulationController : MonoBehaviour
 
     public GameObject buildModeUI;
     public GameObject buildModeGrid;
+    public GameObject buildModeModuleHolder;
     public GameObject raceUI;
     public GameObject winUI;
 
@@ -22,10 +23,13 @@ public class SimulationController : MonoBehaviour
     private CameraFollow cameraFollow;
     private float raceDistance;
     private GameObject opponentInstance;
+    private VehicleConstructor _vehicleConstructor;
 
     private void Awake()
     {
         cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
+        _vehicleConstructor = GetComponent<VehicleConstructor>();
+        _vehicleConstructor.vehicleCore = playerVehicle;
     }
     void Start()
     {
@@ -48,6 +52,7 @@ public class SimulationController : MonoBehaviour
         // Change UI
         buildModeUI.SetActive(true);
         buildModeGrid.SetActive(true);
+        buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
 
         // Freeze player vehicle
@@ -63,11 +68,13 @@ public class SimulationController : MonoBehaviour
     public void StartRace()
     {
         inBuildMode = false;
+        playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign());
         cameraFollow.Target = playerVehicle.transform;
 
         // Change UI
         buildModeUI.SetActive(false);
         buildModeGrid.SetActive(false);
+        buildModeModuleHolder.SetActive(false);
         raceUI.SetActive(true);
 
         // Unfreeze player vehicle
@@ -76,18 +83,18 @@ public class SimulationController : MonoBehaviour
         raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
 
         //opponentInstance = Instantiate(opponentVehicle, buildModeCamPos.position, Quaternion.identity);
-        opponentInstance = Instantiate(opponentVehicle, new Vector3(-4, 3, 0), Quaternion.identity);
+        //opponentInstance = Instantiate(opponentVehicle, new Vector3(-4, 3, 0), Quaternion.identity);
 
         // Build the opponent
-        if(opponentInstance.TryGetComponent<TestVehicle>(out var test))
-            test.Build();
+        //if(opponentInstance.TryGetComponent<TestVehicle>(out var test))
+         //   test.Build();
 
         // Start the AI simulation
         // TODO: Luke feel free to change this to whatever fits your code better!
-        if (opponentInstance.TryGetComponent<VehicleAI>(out var opponentAI))
-            opponentAI.StartSimulation();
-        else
-            Debug.LogError("Opponent vehicle has no AI");
+        //if (opponentInstance.TryGetComponent<VehicleAI>(out var opponentAI))
+        //    opponentAI.StartSimulation();
+        //else
+         //   Debug.LogError("Opponent vehicle has no AI");
     
         if(playerVehicle.gameObject.TryGetComponent<VehicleAI>(out var playerAI))
             playerAI.StartSimulation();
