@@ -323,6 +323,7 @@ public class VehicleCore : MonoBehaviour
     /// </returns>
     private List<Vector2> DetectHull(out bool disjoint)
     {
+        // All collider paths whose bounds are smaller than this number are filtered out.
         const float minColliderArea = 0.01f;
 
         // If theres only one path, then it must be the hull
