@@ -372,7 +372,8 @@ public class VehicleCore : MonoBehaviour
         // composite collider, one path cannot collide with another path; otherwise
         // the composite collider would have merged them together into a single path.
         // All of this together means that we just need to test a single point of
-        // each path. 
+        // each path. Point in polygon tests are performed through the standard
+        // raycast crossing number test. 
 
         for (int p1 = 0; p1 < paths.Count; p1++)
         {
