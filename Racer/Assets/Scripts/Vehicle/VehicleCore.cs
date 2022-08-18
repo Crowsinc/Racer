@@ -100,14 +100,17 @@ public class VehicleCore : MonoBehaviour
         float totalMass = 0.0f;
         float totalEnergyCapacity = 0.0f;
         Vector2 centreOfMass = Vector2.zero;
-
+        //Debug.Log("core pos:" + transform.position);
         foreach (var (offset, (prefab, rotation)) in design)
         {
+            //Debug.Log("off:" + offset);
             // Instantiate new vehicle module, unless this is the core
-            var position = transform.position + new Vector3(offset.x, offset.y);
+            var position = transform.position + new Vector3(offset.x, offset.y) +  
+                (rotation == 90 ? Vector3.right : rotation == 180 ? Vector3.one : rotation == 270 ? Vector3.up : Vector3.zero);
             var instance = prefab == gameObject ? gameObject
                 : Instantiate(prefab, position, Quaternion.identity, transform);
-
+            //Debug.Log("rot:" + rotation);
+            //Debug.Log("pos:" + position);
             // Rotate module to desired orientation
             instance.transform.rotation = Quaternion.Euler(0, 0, rotation);
 
@@ -118,7 +121,7 @@ public class VehicleCore : MonoBehaviour
                 centreOfMass += module.Mass * (Vector2)offset;
                 totalMass += module.Mass;
 
-                RegisterModule(module);
+                RegisterModule(module, rotation);
             }
             else Debug.LogError($"Vehicle module at {offset} has no VehicleModule component");
 
@@ -256,7 +259,7 @@ public class VehicleCore : MonoBehaviour
     /// <param name="generateCollider"> 
     /// True, if the collider for this module should be generated automatically 
     /// </param>
-    private void RegisterModule(VehicleModule module)
+    private void RegisterModule(VehicleModule module, float rotation = 0)
     {
         Vector2 offset = module.transform.position - transform.position;
         
@@ -265,8 +268,13 @@ public class VehicleCore : MonoBehaviour
         {
             // Get the collider vertices relative to the VehicleCore, taking  
             // into account any transforms and local offsets of the collider
+            Debug.Log("rot:" + rotation);
             Vector2 localColliderOffset = module.Collider.transform.position - module.transform.position;
-            localColliderOffset += module.Collider.offset;
+            localColliderOffset += (
+                rotation == 90 ? new Vector2(-module.Collider.offset.y, module.Collider.offset.x) : 
+                rotation == 180 ? -module.Collider.offset : 
+                rotation == 270 ? new Vector2(module.Collider.offset.y, -module.Collider.offset.x) : 
+                module.Collider.offset);
             Vector2 localColliderScale = module.Collider.transform.localScale;
             Vector2[] localPoints = module.Collider.points;
             for (int i = 0; i < localPoints.Length; i++)
