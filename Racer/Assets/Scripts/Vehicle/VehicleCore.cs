@@ -52,6 +52,7 @@ public class VehicleCore : MonoBehaviour
     /// A counter-clockwise list of vertices outlining shape of the vehicle's collider in the world.
     /// </summary>
     public List<Vector2> Hull { get; private set; }
+    private List<Vector2> _localHull = new List<Vector2>();
 
 
     /// <summary>
@@ -129,11 +130,12 @@ public class VehicleCore : MonoBehaviour
 
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
+        _localHull = DetectHull(out bool disjoint);
 
         // Validate our vehicles hull to make sure
-        if (Collider.pathCount != 1)
+        if (disjoint)
         {
-            Debug.LogError($"Vehicle hull is invalid ({Collider.pathCount} Sections)");
+            Debug.LogError($"Vehicle hull is disjoint");
             ClearStructure();
             return false;
         }
@@ -208,6 +210,7 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public void ClearStructure()
     {
+        _localHull?.Clear();
         Hull?.Clear();
         Actuators?.Clear();
         Attachments?.Clear();
@@ -308,6 +311,119 @@ public class VehicleCore : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Attempts to detect the hull path of the vehicle's composite collider
+    /// </summary>
+    /// <param name="disjoint">
+    /// This output parameter is set to true if multiple disjoint hulls exist (vehicle is not fully connected)
+    /// </param>
+    /// <returns>
+    /// The hull path of the vehicles collider. 
+    /// This is only guaranteed to be correct if the vehicle is not disjoint. 
+    /// </returns>
+    private List<Vector2> DetectHull(out bool disjoint)
+    {
+        const float minColliderArea = 0.01f;
+
+        // If theres only one path, then it must be the hull
+        if (Collider.pathCount < 2)
+        {
+            disjoint = false;
+
+            var path = new List<Vector2>();
+            Collider.GetPath(0, path);
+            return path;
+        }
+
+        // Collect all collider paths
+        var paths = new List<List<Vector2>>();
+        for (int i = 0; i < Collider.pathCount; i++)
+        {
+            var path = new List<Vector2>();
+            Collider.GetPath(i, path);
+
+            // Get bounding box of collider
+            Vector2 max = path[0], min = path[0];
+            foreach (var p in path)
+            {
+                max = Vector2.Max(max, p);
+                min = Vector2.Min(min, p);
+            }
+            var diagonal = max - min;
+            var area = diagonal.x * diagonal.y;
+
+            // Filter out any tiny collider paths, probably caused
+            // by bad colliders on a module. This is a hack but
+            // the problem lies with the colliders not the hull
+            // detection ¯\_(?)_/¯
+
+            if (area > minColliderArea)
+                paths.Add(path);
+            else
+                Debug.LogWarning("A bad module collider was filtered out for hull detection");
+        }
+
+        // Remove all paths representing holes within a hull defined by another path.
+        // We can determine if one path is inside another, if any of its points is
+        // inside the (potentially convex) polygon formed by another path. Similarly,
+        // we can determine if one path is outside of another if any of its points 
+        // are outside of this polygon. This holds because by definition of the 
+        // composite collider, one path cannot collide with another path; otherwise
+        // the composite collider would have merged them together into a single path.
+        // All of this together means that we just need to test a single point of
+        // each path. 
+
+        for (int p1 = 0; p1 < paths.Count; p1++)
+        {
+            for (int p2 = 0; p2 < paths.Count; p2++)
+            {
+                if (p1 == p2) continue;
+
+                var polygonPath = paths[p1];
+                var testPoint = paths[p2][0];
+
+                int intersections = 0;
+                var s1 = polygonPath[^1];
+                foreach (var s2 in polygonPath)
+                {
+                    var segment = s2 - s1;
+                    var minX = Mathf.Min(s1.x, s2.x);
+                    var maxX = Mathf.Max(s1.x, s2.x);
+                    var plane = new Plane(Vector2.Perpendicular(segment), s1);
+
+                    Ray ray = new Ray(testPoint, Vector2.right);
+                    if (plane.Raycast(ray, out float distance))
+                    {
+                        var intersectPoint = ray.GetPoint(distance);
+                        if (intersectPoint.x >= minX && intersectPoint.x <= maxX)
+                            intersections++;
+                    }
+
+                    s1 = s2;
+                }
+
+                if (intersections % 2 == 1)
+                {
+                    // If there is an odd number of intersections, then the point
+                    // must be inside an outer hull, so it must be a hole.
+                    paths.RemoveAt(p2--);
+                    if (p2 < p1)
+                        p1--;
+                }
+            }
+        }
+
+        // The hull is disjoint if we end up with more than one path here.
+        disjoint = paths.Count > 1;
+
+        // If the hull isnt disjoint than paths[0] should contain the hull.
+        // This is not guaranteed if it is disjoint, but we could easily
+        // guarantee it if required by testing for the hull which contains
+        // the vehicle core (0,0) point inside of it. 
+        return paths[0];
+    }
+
+
     void Awake()
     {
         Hull = new List<Vector2>();
@@ -333,10 +449,8 @@ public class VehicleCore : MonoBehaviour
     {
         // Update the vehicle hull
         Hull.Clear();
-        Collider.GetPath(0, Hull);
-        for (int i = 0; i < Hull.Count; i++)
-            Hull[i] = (Vector2)transform.TransformPoint(Hull[i]);
-
+        for (int i = 0; i < _localHull.Count; i++)
+            Hull.Add((Vector2)transform.TransformPoint(_localHull[i]));
 
         // Calculate aerodynamic drag
         // The aerodynamic drag formula is:
