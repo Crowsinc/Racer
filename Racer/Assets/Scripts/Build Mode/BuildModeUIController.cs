@@ -57,8 +57,8 @@ public class BuildModeUIController : MonoBehaviour
             moduleYDisplacement -= (module.GetComponent<VehicleModule>().Size.y / 2) + 50f;
 
             // Add menu module component
-            menuModule.AddComponent<MenuModule>();
-            menuModule.GetComponent<MenuModule>().originalPrefab = module;
+            menuModule.AddComponent<DraggableModule>();
+            menuModule.GetComponent<DraggableModule>().originalPrefab = module;
 
             // TODO: disable vehicle module functions
             menuModule.GetComponent<VehicleModule>().Freeze();

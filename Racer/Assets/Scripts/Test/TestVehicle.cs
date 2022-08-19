@@ -39,10 +39,10 @@ public class TestVehicle : MonoBehaviour
         design.Add(new Vector2Int(-5, 0), new ModuleSchematic(ThrusterPrefab));
         design.Add(new Vector2Int(-2, -2), new ModuleSchematic(SuspensionWheelPrefab));
         design.Add(new Vector2Int(0, -2), new ModuleSchematic(SuspensionWheelPrefab));
-        //design.Add(new Vector2Int(-4, 1), new ModuleSchematic(ThrusterPrefab, 270));
+        design.Add(new Vector2Int(-4, 1), new ModuleSchematic(ThrusterPrefab, 270));
         design.Add(new Vector2Int(1, 0), new ModuleSchematic(ChassisPrefab));
-        //design.Add(new Vector2Int(2, 0), new ModuleSchematic(ThrusterPrefab, 180));
-        //design.Add(new Vector2Int(1, -1), new ModuleSchematic(ThrusterPrefab, 90));
+        design.Add(new Vector2Int(2, 0), new ModuleSchematic(ThrusterPrefab, 180));
+        design.Add(new Vector2Int(1, -1), new ModuleSchematic(ThrusterPrefab, 90));
         design.Add(new Vector2Int(-4, -1), new ModuleSchematic(SolidWheelPrefab));
 
         if (!_core.TryBuildStructure(design))

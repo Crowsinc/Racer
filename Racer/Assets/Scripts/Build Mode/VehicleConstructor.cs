@@ -26,8 +26,18 @@ public class VehicleConstructor : MonoBehaviour
         Vector2Int localPos = ModuleWorldPosToLocalPos(module.transform.position - module.GetComponent<DraggableModule>().CalculateRotationOffset());
 
         // Overlapping other module
-        if (localPos == Vector2Int.zero || takenCoords.Contains(localPos)){
+        if (localPos == Vector2Int.zero){
             return (false, Vector2Int.zero);
+        }
+        for (int i = 0; i < module.GetComponent<VehicleModule>().Size.x; i++)
+        {
+            for (int j = 0; j < module.GetComponent<VehicleModule>().Size.y; j++)
+            {
+                if (takenCoords.Contains(new Vector2Int(localPos.x + i, localPos.y + j)))
+                {
+                    return (false, Vector2Int.zero);
+                }
+            }
         }
 
         // Add original prefab to design

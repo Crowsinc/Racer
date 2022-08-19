@@ -100,7 +100,6 @@ public class VehicleCore : MonoBehaviour
         float totalMass = 0.0f;
         float totalEnergyCapacity = 0.0f;
         Vector2 centreOfMass = Vector2.zero;
-        //Debug.Log("core pos:" + transform.position);
         foreach (var (offset, (prefab, rotation)) in design)
         {
             //Debug.Log("off:" + offset);
@@ -109,8 +108,7 @@ public class VehicleCore : MonoBehaviour
                 (rotation == 90 ? Vector3.right : rotation == 180 ? Vector3.one : rotation == 270 ? Vector3.up : Vector3.zero);
             var instance = prefab == gameObject ? gameObject
                 : Instantiate(prefab, position, Quaternion.identity, transform);
-            //Debug.Log("rot:" + rotation);
-            //Debug.Log("pos:" + position);
+
             // Rotate module to desired orientation
             instance.transform.rotation = Quaternion.Euler(0, 0, rotation);
 
@@ -133,10 +131,10 @@ public class VehicleCore : MonoBehaviour
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
 
-        // Validate our vehicles hull to make sure
-        if (Collider.pathCount != 1)
+        // Validate our vehicles hull
+        if (!ValidateHull(design))
         {
-            Debug.LogError($"Vehicle hull is invalid ({Collider.pathCount} Sections)");
+            Debug.LogError($"Vehicle hull is invalid, some modules not touching");
             ClearStructure();
             return false;
         }
@@ -154,6 +152,33 @@ public class VehicleCore : MonoBehaviour
         ResetVehicle();
 
         IsBuilt = true;
+        return true;
+    }
+
+    /// <summary>
+    /// Validates that every module in the design is connected to the hull
+    /// </summary>
+    /// <param name="design">A dictionary of ModuleSchematics, describing a prefab that is to be placed as a vehicle module.
+    /// Each ModuleSchematic is keyed by its positional offset from the VehicleCore. As such, the offset
+    /// (0,0) will be reserved for the vehicle core and ignored. </param>
+    /// <returns>False if one or more modules is disconnected from the rest, otherwise true. </returns>
+    private bool ValidateHull(Dictionary<Vector2Int, ModuleSchematic> design)
+    {
+        Vector2[] p = new Vector2[design.Count]; // Array of points for each module
+        int i = 0;
+
+        // Add each position of each module to path
+        foreach (var (offset, (prefab, rotation)) in design)
+        {
+            p[i] = new Vector2(transform.position.x, transform.position.y) + offset;
+            i++;
+        }
+
+        // Check that number of points on path equals number of modules
+        if (design.Count > Collider.GetPath(0, p))
+        {
+            return false;
+        }
         return true;
     }
 
@@ -268,7 +293,6 @@ public class VehicleCore : MonoBehaviour
         {
             // Get the collider vertices relative to the VehicleCore, taking  
             // into account any transforms and local offsets of the collider
-            Debug.Log("rot:" + rotation);
             Vector2 localColliderOffset = module.Collider.transform.position - module.transform.position;
             localColliderOffset += (
                 rotation == 90 ? new Vector2(-module.Collider.offset.y, module.Collider.offset.x) : 

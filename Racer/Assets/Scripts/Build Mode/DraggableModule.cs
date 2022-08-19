@@ -6,8 +6,10 @@ using UnityEngine.EventSystems;
 public class DraggableModule : MonoBehaviour
     , IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
+    private Transform _moduleHolder;
     private VehicleConstructor _vehicleConstructor;
     private bool _dragging = false;
+    private bool _placed = false;
     public GameObject originalPrefab; // Original prefab of the module
     private int _rotation = 0;
     private Vector2Int _localPos; // Position of the module relative to the vehicle core
@@ -15,7 +17,9 @@ public class DraggableModule : MonoBehaviour
 
     private void Awake()
     {
+        _origPos = transform.position;
         _vehicleConstructor = GameObject.FindGameObjectWithTag("GameController").GetComponent<VehicleConstructor>();
+        _moduleHolder = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().buildModeModuleHolder.transform;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -30,43 +34,45 @@ public class DraggableModule : MonoBehaviour
 
         // Try to add the module to design
         (bool, Vector2Int) successful = _vehicleConstructor.TryAddModule(gameObject, originalPrefab);
-        if (!successful.Item1)
+        if (!successful.Item1 || !MouseOverGrid())
         {
-            // If module hasn't been placed, destroy it
-            if (_localPos == null)
-            {
-                Destroy(gameObject);
-                return;
-            }
             // Return to original position
             transform.position = _origPos;
             return;
         }
 
-        // Removing the module's old position from design
-        if (_localPos != null)
+        // Removing the module's old position from design if placed
+        if (_placed)
         {
             _vehicleConstructor.RemoveModule(_localPos, GetComponent<VehicleModule>().Size);
         }
+        // Replacing module in menu
+        else
+        {
+            Instantiate(gameObject, _origPos, Quaternion.identity, transform.parent);
+            transform.parent = _moduleHolder;
+        }
+        _placed = true;
         _origPos = transform.position;
         _localPos = successful.Item2;
     }
 
     private void Update()
     {
-        // Detect rotation
+        // While being dragged
         if (_dragging)
         {
+            // Detect rotation from scroll wheel or key input
             float scrollDelta = Input.mouseScrollDelta.y;
             
-            // Anticlockwise rotation
-            if (scrollDelta < 0 || Input.GetKeyDown(KeyCode.E))
+            // Clockwise rotation
+            if (scrollDelta < 0 || Input.GetKeyDown(KeyCode.R))
             {
                 _rotation -= 90;
             }
 
-            // Clockwise rotation
-            else if (scrollDelta > 0 || Input.GetKeyDown(KeyCode.R))
+            // Anticlockwise rotation
+            else if (scrollDelta > 0 || Input.GetKeyDown(KeyCode.E))
             {
                 _rotation += 90;
             }
@@ -83,8 +89,21 @@ public class DraggableModule : MonoBehaviour
 
             transform.rotation = Quaternion.Euler(0, 0, _rotation);
             UpdatePosition();
+
+            // Deleting module
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                if (_placed)
+                {
+                    _vehicleConstructor.RemoveModule(_localPos, GetComponent<VehicleModule>().Size);
+                }
+                else
+                {
+                    Instantiate(gameObject, _origPos, Quaternion.identity, transform.parent);
+                }
+                Destroy(gameObject);
+            }
         }
-        Debug.Log(_rotation);
     }
 
     /// <summary>
@@ -93,7 +112,14 @@ public class DraggableModule : MonoBehaviour
     private void UpdatePosition()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector3(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y), 0) + CalculateRotationOffset();
+        if (MouseOverGrid())
+        {
+            transform.position = new Vector3(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y), 0) + CalculateRotationOffset();
+        }
+        else
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0) + CalculateRotationOffset();
+        }
     }
 
     /// <summary>
@@ -121,6 +147,17 @@ public class DraggableModule : MonoBehaviour
             default:
                 return Vector3.zero;
         }
+    }
+
+    private bool MouseOverGrid()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        // TODO: fix up to work with any grid size
+        if (-6 < mousePos.x && mousePos.x < 7 && 0 < mousePos.y && mousePos.y < 7)
+        {
+            return true;
+        }
+        return false;
     }
 
     public void SetLocalPos(Vector2Int localPos)
