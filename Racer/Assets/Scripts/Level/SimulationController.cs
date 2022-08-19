@@ -10,6 +10,8 @@ public class SimulationController : MonoBehaviour
     public GameObject buildModeUI;
     public GameObject buildModeGrid;
     public GameObject buildModeModuleHolder;
+    public GameObject moduleStatsDisplay;
+
     public GameObject raceUI;
     public GameObject winUI;
 

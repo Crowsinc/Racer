@@ -2,24 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class DraggableModule : MonoBehaviour
-    , IDragHandler, IPointerUpHandler, IPointerDownHandler
+    , IDragHandler, IPointerUpHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private Transform _moduleHolder;
     private VehicleConstructor _vehicleConstructor;
+    private VehicleModule _vehicleModule;
     private bool _dragging = false;
     private bool _placed = false;
     public GameObject originalPrefab; // Original prefab of the module
     private int _rotation = 0;
     private Vector2Int _localPos; // Position of the module relative to the vehicle core
     private Vector3 _origPos; // Position of the module before moving
+    private SimulationController _simulationController;
 
     private void Awake()
     {
         _origPos = transform.position;
-        _vehicleConstructor = GameObject.FindGameObjectWithTag("GameController").GetComponent<VehicleConstructor>();
-        _moduleHolder = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().buildModeModuleHolder.transform;
+        _vehicleModule = GetComponent<VehicleModule>();
+        _simulationController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
+        _vehicleConstructor = _simulationController.GetComponent<VehicleConstructor>();
+        _moduleHolder = _simulationController.buildModeModuleHolder.transform;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -44,7 +49,7 @@ public class DraggableModule : MonoBehaviour
         // Removing the module's old position from design if placed
         if (_placed)
         {
-            _vehicleConstructor.RemoveModule(_localPos, GetComponent<VehicleModule>().Size);
+            _vehicleConstructor.RemoveModule(_localPos, _vehicleModule.Size);
         }
         // Replacing module in menu
         else
@@ -95,7 +100,7 @@ public class DraggableModule : MonoBehaviour
             {
                 if (_placed)
                 {
-                    _vehicleConstructor.RemoveModule(_localPos, GetComponent<VehicleModule>().Size);
+                    _vehicleConstructor.RemoveModule(_localPos, _vehicleModule.Size);
                 }
                 else
                 {
@@ -168,5 +173,22 @@ public class DraggableModule : MonoBehaviour
     public int GetRotation()
     {
         return _rotation;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
+        _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
+            $"{_vehicleModule.Mass}\n" +
+            $"{_vehicleModule.EnergyCapacity}\n" +
+            $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (!_dragging)
+        {
+            _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
+        }
     }
 }
