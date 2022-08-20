@@ -12,6 +12,12 @@ public class ActuatorModule : MonoBehaviour
 
 
     /// <summary>
+    /// The force the actuator applies to the world while NOT activated
+    /// </summary>
+    public Vector2 LocalIdleForce = Vector2.zero;
+
+
+    /// <summary>
     /// The origin position of the actuation force, relative to the centre of the module
     /// </summary>
     public Vector2 LocalActuationPosition = Vector2.zero;
@@ -46,13 +52,31 @@ public class ActuatorModule : MonoBehaviour
     /// <summary>
     /// Set to true to disable the use of the actuator.
     /// </summary>
-    public bool Disable = false;
+    public bool Disabled = false;
 
 
     /// <summary>
-    /// The force the actuator applies on the world when activated
+    /// The force the actuator applies on the world when activated at 100%
     /// </summary>
     public Vector2 ActuationForce { get; private set; }
+
+
+    /// <summary>
+    /// The force the actuator applies on the vehicle when activated at 100%
+    /// </summary>
+    public Vector2 ReactionForce { get; private set; }
+
+
+    /// <summary>
+    /// The force the actuator applies on the world when not activated
+    /// </summary>
+    public Vector2 IdleForce { get; private set; }
+
+
+    /// <summary>
+    /// The force the actuator applies on the vehicle when not activated
+    /// </summary>
+    public Vector2 IdleReactionForce { get; private set; }
 
 
     /// <summary>
@@ -107,9 +131,13 @@ public class ActuatorModule : MonoBehaviour
     /// True if the actuator has been activated, false otherwise.
     /// </summary>
     public bool Activated { get; private set; }
-
-
     private bool _locked = false;
+
+    /// <summary>
+    /// The proportion [0,1] that the actuator is activated with
+    /// </summary>
+    public float Proportion { get; private set; }
+    private float _proportion = 0.0f;
 
 
     /// <summary>
@@ -132,7 +160,7 @@ public class ActuatorModule : MonoBehaviour
     /// </returns>
     public bool TryActivate(float proportion = 1.0f, bool forced = false)
     {
-        if (Disable)
+        if (Disabled)
             return false;
 
         if(_locked)
@@ -164,12 +192,10 @@ public class ActuatorModule : MonoBehaviour
         }
 
         LinkedVehicle.EnergyLevel = Mathf.Max(0, LinkedVehicle.EnergyLevel - requiredEnergy);
+        LinkedVehicle.Rigidbody.AddForceAtPosition(ReactionForce * proportion, ActuationPosition);
 
-        // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
-        LinkedVehicle.Rigidbody.AddForceAtPosition(-ActuationForce, ActuationPosition);
-
+        _proportion = proportion;
         _locked = true;
-
         return true;
     }
 
@@ -247,37 +273,48 @@ public class ActuatorModule : MonoBehaviour
         out Vector2 linearAcceleration
     )
     {
-        var reactionForce = -ActuationForce;
-
         momentArm = ActuationPosition - referencePoint;
 
         // Angular force is everything normal to the moment arm so 
         // project the actuation force onto the normal of the moment arm.
         Vector2 tangent = Vector2.Perpendicular(momentArm).normalized;
-        var scalarAngularForce = Vector2.Dot(reactionForce, tangent);
+        var scalarAngularForce = Vector2.Dot(ReactionForce, tangent);
         angularForce = scalarAngularForce * tangent;
 
         var torque = scalarAngularForce * momentArm.magnitude;
         angularAcceleration = torque / rotationalInertia;
 
         // Linear force is anything left over, not normal to the moment arm
-        linearForce = reactionForce - angularForce;
+        linearForce = ReactionForce - angularForce;
         linearAcceleration = linearForce / mass;
     }
-
 
     void FixedUpdate()
     {
         Activated = _locked;
         _locked = false;
 
-        ActuationForce = transform.TransformDirection(LocalActuationForce);
+        Proportion = _proportion;
+        _proportion = 0.0f;
+
         ActuationPosition = transform.position + transform.TransformDirection(LocalActuationPosition);
+        
+        ActuationForce = transform.TransformDirection(LocalActuationForce);
+        ReactionForce = -ActuationForce;
+        
+        IdleForce = transform.TransformDirection(LocalIdleForce);
+        IdleReactionForce = -IdleForce;
+
 
         // Update physical effects of the actuator
         if (LinkedVehicle != null)
         {
-            LinkedVehicle.EnergyLevel -= IdleCost * Time.fixedDeltaTime;
+            // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
+            if(!Activated)
+            {
+                LinkedVehicle.Rigidbody.AddForceAtPosition(IdleReactionForce, ActuationPosition);
+                LinkedVehicle.EnergyLevel -= IdleCost * Time.fixedDeltaTime;
+            }
 
             FindPhysicsCharacteristics(
                 LinkedVehicle.Rigidbody.mass,
