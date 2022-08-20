@@ -95,7 +95,7 @@ public class StabilityGoal : AIGoal
         // pick the most effective choice of actuators.
         foreach (var actuator in _rankedActuators)
         {
-            if (actuator.Disable)
+            if (actuator.Disabled)
                 continue;
 
             float requiredProportion = _targetAcceleration / actuator.AngularAcceleration;
