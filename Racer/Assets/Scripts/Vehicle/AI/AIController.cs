@@ -5,16 +5,17 @@ using System;
 
 public class AIController : MonoBehaviour
 {
-    /* TODO:
-     *  3 - improve Forward and stability goals
-     *  4- Test out multiple goals at the same time
-     */
-
     /// <summary>
     /// Set to true to run the AI controller, otherwise set to false. 
     /// </summary>
     public bool Simulate = false;
     private bool _running = false;
+
+    /// <summary>
+    /// Whether multiple goals should run at once, or just the highest priority one.
+    /// Keep this false, the blend mode sucks :(
+    /// </summary>
+    public bool BlendGoals = false;
 
 
     /// <summary>
@@ -57,6 +58,12 @@ public class AIController : MonoBehaviour
     /// List of all current contact points across all colliders
     /// </summary>
     public List<ContactPoint2D> Contacts { get; private set; }
+
+
+    /// <summary>
+    /// A vector representing the forward direction of the vehicle 
+    /// </summary>
+    public Vector2 Forward { get; private set; }
 
 
     /// <summary>
@@ -151,6 +158,8 @@ public class AIController : MonoBehaviour
             Contacts.AddRange(contactList);
         }
 
+        Forward = Vehicle.transform.TransformDirection(Vector2.right);
+
         float verticalOffset = 500.0f; // This is just to avoid raycasting into the map
         Vector2 halfSizeOffset = new Vector2(0.5f * LocalSize.x, 0.0f);
 
@@ -180,7 +189,6 @@ public class AIController : MonoBehaviour
         Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, leftRay.point, Color.yellow);
         Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedLeftRay.point, Color.red);
         Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedRightRay.point, Color.red);
-
     }
 
     // Update is called once per frame
@@ -196,6 +204,44 @@ public class AIController : MonoBehaviour
 
         UpdateSensors();
 
+        // Run the controller for this update tick
+        if (BlendGoals)
+            BlendController();
+        else
+            MaxController();
+    }
+   
+
+    private void BlendController()
+    {
+        Dictionary<ActuatorModule, float> globalActions = new Dictionary<ActuatorModule, float>();
+
+        // Gather all goal actuators and their respective prioritised proportions
+        var totalPriority = 0.0f;
+        foreach (var goal in Goals)
+        {
+            var priority = goal.Plan();
+            var actions = goal.GenerateActions();
+
+            totalPriority += priority;
+            foreach (var (actuator, proportion) in actions)
+            {
+                if(!globalActions.TryAdd(actuator, priority * proportion))
+                    globalActions[actuator] += priority * proportion;
+            }
+                
+        }
+
+        // Blend and run all required actuators 
+        foreach(var (actuator, blendedProportion) in globalActions)
+        {
+            actuator.TryActivate(blendedProportion / totalPriority, true);
+        }    
+    }
+
+
+    private void MaxController()
+    {
         // Run highest priority goal.
         AIGoal priorityGoal = null;
         float highestPriority = float.NegativeInfinity;
@@ -217,4 +263,5 @@ public class AIController : MonoBehaviour
                 actuator.TryActivate(proportion, true);
         }
     }
+
 }

@@ -37,7 +37,8 @@ public class ActuatorModule : MonoBehaviour
          
 
     /// <summary>
-    /// If true, allows AI to control the actuator
+    /// If true, allows AI to control the actuator. 
+    /// Changes do not take effect while the AI is already running.
     /// </summary>
     public bool AIControllable = true;
 

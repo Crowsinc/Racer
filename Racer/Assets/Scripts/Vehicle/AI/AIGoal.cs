@@ -11,12 +11,6 @@ public abstract class AIGoal : MonoBehaviour
     /// </summary>
     public AIController Controller;
 
-    /// <summary>
-    /// Set to false to disable execution of this AIGoal
-    /// </summary>
-    public bool Enabled { get; protected set; }
-
-
     protected VehicleCore Vehicle { get => Controller.Vehicle; }
 
     protected Rigidbody2D Rigidbody { get => Controller.Vehicle.Rigidbody; }
@@ -24,6 +18,8 @@ public abstract class AIGoal : MonoBehaviour
     protected Vector2 Velocity { get => Controller.Vehicle.Rigidbody.velocity; }
 
     protected float AngularVelocity { get => Controller.Vehicle.Rigidbody.angularVelocity; }
+
+    protected Vector2 Forward { get => Controller.Forward; }
 
     protected Vector2 CentreOfMass { get => Controller.Vehicle.Rigidbody.worldCenterOfMass; }
 
@@ -46,8 +42,6 @@ public abstract class AIGoal : MonoBehaviour
     protected float EnergyPercentage { get => EnergyLevel / EnergyCapacity; }
 
     protected Vector2 GroundShadow { get => Controller.Shadow; }
-
-    protected Vector2 ForwardShadow { get => Controller.ForwardShadow; }
 
     protected Vector2 ProjectedShadow { get => Controller.ProjectedShadow; }
 
@@ -75,9 +69,4 @@ public abstract class AIGoal : MonoBehaviour
     /// </returns>
     public abstract List<Tuple<ActuatorModule, float>> GenerateActions();
 
-
-    private void Awake()
-    {
-        Enabled = true;
-    }
 }

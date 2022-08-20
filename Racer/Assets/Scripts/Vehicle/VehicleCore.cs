@@ -52,7 +52,12 @@ public class VehicleCore : MonoBehaviour
     /// A counter-clockwise list of vertices outlining shape of the vehicle's collider in the world.
     /// </summary>
     public List<Vector2> Hull { get; private set; }
-    private List<Vector2> _localHull = new List<Vector2>();
+
+
+    /// <summary>
+    /// A counter-clockwise list of vertices outlining shape of the vehicle's collider in local coordinates.
+    /// </summary>
+    public List<Vector2> LocalHull { get; private set; }
 
 
     /// <summary>
@@ -130,7 +135,7 @@ public class VehicleCore : MonoBehaviour
 
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
-        _localHull = DetectHull(out bool disjoint);
+        LocalHull = DetectHull(out bool disjoint);
 
         // Validate our vehicles hull to make sure
         if (disjoint)
@@ -210,7 +215,7 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public void ClearStructure()
     {
-        _localHull?.Clear();
+        LocalHull?.Clear();
         Hull?.Clear();
         Actuators?.Clear();
         Attachments?.Clear();
@@ -429,6 +434,7 @@ public class VehicleCore : MonoBehaviour
     void Awake()
     {
         Hull = new List<Vector2>();
+        LocalHull = new List<Vector2>();
         Attachments = new List<Rigidbody2D>();
         Actuators = new List<ActuatorModule>();
         Modules = new List<VehicleModule>();
@@ -451,8 +457,8 @@ public class VehicleCore : MonoBehaviour
     {
         // Update the vehicle hull
         Hull.Clear();
-        for (int i = 0; i < _localHull.Count; i++)
-            Hull.Add((Vector2)transform.TransformPoint(_localHull[i]));
+        for (int i = 0; i < LocalHull.Count; i++)
+            Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
 
         // Calculate aerodynamic drag
         // The aerodynamic drag formula is:

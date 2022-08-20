@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class StabilityGoal : AIGoal
 {
+    // This goal is solely for preventing flipping and keeping the vehicle stable.
+
+
     /// <summary>
     /// The maximum amount of angle deviation from the ground slope 
     /// allowed before stability becomes a max priority goal of the vehicle.
@@ -79,7 +82,6 @@ public class StabilityGoal : AIGoal
         //  a = resulting angular acceleration
         _targetAcceleration = 2.0f * (targetDisplacement - Rigidbody.angularVelocity * ReactionTime) / (ReactionTime * ReactionTime);
 
-        //TODO: take angular velocity into account (use target acceleration instead)
         return Mathf.Clamp01(Mathf.Abs(targetDisplacement) / MaxDeviation);
     }
 
