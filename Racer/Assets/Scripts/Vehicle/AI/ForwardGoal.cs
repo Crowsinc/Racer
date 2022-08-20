@@ -30,22 +30,6 @@ public class ForwardGoal : AIGoal
     public override void Begin()
     {
         _linearActuators = Actuators;
-
-
-        // The foward goal will only use actuators which provide more linear effects than angular.
-        //_linearActuators.Clear();
-        //foreach (var actuator in Actuators)
-        //{
-        //    if(actuator.LinearForce.sqrMagnitude > actuator.AngularForce.sqrMagnitude)
-        //        _linearActuators.Add(actuator);
-        //}
-
-        // If there are no actuators, because this is a bad design, then just use them all
-        //if (_linearActuators.Count == 0)
-        //{
-        //    _linearActuators = Actuators;
-        //    Debug.LogWarning("Bad Vehicle Design - No Linear Actuators :(");
-        //}
     }
 
 
