@@ -68,6 +68,9 @@ public class ForwardGoal : AIGoal
         {
             var actuator = _linearActuators[i];
 
+            if (actuator.Disable)
+                continue;
+
             // Scalar projection of the linear force in the direction of the target force.
             var usefulForce = Vector2.Dot(actuator.LinearForce, targetForceDirection);
             var byproduct = actuator.LinearForce - usefulForce * targetForceDirection;
