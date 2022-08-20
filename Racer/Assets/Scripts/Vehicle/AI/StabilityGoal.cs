@@ -60,7 +60,15 @@ public class StabilityGoal : AIGoal
         else
             _targetSlope = groundSlope;
 
-        var targetDisplacement = _targetSlope - Rigidbody.rotation;
+        // The rigidbody rotation isn't bounded, so we need to keep it 0-360 ourselves.
+        var vehicleRotation = Rigidbody.rotation % 360.0f;
+        var targetDisplacement = _targetSlope - vehicleRotation;
+
+        // Always rotate in the shortest direction
+        if (targetDisplacement > 180.0f)
+            targetDisplacement -= 360.0f;
+        else if (targetDisplacement < -180.0f)
+            targetDisplacement += 360.0f;
 
         // Use an equation of motion to solve for the acceleration required to meet our target displacement.
         // s = ut + 0.5 * at^2 => a = 2(s - ut)/t^2
@@ -71,6 +79,7 @@ public class StabilityGoal : AIGoal
         //  a = resulting angular acceleration
         _targetAcceleration = 2.0f * (targetDisplacement - Rigidbody.angularVelocity * ReactionTime) / (ReactionTime * ReactionTime);
 
+        //TODO: take angular velocity into account (use target acceleration instead)
         return Mathf.Clamp01(Mathf.Abs(targetDisplacement) / MaxDeviation);
     }
 
