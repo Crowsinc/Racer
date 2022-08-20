@@ -19,27 +19,12 @@ public class StabilityGoal : AIGoal
     /// </summary>
     public float ReactionTime = 0.2f;
 
-    /// <summary>
-    /// The length of the area that will be sampled underneath the 
-    /// centre of mass to determine the slope of the ground.
-    /// </summary>
-    public float SampleArea = 2.0f;
-
 
     /// <summary>
-    /// An offset from the centre of mass of the vehicle, 
-    /// which defines where the sample area will begin. 
-    /// A positive offset means the vehicle will consider
-    /// the ground ahead of its path. 
-    /// </summary>
-    public float SampleOffset = 2.0f;
-
-
-    /// <summary>
-    /// Smooths out ground sampling to help filter out noise or
+    /// Smooths out slope sampling to help filter out noise or
     /// transient changes in ground slope (e.g. the edge of a cliff)
     /// </summary>
-    public bool SampleSmoothing = true;
+    public bool SlopeSmoothing = true;
 
 
     /// <summary>
@@ -47,19 +32,10 @@ public class StabilityGoal : AIGoal
     /// </summary>
     public float SmoothingFactor = 0.03f;
 
-    private float _groundSlope = 0.0f;
+    private float _targetSlope = 0.0f;
+    private float _targetAcceleration = 0.0f;
 
-    private int _mapMask = 0;
-    private int _maxRayDistance = 1000;
-
-    private float _targetAcceleration;
     private List<ActuatorModule> _rankedActuators;
-
-    void Awake()
-    {
-        _mapMask = LayerMask.GetMask("Default");
-    }
-
 
     public override void Begin()
     {
@@ -76,35 +52,15 @@ public class StabilityGoal : AIGoal
 
     public override float Plan()
     {
-        var step = new Vector2(SampleArea * 0.5f, 0);
-        var offset = new Vector2(SampleOffset, 0);
+        var groundSlope = Mathf.Rad2Deg * Mathf.Atan(ProjectedShadow.y / ProjectedShadow.x);
+        
+        if (SlopeSmoothing)
+            // Apply smoothing through an exponential moving average approximation
+            _targetSlope = SmoothingFactor * groundSlope + (1.0f - SmoothingFactor) * _targetSlope;
+        else
+            _targetSlope = groundSlope;
 
-        // Sample the ground
-        var leftRay = Physics2D.Raycast(CentreOfMass + offset - step, Vector2.down, _maxRayDistance, _mapMask);
-        var rightRay = Physics2D.Raycast(CentreOfMass + offset + step, Vector2.down, _maxRayDistance, _mapMask);
-
-        Debug.DrawLine(CentreOfMass, rightRay.point, Color.yellow);
-        Debug.DrawLine(CentreOfMass, leftRay.point, Color.yellow);
-
-        float targetDisplacement = 0.0f;
-        if (leftRay.collider != null && rightRay.collider != null)
-        {
-            // Determine the slope of the ground
-
-            var sampleVector = rightRay.point - leftRay.point;
-            var sampleSlope = Mathf.Rad2Deg * Mathf.Atan(sampleVector.y / sampleVector.x);
-
-            if (SampleSmoothing)
-                // Apply smoothing through an exponential moving average approximation
-                _groundSlope = SmoothingFactor * sampleSlope + (1.0f - SmoothingFactor) * _groundSlope;
-            else
-                _groundSlope = sampleSlope;
-
-
-            targetDisplacement = _groundSlope - Rigidbody.rotation;
-        }
-        else targetDisplacement = -Rigidbody.rotation;
-
+        var targetDisplacement = _targetSlope - Rigidbody.rotation;
 
         // Use an equation of motion to solve for the acceleration required to meet our target displacement.
         // s = ut + 0.5 * at^2 => a = 2(s - ut)/t^2

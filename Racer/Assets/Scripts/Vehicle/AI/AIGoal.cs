@@ -5,35 +5,51 @@ using System;
 
 public abstract class AIGoal : MonoBehaviour
 {
+
     /// <summary>
-    /// The vehicle that the AIGoal is attached to
+    /// The AI controller that runs the AI goal
     /// </summary>
-    public VehicleCore Vehicle;
+    public AIController Controller;
 
-    // Vehicle Shortcuts
+    /// <summary>
+    /// Set to false to disable execution of this AIGoal
+    /// </summary>
+    public bool Enabled { get; protected set; }
 
-    protected Rigidbody2D Rigidbody { get => Vehicle.Rigidbody; }
 
-    protected Vector2 Velocity { get => Vehicle.Rigidbody.velocity; }
+    protected VehicleCore Vehicle { get => Controller.Vehicle; }
 
-    protected float AngularVelocity { get => Vehicle.Rigidbody.angularVelocity; }
+    protected Rigidbody2D Rigidbody { get => Controller.Vehicle.Rigidbody; }
 
-    protected Vector2 CentreOfMass { get => Vehicle.Rigidbody.worldCenterOfMass; }
+    protected Vector2 Velocity { get => Controller.Vehicle.Rigidbody.velocity; }
 
-    protected CompositeCollider2D Collider { get => Vehicle.Collider; }
+    protected float AngularVelocity { get => Controller.Vehicle.Rigidbody.angularVelocity; }
 
-    protected List<Vector2> Hull { get => Vehicle.Hull; }
+    protected Vector2 CentreOfMass { get => Controller.Vehicle.Rigidbody.worldCenterOfMass; }
 
-    protected List<Rigidbody2D> Attachments { get => Vehicle.Attachments; }
+    protected CompositeCollider2D HullCollider { get => Controller.Vehicle.Collider; }
 
-    protected List<ActuatorModule> Actuators { get => Vehicle.Actuators; }
+    protected List<Collider2D> Colliders { get => Controller.Colliders; }
 
-    protected float EnergyLevel { get => Vehicle.EnergyLevel; }
+    protected List<ContactPoint2D> Contacts { get => Controller.Contacts; }
 
-    protected float EnergyCapacity { get => Vehicle.EnergyCapacity; }
+    protected List<Vector2> Hull { get => Controller.Vehicle.Hull; }
 
-    protected float EnergyPercentage { get => Vehicle.EnergyLevel / Vehicle.EnergyCapacity; }
+    public List<ActuatorModule> Actuators { get => Controller.Actuators; }
 
+    protected List<Rigidbody2D> Attachments { get => Controller.Vehicle.Attachments; }
+
+    protected float EnergyLevel { get => Controller.Vehicle.EnergyLevel; }
+
+    protected float EnergyCapacity { get => Controller.Vehicle.EnergyCapacity; }
+
+    protected float EnergyPercentage { get => EnergyLevel / EnergyCapacity; }
+
+    protected Vector2 GroundShadow { get => Controller.Shadow; }
+
+    protected Vector2 ForwardShadow { get => Controller.ForwardShadow; }
+
+    protected Vector2 ProjectedShadow { get => Controller.ProjectedShadow; }
 
     /// <summary>
     /// Runs when the AI controller begins simulating. 
@@ -62,7 +78,6 @@ public abstract class AIGoal : MonoBehaviour
 
     private void Awake()
     {
-        if (!TryGetComponent<VehicleCore>(out Vehicle))
-            Debug.LogWarning("AIGoal is not attached to a vehicle");
+        Enabled = true;
     }
 }

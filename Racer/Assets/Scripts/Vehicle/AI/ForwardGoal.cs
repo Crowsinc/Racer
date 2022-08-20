@@ -42,6 +42,6 @@ public class ForwardGoal : AIGoal
         //_targetAcceleration = 2.0f * ((targetSpeed * reactionTime) - Rigidbody.velocity.magnitude * reactionTime) / (reactionTime * reactionTime);
         //_targetAcceleration = 2.0f * ((targetSpeed * reactionTime) - Rigidbody.velocity.x * reactionTime) / (reactionTime * reactionTime);
         _targetAcceleration = (targetSpeed - Velocity.x) / reactionTime;        
-        return 0.75f;
+        return 0.5f;
     }
 }
