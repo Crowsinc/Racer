@@ -98,7 +98,11 @@ public class StabilityGoal : AIGoal
             float requiredProportion = _targetAcceleration / actuator.AngularAcceleration;
             if (requiredProportion > 0.0f) // Negative proportion => wrong direction
             {
-                requiredProportion = Mathf.Clamp01(requiredProportion);
+                if (!actuator.ProportionalControl)
+                    requiredProportion = 1.0f;
+                else
+                    requiredProportion = Mathf.Clamp01(requiredProportion);
+
                 _targetAcceleration -= requiredProportion * actuator.AngularAcceleration;
 
                 actions.Add(new Tuple<ActuatorModule, float>(actuator, requiredProportion));

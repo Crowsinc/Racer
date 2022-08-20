@@ -85,10 +85,16 @@ public class ForwardGoal : AIGoal
             float requiredProportion = targetForceMagnitude / actuatorForce;
             if (requiredProportion > 0.0f) // Negative proportion => wrong direction
             {
-                requiredProportion = Mathf.Clamp01(requiredProportion);
+                var actuator = _linearActuators[index];
+
+                if (!actuator.ProportionalControl)
+                    requiredProportion = 1.0f;
+                else
+                    requiredProportion = Mathf.Clamp01(requiredProportion);
+
                 targetForceMagnitude -= requiredProportion * actuatorForce;
 
-                actions.Add(new Tuple<ActuatorModule, float>(_linearActuators[index], requiredProportion));
+                actions.Add(new Tuple<ActuatorModule, float>(actuator, requiredProportion));
             }
         }
 
