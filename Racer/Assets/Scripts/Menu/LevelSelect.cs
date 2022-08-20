@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class LevelSelect : MonoBehaviour
 {
     // Start is called before the first frame update
-
+    public GameObject levelScreen;
+    
     public Button[] levelButtons;
     void Start()
     {
@@ -40,13 +41,23 @@ public class LevelSelect : MonoBehaviour
             }
         }
     }
-    
-    public void lockLevel()
+
+    public void OpenLevelScreen()
+    {
+        levelScreen.SetActive(true);
+    }
+
+    public void CloseLevelScreen()
+    {
+        levelScreen.SetActive(false);
+    }
+
+    public void LockLevel()
     {
         PlayerPrefs.SetInt("Level", 1);
     }
 
-    public void unlockLevel()
+    public void UnlockLevel()
     {
         PlayerPrefs.SetInt("Level", 10);
     }
