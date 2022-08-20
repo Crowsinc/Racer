@@ -28,7 +28,7 @@ public class StabilityGoal : AIGoal
 
 
     /// <summary>
-    /// The smoothing factor (0,1) to use when sample smoothing is turned on.
+    /// The smoothing factor (0,1) to use when slope smoothing is turned on.
     /// </summary>
     public float SmoothingFactor = 0.03f;
 

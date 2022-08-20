@@ -66,12 +66,6 @@ public class AIController : MonoBehaviour
 
 
     /// <summary>
-    /// A vector representing the slope of the ground under the front half of the vehicle.
-    /// </summary>
-    public Vector2 ForwardShadow { get; private set; }
-
-
-    /// <summary>
     /// A vector representing the slope of the ground where the vehicle is expected 
     /// </summary>
     public Vector2 ProjectedShadow { get; private set; }
