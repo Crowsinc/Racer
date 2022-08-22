@@ -46,18 +46,18 @@ public class BuildModeUIController : MonoBehaviour
         {
             // Get module from list
             GameObject module = modulesList[i];
-            Debug.Log("Before " + module.name + ": " + moduleYDisplacement);
+
             // Calculate y displacement from half of the module's height
             moduleYDisplacement -= (modulesList[i].GetComponent<VehicleModule>().Size.y) * (Camera.main.scaledPixelHeight / 20);
-            Debug.Log("During " + module.name + ": " + moduleYDisplacement);
 
             // Instantiate menu module into world space from canvas space
             Vector3 spawnPoint = new Vector3(initalPlacement.position.x, moduleYDisplacement, 0);
             GameObject menuModule = Instantiate(module, Camera.main.ScreenToWorldPoint(spawnPoint), Quaternion.identity, moduleHolder);
             menuModule.transform.Translate(Vector3.back * menuModule.transform.position.z);
+
+            // Adding small gap for next module
             moduleYDisplacement -= Camera.main.scaledPixelHeight / 20;
 
-            Debug.Log("After " + module.name + ": " + moduleYDisplacement);
             // Add menu module component
             menuModule.AddComponent<DraggableModule>();
             menuModule.GetComponent<DraggableModule>().originalPrefab = module;
