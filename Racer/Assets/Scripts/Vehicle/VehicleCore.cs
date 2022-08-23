@@ -190,8 +190,14 @@ public class VehicleCore : MonoBehaviour
         }
 
         Collider.GenerateGeometry();
-        if (Collider.pathCount != 1)
-            Debug.LogError($"Pre-generated vehicle hull is invalid ({Collider.pathCount} Sections)");
+        LocalHull = DetectHull(out bool disjoint);
+
+        // Validate our vehicles hull to make sure
+        if (disjoint)
+        {
+            Debug.LogError($"Pregenerated Vehicle hull is disjoint");
+            ClearStructure();
+        }
 
         EnergyCapacity = totalEnergyCapacity;
         Rigidbody.mass = totalMass;
@@ -462,61 +468,64 @@ public class VehicleCore : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Update the vehicle hull
-        Hull.Clear();
-        for (int i = 0; i < LocalHull.Count; i++)
-            Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
-
-        // Calculate aerodynamic drag
-        // The aerodynamic drag formula is:
-        // Fd = 0.5 * rho * v^2 * C * A,
-        // where:
-        //   rho = air density
-        //   v = relative velocity
-        //   C = drag coefficient
-        //   A = drag area
-        //
-        // Unity's linear drag equation, v = v * (1 - drag), is too simple to 
-        // implement proper aerodynamic drag, which is proportional to the square
-        // of the velocity. So instead we set the rigidbody linear drag to 0 and
-        // apply our own drag force. This will be a simplified version which acts 
-        // on the centre of mass and removes air density.The drag coefficient will 
-        // be a vehicle parameter set during game balancing to introduce the correct
-        // game feel. The drag area will be approximated on fly for each hull segment via:
-        //
-        // drag area = sum(segment area * clamp(1.0 - dot(segment normal, vehicle velocity), 0, 1))
-        //
-        // Hull segments which are perpendicular to the vehicle velocity will have their
-        // full area considered, while those which are parralel or on the opposite side
-        // of the vehicle will be ignored. Note that we care about the opposite velocity
-        // of the drag for the vector dot product, which is why we are using the vehicle
-        // velocity.
-
-        // Velocity of vehicle, assuming zero wind speed.
-        var velocityDir = Rigidbody.velocity.normalized;
-        var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
-
-        // Find drag area
-        float dragArea = 0.0f;
-        Vector2 prevPoint = Hull[^1];
-        foreach (Vector2 currPoint in Hull)
+        if(IsBuilt)
         {
-            // The hull is in counter-clockwise order but we want the segment
-            // to be clockwise so that Vector2.perpendicular() gives us the
-            // outer facing normals of the vehicle hull.
-            var segment = prevPoint - currPoint;
-            var outerNormal = Vector2.Perpendicular(segment).normalized;
+            // Update the vehicle hull
+            Hull.Clear();
+            for (int i = 0; i < LocalHull.Count; i++)
+                Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
 
-            dragArea += segment.magnitude * Mathf.Clamp01(Vector2.Dot(outerNormal, velocityDir));
+            // Calculate aerodynamic drag
+            // The aerodynamic drag formula is:
+            // Fd = 0.5 * rho * v^2 * C * A,
+            // where:
+            //   rho = air density
+            //   v = relative velocity
+            //   C = drag coefficient
+            //   A = drag area
+            //
+            // Unity's linear drag equation, v = v * (1 - drag), is too simple to 
+            // implement proper aerodynamic drag, which is proportional to the square
+            // of the velocity. So instead we set the rigidbody linear drag to 0 and
+            // apply our own drag force. This will be a simplified version which acts 
+            // on the centre of mass and removes air density.The drag coefficient will 
+            // be a vehicle parameter set during game balancing to introduce the correct
+            // game feel. The drag area will be approximated on fly for each hull segment via:
+            //
+            // drag area = sum(segment area * clamp(1.0 - dot(segment normal, vehicle velocity), 0, 1))
+            //
+            // Hull segments which are perpendicular to the vehicle velocity will have their
+            // full area considered, while those which are parralel or on the opposite side
+            // of the vehicle will be ignored. Note that we care about the opposite velocity
+            // of the drag for the vector dot product, which is why we are using the vehicle
+            // velocity.
 
-            prevPoint = currPoint;
+            // Velocity of vehicle, assuming zero wind speed.
+            var velocityDir = Rigidbody.velocity.normalized;
+            var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
+
+            // Find drag area
+            float dragArea = 0.0f;
+            Vector2 prevPoint = Hull[^1];
+            foreach (Vector2 currPoint in Hull)
+            {
+                // The hull is in counter-clockwise order but we want the segment
+                // to be clockwise so that Vector2.perpendicular() gives us the
+                // outer facing normals of the vehicle hull.
+                var segment = prevPoint - currPoint;
+                var outerNormal = Vector2.Perpendicular(segment).normalized;
+
+                dragArea += segment.magnitude * Mathf.Clamp01(Vector2.Dot(outerNormal, velocityDir));
+
+                prevPoint = currPoint;
+            }
+
+            // NOTE: we invert the force direction here, to make it drag (-0.5f)
+            var aerodynamicDragForce = -0.5f * AerodynamicDragCoefficient * dragArea * velocitySqr;
+
+            Rigidbody.drag = 0.0f;
+            Rigidbody.AddForce(aerodynamicDragForce);
         }
-
-        // NOTE: we invert the force direction here, to make it drag (-0.5f)
-        var aerodynamicDragForce = -0.5f * AerodynamicDragCoefficient * dragArea * velocitySqr;
-
-        Rigidbody.drag = 0.0f;
-        Rigidbody.AddForce(aerodynamicDragForce);
     }
 
 

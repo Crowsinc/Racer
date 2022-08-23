@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Cost: 20
   EnergyCapacity: 10
-  Mass: 1
+  Mass: 5
   Size: {x: 1, y: 1}
   Collider: {fileID: 3382732491998691383}
   Attachments: []

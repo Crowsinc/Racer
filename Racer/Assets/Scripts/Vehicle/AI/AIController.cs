@@ -21,7 +21,7 @@ public class AIController : MonoBehaviour
     /// <summary>
     /// The number of FixedUpdate ticks that vehicle projections are estimated over.
     /// </summary>
-    public uint ProjectionSampleTime = 2;
+    public uint ProjectionSampleTime = 10;
 
 
     /// <summary>

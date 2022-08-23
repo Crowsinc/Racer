@@ -24,6 +24,6 @@ public class SuspensionResizer : MonoBehaviour
                 SliderJoint.jointTranslation
             );
         }
-        else Debug.LogWarning("Suspension resizer is not configured");  
+      //  else Debug.LogWarning("Suspension resizer is not configured");  
     }
 }

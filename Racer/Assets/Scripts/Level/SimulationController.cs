@@ -68,38 +68,40 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     public void StartRace()
     {
-        inBuildMode = false;
-        playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign());
-        cameraFollow.Target = playerVehicle.transform;
+        if (playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign()))
+        {
+            inBuildMode = false;
+            cameraFollow.Target = playerVehicle.transform;
 
-        // Change UI
-        buildModeUI.SetActive(false);
-        buildModeGrid.SetActive(false);
-        buildModeModuleHolder.SetActive(false);
-        raceUI.SetActive(true);
 
-        // Unfreeze player vehicle
-        playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            // Change UI
+            buildModeUI.SetActive(false);
+            buildModeGrid.SetActive(false);
+            buildModeModuleHolder.SetActive(false);
+            raceUI.SetActive(true);
 
-        raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
+            raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
+            
+            // Build the opponent
+            opponentInstance = Instantiate(opponentVehicle, new Vector3(0, 3, 0), Quaternion.identity);
+            
+            // Unfreeze player vehicle
+            playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
-        opponentInstance = Instantiate(opponentVehicle, new Vector3(3,-4,0), Quaternion.identity);
+            // Start the AI simulation
+            // TODO: Luke feel free to change this to whatever fits your code better!
+            var _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
+            if (_opponentAI != null)
+                _opponentAI.Simulate = true;
+            else
+                Debug.LogError("Opponent vehicle has no AI");
 
-        // Build the opponent
-        if (opponentInstance.TryGetComponent<TestVehicle>(out var test))
-            test.Build();
-
-        // Start the AI simulation
-        // TODO: Luke feel free to change this to whatever fits your code better!
-        if (opponentInstance.TryGetComponent<AIController>(out _opponentAI))
-            _opponentAI.Simulate = true;
-        else
-            Debug.LogError("Opponent vehicle has no AI");
-
-        if (playerVehicle.gameObject.TryGetComponent<AIController>(out _playerAI))
-            _playerAI.Simulate = true;
-        else
-            Debug.LogError("Player vehicle has no AI");
+            if (playerVehicle.gameObject.TryGetComponent<AIController>(out _playerAI))
+                _playerAI.Simulate = true;
+            else
+                Debug.LogError("Player vehicle has no AI");
+        }
+        else Debug.LogWarning("Player Vehicle Failed Validation");
     }
 
     /// <summary>

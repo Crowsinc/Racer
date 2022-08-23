@@ -131,7 +131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: ff45b6abaa7d0f1488c8871dfb1d909f, type: 3}
   Cost: 60
   EnergyCapacity: 0
   Mass: 1
@@ -151,10 +150,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -80, y: 0}
+  LocalActuationForce: {x: -150, y: 0}
+  LocalIdleForce: {x: 0, y: 0}
   LocalActuationPosition: {x: -0.5, y: 0}
+  ActivationCost: 1
+  IdleCost: 0
+  ProportionalControl: 1
+  AIControllable: 1
+  Disabled: 0
   LinkedVehicle: {fileID: 0}
-  EnergyPerSecond: 20
 --- !u!114 &3855434626019958647
 MonoBehaviour:
   m_ObjectHideFlags: 0

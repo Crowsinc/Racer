@@ -441,13 +441,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -300, y: 0}
+  LocalActuationForce: {x: -800, y: 0}
+  LocalIdleForce: {x: 0, y: 0}
   LocalActuationPosition: {x: -1.25, y: 0}
   ActivationCost: 1
   IdleCost: 0
   ProportionalControl: 1
   AIControllable: 1
-  Disable: 0
+  Disabled: 0
   LinkedVehicle: {fileID: 0}
 --- !u!114 &6897264028096929904
 MonoBehaviour:
