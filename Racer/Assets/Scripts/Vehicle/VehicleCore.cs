@@ -395,18 +395,19 @@ public class VehicleCore : MonoBehaviour
                 foreach (var s2 in polygonPath)
                 {
                     var segment = s2 - s1;
-                    var minX = Mathf.Min(s1.x, s2.x);
-                    var maxX = Mathf.Max(s1.x, s2.x);
+                    var min = Vector2.Min(s1, s2);
+                    var max = Vector2.Max(s1, s2);
                     var plane = new Plane(Vector2.Perpendicular(segment), s1);
 
                     Ray ray = new Ray(testPoint, Vector2.right);
                     if (plane.Raycast(ray, out float distance))
                     {
                         var intersectPoint = ray.GetPoint(distance);
-                        if (intersectPoint.x >= minX && intersectPoint.x <= maxX)
+                        if (intersectPoint.x >= min.x && intersectPoint.x <= max.x 
+                         && intersectPoint.y >= min.y && intersectPoint.y <= max.y)
                             intersections++;
                     }
-
+                    
                     s1 = s2;
                 }
 
