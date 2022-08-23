@@ -52,7 +52,7 @@ public class SimulationController : MonoBehaviour
         buildModeGrid.SetActive(true);
         raceUI.SetActive(false);
 
-        Destroy(opponentVehicle);
+        DestroyImmediate(opponentVehicle, true);
     }
 
     /// <summary>

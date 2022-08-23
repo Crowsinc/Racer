@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a242634dc8c5b4a93e07be465b240a, type: 3}
+  m_Name: Level3
+  m_EditorClassIdentifier: 
+  levelId: 3
+  terrain: {fileID: 3751650358320115858, guid: 4611a0a06af81f44eaaebf50b00a356f, type: 3}
+  opponentVehicle: {fileID: 1800276209104778206, guid: 386e393f4f45e8b44a6b4cefa0ca2c57, type: 3}
+  budget: 1000

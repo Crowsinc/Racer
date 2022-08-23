@@ -17,12 +17,14 @@ public class LevelTerrain : MonoBehaviour
     private int startIndex;
     private int endIndex;
 
-    private bool isGrounded;
+    private Dictionary<string, Rigidbody2D> rbs;
 
     public void Start()
     {
         startIndex = startPoint.GetComponent<NodeAttach>().index;
         endIndex = endPoint.GetComponent<NodeAttach>().index;
+
+        rbs = new Dictionary<string, Rigidbody2D>();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -31,8 +33,13 @@ public class LevelTerrain : MonoBehaviour
         // Return if collided object is not a vehicle
         if (parent.gameObject.layer != 30) return;
 
-        // Only run for player for now;
+        // Only run the player for now;
         if (parent.name != "PlayerVehicle") return;
+
+        if (!rbs.ContainsKey(parent.name))
+        {
+            rbs[parent.name] = parent.GetComponent<Rigidbody2D>();
+        }
 
         switch (CheckWhichTerrain(parent.position))
         {
@@ -41,6 +48,12 @@ public class LevelTerrain : MonoBehaviour
                 break;
             case 1:
                 // What happens if vehicle is touching Mud
+                break;
+            case 2:
+                rbs[parent.name].AddForce(new Vector2(0, 10000));
+                break;
+            case 3:
+                rbs[parent.name].AddForce(new Vector2(rbs[parent.name].velocity.x * 100, 0));
                 break;
         }
 
