@@ -37,8 +37,8 @@ public class TestVehicle : MonoBehaviour
         design.Add(new Vector2Int(-4, 0), new ModuleSchematic(ChassisPrefab));
         design.Add(new Vector2Int(-1, 1), new ModuleSchematic(JetPrefab));
         design.Add(new Vector2Int(-5, 0), new ModuleSchematic(ThrusterPrefab));
-        design.Add(new Vector2Int(-2, -1), new ModuleSchematic(SuspensionWheelPrefab));
-        design.Add(new Vector2Int(0, -1), new ModuleSchematic(SuspensionWheelPrefab));
+        design.Add(new Vector2Int(-2, -2), new ModuleSchematic(SuspensionWheelPrefab));
+        design.Add(new Vector2Int(0, -2), new ModuleSchematic(SuspensionWheelPrefab));
         design.Add(new Vector2Int(-4, 1), new ModuleSchematic(ThrusterPrefab, 270));
         design.Add(new Vector2Int(1, 0), new ModuleSchematic(ChassisPrefab));
         design.Add(new Vector2Int(2, 0), new ModuleSchematic(ThrusterPrefab, 180));

@@ -9,6 +9,9 @@ public class SimulationController : MonoBehaviour
 
     public GameObject buildModeUI;
     public GameObject buildModeGrid;
+    public GameObject buildModeModuleHolder;
+    public GameObject moduleStatsDisplay;
+
     public GameObject raceUI;
     public GameObject winUI;
 
@@ -22,6 +25,7 @@ public class SimulationController : MonoBehaviour
     private CameraFollow cameraFollow;
     private float raceDistance;
     private GameObject opponentInstance;
+    private VehicleConstructor _vehicleConstructor;
 
     private AIController _playerAI;
     private AIController _opponentAI;
@@ -29,6 +33,8 @@ public class SimulationController : MonoBehaviour
     private void Awake()
     {
         cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
+        _vehicleConstructor = GetComponent<VehicleConstructor>();
+        _vehicleConstructor.vehicleCore = playerVehicle;
     }
     void Start()
     {
@@ -48,10 +54,16 @@ public class SimulationController : MonoBehaviour
         inBuildMode = true;
         cameraFollow.Target = buildModeCamPos;
 
+        // Change UI
         buildModeUI.SetActive(true);
         buildModeGrid.SetActive(true);
+        buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
 
+        // Freeze player vehicle
+        playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+
+        // Destroy opponent vehicle
         Destroy(opponentVehicle);
     }
 
@@ -61,16 +73,21 @@ public class SimulationController : MonoBehaviour
     public void StartRace()
     {
         inBuildMode = false;
+        playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign());
         cameraFollow.Target = playerVehicle.transform;
 
+        // Change UI
         buildModeUI.SetActive(false);
-        buildModeGrid.SetActive(true);
+        buildModeGrid.SetActive(false);
+        buildModeModuleHolder.SetActive(false);
         raceUI.SetActive(true);
+
+        // Unfreeze player vehicle
+        playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
         raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
 
-        //opponentInstance = Instantiate(opponentVehicle, buildModeCamPos.position, Quaternion.identity);
-        opponentInstance = Instantiate(opponentVehicle, new Vector3(-4, 3, 0), Quaternion.identity);
+        opponentInstance = Instantiate(opponentVehicle, new Vector3(3,-4,0), Quaternion.identity);
 
         // Build the opponent
         if (opponentInstance.TryGetComponent<TestVehicle>(out var test))
