@@ -14,12 +14,18 @@ public class ActuationEffect : MonoBehaviour
     /// </summary>
     public ActuatorModule ActuatorModule;
 
+    private float _alpha = 0.0f;
+
     // Update is called once per frame
     void Update()
     {
         if (Texture != null && ActuatorModule != null)
         {
-            Texture.enabled = ActuatorModule.Activated;
+            _alpha = Mathf.Lerp(_alpha, ActuatorModule.Proportion, 0.01f);
+
+            var c = Texture.color;
+            c.a = _alpha;
+            Texture.color = c;
         }
         else Debug.LogWarning("Actuation effect has no attached texture or actuator module");
     }
