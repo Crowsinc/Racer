@@ -60,11 +60,7 @@ public class SimulationController : MonoBehaviour
         buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
 
-        // Freeze player vehicle
-        playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-
-        // Destroy opponent vehicle
-        Destroy(opponentVehicle);
+        DestroyImmediate(opponentVehicle, true);
     }
 
     /// <summary>
