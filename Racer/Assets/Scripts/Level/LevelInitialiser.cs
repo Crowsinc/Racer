@@ -5,12 +5,10 @@ using UnityEngine;
 public class LevelInitialiser : MonoBehaviour
 {
     private Level selectedLevel;
-    public int select = 1;
     public List<Level> levelCollection;
     void Awake()
     {
-        PlayerPrefs.SetInt("SelectedLevel", select); // Temporarily make selected level 1
-        selectedLevel = FindLevelById(PlayerPrefs.GetInt("SelectedLevel"));
+        selectedLevel = FindLevelById(PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL));
 
         // Creating terrain
         Instantiate(selectedLevel.terrain, Vector3.zero, Quaternion.identity);

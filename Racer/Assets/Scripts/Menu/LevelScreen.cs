@@ -7,22 +7,24 @@ public class LevelScreen : MonoBehaviour
 {
     // Start is called before the first frame update
     public TMP_Text levelTitle;
+    public List<Level> allLevels = new List<Level>();
+    private Level level;
     
     void Start()
     {
         
     }
 
-    public void initLevelScreen(int level)
+    public void initLevelScreen(int levelNum)
     {
-        levelTitle.text = "Level " + level.ToString();
-        Debug.Log(level.ToString());
+        levelTitle.text = "Level " + levelNum.ToString();
+        level = allLevels[levelNum];
     }
     
     public void LoadGameScene()
     {
-        //SceneManager.LoadScene("TestScene");
-        //untested to see if it works or not
+        PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, level.levelId);
+        SceneManager.LoadSceneAsync(GameConstants.SIMULATION_SCENE_ID);
     }
     
     // Update is called once per frame
