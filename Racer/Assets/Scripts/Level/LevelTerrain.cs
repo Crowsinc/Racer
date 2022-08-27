@@ -29,16 +29,14 @@ public class LevelTerrain : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        var parent = collision.transform.root;
+        var parent = collision.transform.root.Find("Vehicle");
         // Return if collided object is not a vehicle
         if (parent.gameObject.layer != 30) return;
 
-        // Only run the player for now;
-        if (parent.name != "PlayerVehicle") return;
-
-        if (!rbs.ContainsKey(parent.name))
+        var vehicleName = parent.root.name;
+        if (!rbs.ContainsKey(vehicleName))
         {
-            rbs[parent.name] = parent.GetComponent<Rigidbody2D>();
+            rbs[vehicleName] = parent.GetComponent<Rigidbody2D>();
         }
 
         switch (CheckWhichTerrain(parent.position))
@@ -50,10 +48,10 @@ public class LevelTerrain : MonoBehaviour
                 // What happens if vehicle is touching Mud
                 break;
             case 2:
-                rbs[parent.name].AddForce(new Vector2(0, 10000));
+                rbs[vehicleName].AddForce(new Vector2(0, 10000));
                 break;
             case 3:
-                rbs[parent.name].AddForce(new Vector2(rbs[parent.name].velocity.x * 100, 0));
+                rbs[vehicleName].AddForce(new Vector2(rbs[vehicleName].velocity.x * 100, 0));
                 break;
         }
 
