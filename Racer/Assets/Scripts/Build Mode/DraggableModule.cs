@@ -53,6 +53,11 @@ public class DraggableModule : MonoBehaviour
     private Vector3 _origPos;
 
     /// <summary>
+    /// Rotation of the module before moving
+    /// </summary>
+    private int _origRotation;
+
+    /// <summary>
     /// Original prefab of the module
     /// </summary>
     public GameObject originalPrefab;
@@ -65,9 +70,10 @@ public class DraggableModule : MonoBehaviour
         _vehicleConstructor = _simulationController.GetComponent<VehicleConstructor>();
         _moduleHolder = _simulationController.buildModeModuleHolder.transform;
         
-        // Setting original position
+        // Setting original position & rotation
         _origPos = transform.position;
-        
+        _origRotation = (int)transform.rotation.eulerAngles.z;
+
         // Adding hitbox that spans the size of the module
         BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
         _draggableCollider.size = _vehicleModule.Size;
@@ -91,12 +97,18 @@ public class DraggableModule : MonoBehaviour
     {
         _dragging = false;
 
+        // Check that mouse is being let go above the grid
+        if (!MouseOverGrid())
+        {
+            Reset();
+            return;
+        }
+
         // Try to add the module to design
         (bool, Vector2Int) successful = _vehicleConstructor.TryAddModule(gameObject, originalPrefab);
-        if (!successful.Item1 || !MouseOverGrid())
+        if (!successful.Item1)
         {
-            // Return to original position
-            transform.position = _origPos;
+            Reset();
             return;
         }
 
@@ -113,7 +125,20 @@ public class DraggableModule : MonoBehaviour
         }
         _placed = true;
         _origPos = transform.position;
+        _origRotation = (int)transform.rotation.eulerAngles.z;
         _localPos = successful.Item2;
+    }
+
+
+    /// <summary>
+    /// Resets the vehicle module back to its previous position & rotation
+    /// </summary>
+    public void Reset()
+    {
+        transform.position = _origPos;
+
+        _rotation = _origRotation;
+        transform.rotation = Quaternion.Euler(0, 0, _origRotation);
     }
 
     private void Update()
