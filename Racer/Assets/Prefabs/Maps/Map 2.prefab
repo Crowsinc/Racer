@@ -1028,7 +1028,7 @@ GameObject:
   - component: {fileID: 3751650358320115857}
   - component: {fileID: 3751650358320115856}
   - component: {fileID: 3751650358320115859}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Map 2
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -2352,7 +2352,7 @@ GameObject:
   - component: {fileID: 8018101175077915988}
   - component: {fileID: 1002084469812423400}
   - component: {fileID: 4134630753026665105}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: TopHill
   m_TagString: Ground
   m_Icon: {fileID: 0}

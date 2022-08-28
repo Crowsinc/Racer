@@ -88,7 +88,7 @@ public class AIController : MonoBehaviour
             Debug.LogError("AIController is not attached to a vehicle!");
 
         // This should be the layer that the map is on
-        _mapMask = LayerMask.GetMask("Default");
+        _mapMask = LayerMask.GetMask("Terrain");
 
         Actuators = new List<ActuatorModule>();
         Contacts = new List<ContactPoint2D>();
@@ -160,10 +160,13 @@ public class AIController : MonoBehaviour
 
         Forward = Vehicle.transform.TransformDirection(Vector2.right);
 
-        float verticalOffset = 500.0f; // This is just to avoid raycasting into the map
+        float verticalOffset = 2.0f; // This is just to avoid raycasting into the map
         Vector2 halfSizeOffset = new Vector2(0.5f * LocalSize.x, 0.0f);
 
-        Vector2 centreLine = new Vector2(Vehicle.Collider.bounds.center.x, verticalOffset);
+        Vector2 centreLine = new Vector2(
+            Vehicle.Collider.bounds.center.x,
+            Vehicle.Collider.bounds.center.y + verticalOffset
+        );
         Vector2 rightBound = centreLine + halfSizeOffset;
         Vector2 leftBound = centreLine - halfSizeOffset;
         
