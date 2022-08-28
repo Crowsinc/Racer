@@ -26,7 +26,7 @@ public class LevelScreen : MonoBehaviour
         PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, level.levelId);
         SceneManager.LoadSceneAsync(GameConstants.SIMULATION_SCENE_ID);
     }
-    
+
     // Update is called once per frame
     void Update()
     {

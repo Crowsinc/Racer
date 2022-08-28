@@ -13,7 +13,13 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 1) == 0)
+        {
+            //If the selected level is 0, that means we are coming back from the simulation screen.
+            //We also need to reset the flag.
+            PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, 1);
+            PlayGame();
+        }
     }
 
     // Update is called once per frame

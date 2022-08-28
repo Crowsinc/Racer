@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 public class LevelCompleteScreen : MonoBehaviour
@@ -50,6 +51,13 @@ public class LevelCompleteScreen : MonoBehaviour
     public void CloseLevelCompleteScreen()
     {
         levelCompleteScreen.SetActive(false);
+    }
+    
+    public void LoadMenuScene()
+    {
+        //quick hack to detect when main menu is returned to
+        PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0);
+        SceneManager.LoadSceneAsync(GameConstants.MAIN_MENU_SCENE_ID);
     }
 
     // Update is called once per frame
