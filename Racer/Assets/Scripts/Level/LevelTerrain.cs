@@ -31,7 +31,7 @@ public class LevelTerrain : MonoBehaviour
     {
         var parent = collision.transform.root.Find("Vehicle");
         // Return if collided object is not a vehicle
-        if (parent.gameObject.layer != 30) return;
+        if (parent == null || parent.gameObject.layer != 30) return;
 
         var vehicleName = parent.root.name;
         if (!rbs.ContainsKey(vehicleName))
