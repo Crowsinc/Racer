@@ -7,7 +7,7 @@ public class LevelScreen : MonoBehaviour
 {
     // Start is called before the first frame update
     public TMP_Text levelTitle;
-    public List<Level> allLevels = new List<Level>();
+    public List<Level> levelCollection = new List<Level>();
     private Level level;
     
     void Start()
@@ -18,7 +18,7 @@ public class LevelScreen : MonoBehaviour
     public void initLevelScreen(int levelNum)
     {
         levelTitle.text = "Level " + levelNum.ToString();
-        level = allLevels[levelNum];
+        level = FindLevelById(levelNum);
     }
     
     public void LoadGameScene()
@@ -26,10 +26,17 @@ public class LevelScreen : MonoBehaviour
         PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, level.levelId);
         SceneManager.LoadSceneAsync(GameConstants.SIMULATION_SCENE_ID);
     }
-    
-    // Update is called once per frame
-    void Update()
+
+    // Find level in collection that matches id
+    private Level FindLevelById(int id)
     {
-        
+        foreach (Level level in levelCollection)
+        {
+            if (level.levelId == id)
+            {
+                return level;
+            }
+        }
+        return levelCollection[0];
     }
 }
