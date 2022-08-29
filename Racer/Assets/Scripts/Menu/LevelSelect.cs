@@ -11,6 +11,14 @@ public class LevelSelect : MonoBehaviour
     void Start()
     {
         initLevelSelect();
+        
+        if (PlayerPrefs.GetInt(GameConstants.LOAD_LEVEL_SCREEN, 0) == 1)
+        {
+            //If the LOAD LEVEL SCREEN is 1, that means we are coming back from the simulation screen and need to load
+            //the level selection screen AND the level screen for the next selected level.
+            //We also need to reset the flag.
+            OpenLevelScreen();
+        }
     }
 
     // Update is called once per frame
@@ -30,7 +38,7 @@ public class LevelSelect : MonoBehaviour
         levelButtons[0].interactable = true;
         
         //Get the current player progression
-        int currentLevel = PlayerPrefs.GetInt("Level", 1);
+        int currentLevel = PlayerPrefs.GetInt(GameConstants.LEVEL_UNLOCKED, 1);
         if (currentLevel >= 2)
         {
             int i = 0;
@@ -40,6 +48,12 @@ public class LevelSelect : MonoBehaviour
                 i += 1;
             }
         }
+    }
+
+    public void ChooseLevel(int level)
+    {
+        PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, level);
+        OpenLevelScreen();
     }
 
     public void OpenLevelScreen()
@@ -54,11 +68,11 @@ public class LevelSelect : MonoBehaviour
 
     public void LockLevel()
     {
-        PlayerPrefs.SetInt("Level", 1);
+        PlayerPrefs.SetInt(GameConstants.LEVEL_UNLOCKED, 1);
     }
 
     public void UnlockLevel()
     {
-        PlayerPrefs.SetInt("Level", 10);
+        PlayerPrefs.SetInt(GameConstants.LEVEL_UNLOCKED, 10);
     }
 }

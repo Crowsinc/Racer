@@ -11,4 +11,6 @@ public class GameConstants
 
     // PlayerPref keys
     public const string PPKEY_SELECTED_LEVEL = "SelectedLevel";
+    public const string LOAD_LEVEL_SCREEN = "LevelScreenBool";
+    public const string LEVEL_UNLOCKED = "Level";
 }

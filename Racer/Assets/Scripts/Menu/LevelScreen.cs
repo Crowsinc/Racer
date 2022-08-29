@@ -12,18 +12,19 @@ public class LevelScreen : MonoBehaviour
     
     void Start()
     {
-        
+        initLevelScreen();
     }
 
-    public void initLevelScreen(int levelNum)
+    public void initLevelScreen()
     {
+        int levelNum = PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0);
         levelTitle.text = "Level " + levelNum.ToString();
         level = FindLevelById(levelNum);
     }
     
     public void LoadGameScene()
     {
-        PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, level.levelId);
+        //PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, level.levelId);
         SceneManager.LoadSceneAsync(GameConstants.SIMULATION_SCENE_ID);
     }
 
