@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 public class LevelCompleteScreen : MonoBehaviour
@@ -28,6 +29,9 @@ public class LevelCompleteScreen : MonoBehaviour
 
     public void drawPassed()
     {
+        int currentLevel = PlayerPrefs.GetInt(GameConstants.LEVEL_UNLOCKED, 0);
+        PlayerPrefs.SetInt(GameConstants.LEVEL_UNLOCKED, currentLevel + 1);
+        
         levelCompleteTitle.text = "Level Complete!";
         retryButton.SetActive(false);
         nextLevelButton.SetActive(true);
@@ -50,6 +54,23 @@ public class LevelCompleteScreen : MonoBehaviour
     public void CloseLevelCompleteScreen()
     {
         levelCompleteScreen.SetActive(false);
+    }
+    
+    public void LevelSelectScreen()
+    {
+        //quick hack to detect when main menu is returned to
+        PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0);
+        SceneManager.LoadSceneAsync(GameConstants.MAIN_MENU_SCENE_ID);
+    }
+    
+    public void NextLevelScreen()
+    {
+        //quick hack to detect when main menu is returned to
+        int currentLevel = PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0);
+        PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, currentLevel + 1);
+        
+        PlayerPrefs.SetInt(GameConstants.LOAD_LEVEL_SCREEN, 1);
+        SceneManager.LoadSceneAsync(GameConstants.MAIN_MENU_SCENE_ID);
     }
 
     // Update is called once per frame
