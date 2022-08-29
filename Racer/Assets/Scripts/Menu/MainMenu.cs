@@ -15,9 +15,22 @@ public class MainMenu : MonoBehaviour
     {
         if (PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 1) == 0)
         {
-            //If the selected level is 0, that means we are coming back from the simulation screen.
+            //Level Select button leads here
+            
+            //If the selected level is 0, that means we are coming back from the simulation screen and need to load the
+            //level selection screen.
             //We also need to reset the flag.
             PlayerPrefs.SetInt(GameConstants.PPKEY_SELECTED_LEVEL, 1);
+            PlayGame();
+        }
+        
+        if (PlayerPrefs.GetInt(GameConstants.LOAD_LEVEL_SCREEN, 0) == 1)
+        {
+            // Next Level button leads here
+            
+            //If the LOAD LEVEL SCREEN is 1, that means we are coming back from the simulation screen and need to load
+            //the level selection screen AND the level screen for the next selected level.
+            //We don't need to reset the flag yet.
             PlayGame();
         }
     }
