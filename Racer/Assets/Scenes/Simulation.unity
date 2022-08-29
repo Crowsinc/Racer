@@ -2592,7 +2592,7 @@ PrefabInstance:
     - target: {fileID: 6700112984822471953, guid: f7e32a563201ce04dae3a98aa1b5e047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 48374961}
     - target: {fileID: 6700112984822471953, guid: f7e32a563201ce04dae3a98aa1b5e047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
@@ -2615,7 +2615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6700112984822471953, guid: f7e32a563201ce04dae3a98aa1b5e047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PlayButtonSound
+      value: NextLevelScreen
       objectReference: {fileID: 0}
     - target: {fileID: 6700112984822471953, guid: f7e32a563201ce04dae3a98aa1b5e047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
@@ -2627,7 +2627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6700112984822471953, guid: f7e32a563201ce04dae3a98aa1b5e047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ButtonSounds, RacerScripts
+      value: LevelCompleteScreen, RacerScripts
       objectReference: {fileID: 0}
     - target: {fileID: 6700112984822471953, guid: f7e32a563201ce04dae3a98aa1b5e047, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
