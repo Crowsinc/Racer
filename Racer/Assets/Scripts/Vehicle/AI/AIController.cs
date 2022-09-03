@@ -78,8 +78,10 @@ public class AIController : MonoBehaviour
     public Vector2 ProjectedShadow { get; private set; }
 
 
-    private int _mapMask = 0;
     private int _maxRayDistance = 10000;
+    private int _terrainLayerMask = 0;
+    private int _raycastLayerMask = 0;
+    private int _raycastLayerID = 0;
 
     private void Awake()
     {
@@ -88,7 +90,9 @@ public class AIController : MonoBehaviour
             Debug.LogError("AIController is not attached to a vehicle!");
 
         // This should be the layer that the map is on
-        _mapMask = LayerMask.GetMask("Terrain");
+        _terrainLayerMask = LayerMask.GetMask("Terrain");
+        _raycastLayerMask = LayerMask.GetMask("AIRaycast");
+        _raycastLayerID = LayerMask.NameToLayer("AIRaycast");
 
         Actuators = new List<ActuatorModule>();
         Contacts = new List<ContactPoint2D>();
@@ -160,7 +164,12 @@ public class AIController : MonoBehaviour
 
         Forward = Vehicle.transform.TransformDirection(Vector2.right);
 
-        float verticalOffset = 2.0f; // This is just to avoid raycasting into the map
+        // Reset vehicle shadows
+        Shadow.Set(0, 0);
+        ProjectedShadow.Set(0, 0);
+        
+        // Determine vehicle shadow bounds
+        float verticalOffset = 100.0f; // This is just to avoid raycasting from within the map
         Vector2 halfSizeOffset = new Vector2(0.5f * LocalSize.x, 0.0f);
 
         Vector2 centreLine = new Vector2(
@@ -169,29 +178,40 @@ public class AIController : MonoBehaviour
         );
         Vector2 rightBound = centreLine + halfSizeOffset;
         Vector2 leftBound = centreLine - halfSizeOffset;
-        
-        // Sample the map shadows through ray casts
-        var leftRay = Physics2D.Raycast(leftBound, Vector2.down, _maxRayDistance, _mapMask);
-        var rightRay = Physics2D.Raycast(rightBound, Vector2.down, _maxRayDistance, _mapMask);
 
-        Vector2 projection = ProjectionSampleTime * Time.fixedDeltaTime * Vehicle.Rigidbody.velocity;
-        var projectedLeftRay = Physics2D.Raycast(leftBound + projection, Vector2.down, _maxRayDistance, _mapMask);
-        var projectedRightRay = Physics2D.Raycast(rightBound + projection, Vector2.down, _maxRayDistance, _mapMask);
+        // Raycast downwards to detect the terrain beneath us
+        var groundRay = Physics2D.Raycast(Vehicle.Rigidbody.worldCenterOfMass, Vector2.down, _maxRayDistance, _terrainLayerMask);
+        if(groundRay.collider != null)
+        {
+            // Temporarily isolate the terrain into its own raycast layer
+            var terrain = groundRay.collider.gameObject;
+            
+            var old_layer = terrain.layer;
+            terrain.layer = _raycastLayerID;
 
-        if (leftRay.collider != null || rightRay.collider != null)
-            Shadow = rightRay.point - leftRay.point;
-        else
-            Shadow.Set(0, 0);
+            // Sample the map shadows through ray casts
+            var leftRay = Physics2D.Raycast(leftBound, Vector2.down, _maxRayDistance, _raycastLayerMask);
+            var rightRay = Physics2D.Raycast(rightBound, Vector2.down, _maxRayDistance, _raycastLayerMask);
 
-        if (projectedLeftRay.collider != null || projectedRightRay.collider != null)
-            ProjectedShadow = projectedRightRay.point - projectedLeftRay.point;
-        else
-            ProjectedShadow.Set(0, 0);
+            Vector2 projection = ProjectionSampleTime * Time.fixedDeltaTime * Vehicle.Rigidbody.velocity;
+            var projectedLeftRay = Physics2D.Raycast(leftBound + projection, Vector2.down, _maxRayDistance, _raycastLayerMask);
+            var projectedRightRay = Physics2D.Raycast(rightBound + projection, Vector2.down, _maxRayDistance, _raycastLayerMask);
 
-        Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, rightRay.point, Color.yellow);
-        Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, leftRay.point, Color.yellow);
-        Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedLeftRay.point, Color.red);
-        Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedRightRay.point, Color.red);
+            // Revert the ground to its original layer
+            terrain.layer = old_layer;
+
+            if (leftRay.collider != null || rightRay.collider != null)
+                Shadow = rightRay.point - leftRay.point;
+
+            if (projectedLeftRay.collider != null || projectedRightRay.collider != null)
+                ProjectedShadow = projectedRightRay.point - projectedLeftRay.point;
+  
+            Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, rightRay.point, Color.yellow);
+            Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, leftRay.point, Color.yellow);
+            Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedLeftRay.point, Color.red);
+            Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedRightRay.point, Color.red);
+            Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, groundRay.point, Color.magenta);
+        }
     }
 
     // Update is called once per frame
