@@ -38,30 +38,44 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     private bool _placed = false;
 
-    /// <summary>
-    /// The number of degrees the draggable has rotated
-    /// </summary>
-    private int _rotation = 0;
 
     /// <summary>
     /// Position of the module relative to the vehicle core
     /// </summary>
-    private Vector2Int _localPos;
+    private Vector2Int _placedGridPos;
 
     /// <summary>
-    /// Position of the module before moving
+    /// The last valid placed position of the module
     /// </summary>
-    private Vector3 _origPos;
+    private Vector2 _savedPosition;
 
     /// <summary>
-    /// Rotation of the module before moving
+    /// The last valid placed rotation of the module
     /// </summary>
-    private int _origRotation;
+    private float _savedRotation;
+
+
+    /// <summary>
+    /// The spawn position of the module.
+    /// </summary>
+    private Vector2 _spawnPosition;
+
 
     /// <summary>
     /// Original prefab of the module
     /// </summary>
     public GameObject originalPrefab;
+
+
+    /// <summary>
+    ///  Offset from bottom left origin to the centre of the module
+    /// </summary>
+    public Vector3 CentreOffset { get; private set; }
+
+    /// <summary>
+    /// Offset from bottom left origin to the position grabbed by the user
+    /// </summary>
+    public Vector3 DragOffset { get; private set; }
 
     private void Awake()
     {
@@ -71,14 +85,17 @@ public class DraggableModule : MonoBehaviour
         _vehicleConstructor = _simulationController.GetComponent<VehicleConstructor>();
         _moduleHolder = _simulationController.buildModeModuleHolder.transform;
         
-        // Setting original position & rotation
-        _origPos = transform.position;
-        _origRotation = (int)transform.rotation.eulerAngles.z;
+        _spawnPosition = transform.position;
+        _savedPosition = transform.position;
+        _savedRotation = 0.0f;
+
+        // Offset from bottom left origin to the centre of the module
+        CentreOffset = _vehicleModule.Size / 2.0f;
 
         // Adding hitbox that spans the size of the module
         BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
-        _draggableCollider.offset = _vehicleModule.Size / 2.0f;
         _draggableCollider.size = _vehicleModule.Size;
+        _draggableCollider.offset = CentreOffset;
     }
 
     /// <summary>
@@ -89,183 +106,6 @@ public class DraggableModule : MonoBehaviour
     {
         UpdatePosition();
         _dragging = true;
-    }
-
-    /// <summary>
-    /// Called when the mouse pointer releases on the module
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        _dragging = false;
-
-        // Check that mouse is being let go above the grid
-        if (!MouseOverGrid())
-        {
-            Reset();
-            return;
-        }
-
-        // Try to add the module to design
-        (bool, Vector2Int) successful = _vehicleConstructor.TryAddModule(gameObject, originalPrefab);
-        if (!successful.Item1)
-        {
-            Reset();
-            return;
-        }
-
-        // Removing the module's old position from design if placed
-        if (_placed)
-        {
-            _vehicleConstructor.RemoveModule(_localPos, _vehicleModule.Size);
-        }
-        // Replacing module in menu
-        else
-        {
-            Instantiate(gameObject, _origPos, Quaternion.identity, transform.parent);
-            transform.parent = _moduleHolder;
-        }
-        _placed = true;
-        _origPos = transform.position;
-        _origRotation = (int)transform.rotation.eulerAngles.z;
-        _localPos = successful.Item2;
-    }
-
-
-    /// <summary>
-    /// Resets the vehicle module back to its previous position & rotation
-    /// </summary>
-    public void Reset()
-    {
-        transform.position = _origPos;
-
-        _rotation = _origRotation;
-        transform.rotation = Quaternion.Euler(0, 0, _origRotation);
-    }
-
-    private void Update()
-    {
-        // While being dragged
-        if (_dragging)
-        {
-            // Detect rotation from scroll wheel or key input
-            float scrollDelta = Input.mouseScrollDelta.y;
-            
-            // Clockwise rotation
-            if (scrollDelta < 0 || Input.GetKeyDown(KeyCode.R))
-            {
-                _rotation -= 90;
-            }
-
-            // Anticlockwise rotation
-            else if (scrollDelta > 0 || Input.GetKeyDown(KeyCode.E))
-            {
-                _rotation += 90;
-            }
-
-            // Constraining rotation to be between 0 and 360
-            if (_rotation < 0)
-            {
-                _rotation += 360;
-            }
-            else if (_rotation >= 360)
-            {
-                _rotation -= 360;
-            }
-
-            transform.rotation = Quaternion.Euler(0, 0, _rotation);
-            UpdatePosition();
-
-            // Deleting module
-            if (Input.GetKeyDown(KeyCode.Delete))
-            {
-                if (_placed)
-                {
-                    _vehicleConstructor.RemoveModule(_localPos, _vehicleModule.Size);
-                }
-                else
-                {
-                    Instantiate(gameObject, _origPos, Quaternion.identity, transform.parent);
-                }
-                Destroy(gameObject);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Sets the position of the module to the mouse position
-    /// </summary>
-    private void UpdatePosition()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (MouseOverGrid())
-        {
-            transform.position = new Vector3(Mathf.Floor(transform.position.x), Mathf.Floor(transform.position.y), 0) + CalculateRotationOffset();
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, 0) + CalculateRotationOffset();
-        }
-    }
-
-    /// <summary>
-    /// Required for OnPointerUp() to be called
-    /// </summary>
-    /// <param name="eventData"></param>
-    public void OnPointerDown(PointerEventData eventData) { }
-
-    /// <summary>
-    /// Calculates the position offset caused by the module rotation
-    /// </summary>
-    /// <returns></returns>
-    public Vector3 CalculateRotationOffset()
-    {
-        switch (_rotation)
-        {
-            case 0:
-                return Vector3.zero;
-            case 90:
-                return Vector3.right;
-            case 180:
-                return Vector3.one;
-            case 270:
-                return Vector3.up;
-            default:
-                return Vector3.zero;
-        }
-    }
-
-    /// <summary>
-    /// Returns whether or not the mouse is over the build grid
-    /// </summary>
-    /// <returns>true if the mouse is over the grid, otherwise false</returns>
-    private bool MouseOverGrid()
-    {
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // TODO: fix up to work with any grid size
-        if (-6 < mousePos.x && mousePos.x < 7 && 0 < mousePos.y && mousePos.y < 7)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    /// <summary>
-    /// Sets the local position
-    /// </summary>
-    /// <param name="localPos">local position to be set</param>
-    public void SetLocalPos(Vector2Int localPos)
-    {
-        _localPos = localPos;
-    }
-
-    /// <summary>
-    /// Gets the rotation of the module
-    /// </summary>
-    /// <returns>rotation of the module</returns>
-    public int GetRotation()
-    {
-        return _rotation;
     }
 
     /// <summary>
@@ -281,6 +121,7 @@ public class DraggableModule : MonoBehaviour
             $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
     }
 
+
     /// <summary>
     /// Called when the mouse pointer leaves the module, to hide the module stats
     /// </summary>
@@ -288,8 +129,166 @@ public class DraggableModule : MonoBehaviour
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!_dragging)
-        {
             _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Called when the mouse pointer releases on the module
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        _dragging = false;
+        DragOffset = Vector3.zero;
+
+        // If the mouse is let go outside of the grid, then delete the module
+        if (!MouseOverGrid())
+        {
+            Delete();
+            return;
+        }
+
+        // Clamp the module to the grid
+        transform.position = VehicleConstructor.ClampToGrid(transform.position);
+
+        // Test if the module can be placed into the grid
+        if (_vehicleConstructor.TestPlacement(gameObject))
+        {
+            // The grid placement allows conditions where a module may be placed in a spot which overlaps itself.
+            // In such a case, we need to remove the module first before adding it, otherwise the grid gets messed up.
+            if (_placed)
+                _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
+            
+            // Place the module 
+            var (pass, position) = _vehicleConstructor.TryAddModule(gameObject, originalPrefab);
+            if (!pass)
+            {
+                // This should never happen because we are already doing a placement test
+                Reset();
+                return;
+            }
+
+            // If the wasn't previously placed, then instantiate a new one
+            if (!_placed)
+            {
+                Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+                transform.parent = _moduleHolder;
+            }
+
+            _placed = true;
+            _placedGridPos = position;
+            _savedPosition = transform.position;
+            _savedRotation = transform.rotation.eulerAngles.z;
+        }
+        else Reset();
+    }
+
+
+    /// <summary>
+    /// Resets the vehicle module back to its previous position & rotation
+    /// </summary>
+    public void Reset()
+    {
+        transform.position = _savedPosition;
+        transform.rotation = Quaternion.Euler(0, 0, _savedRotation);
+    }
+
+    private void Update()
+    {
+        // While being dragged
+        if (_dragging)
+        {
+            // Detect rotation from scroll wheel or key input
+            float scrollDelta = Input.mouseScrollDelta.y;
+            
+            // Clockwise rotation
+            if (scrollDelta < 0 || Input.GetKeyDown(KeyCode.R))
+            {
+                transform.RotateAround(transform.position + DragOffset, Vector3.forward, -90);
+                DragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            }
+
+            // Anticlockwise rotation
+            else if (scrollDelta > 0 || Input.GetKeyDown(KeyCode.E))
+            {
+                transform.RotateAround(transform.position + DragOffset, Vector3.forward, 90);
+                DragOffset = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            }
+
+            UpdatePosition();
+
+            // Deleting module
+            if (Input.GetKeyDown(KeyCode.Delete))
+                Delete();
         }
     }
+
+
+    /// <summary>
+    /// Properly deletes the module
+    /// </summary>
+    private void Delete()
+    {
+        if (_placed)
+            _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
+        else
+            Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+        Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Sets the position of the module to the mouse position
+    /// </summary>
+    private void UpdatePosition()
+    {
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - DragOffset;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+    }
+
+
+    /// <summary>
+    /// Required for OnPointerUp() to be called
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerDown(PointerEventData eventData) 
+    {
+        var worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        DragOffset = worldPosition - transform.position;
+    }
+
+
+    /// <summary>
+    /// Returns whether or not the mouse is over the build grid
+    /// </summary>
+    /// <returns>true if the mouse is over the grid, otherwise false</returns>
+    private bool MouseOverGrid()
+    {
+        var gridPos = _vehicleConstructor.TransformToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        return VehicleConstructor.TestOnGrid(gridPos);
+    }
+
+    /// <summary>
+    /// Calculates the position offset caused by the module rotation
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 CalculateRotationOffset()
+    {
+        int rotation = (int)(transform.rotation.eulerAngles.z / 90.0f) * 90;
+        switch (rotation)
+        {
+            case 0:
+                return Vector3.zero;
+            case 90:
+                return Vector3.right;
+            case 180:
+                return Vector3.one;
+            case 270:
+                return Vector3.up;
+            default:
+                return Vector3.zero;
+        }
+    }
+
+
+  
 }
