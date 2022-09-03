@@ -510,10 +510,6 @@ GameObject:
   - component: {fileID: 7129256788852573696}
   - component: {fileID: 8382662830615484515}
   - component: {fileID: 928824328201569727}
-  - component: {fileID: 6945384243957958675}
-  - component: {fileID: 6945384243957958674}
-  - component: {fileID: 6945384243957958677}
-  - component: {fileID: 6745058967499059849}
   m_Layer: 30
   m_Name: Vehicle
   m_TagString: Untagged
@@ -571,7 +567,7 @@ MonoBehaviour:
   Pregenerated: 1
   AerodynamicDragCoefficient: 0.75
   Rigidbody: {fileID: 3188637010831456537}
-  Collider: {fileID: 6745058967499059849}
+  Collider: {fileID: 0}
 --- !u!114 &4790299063629261975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,89 +681,6 @@ MonoBehaviour:
   Controller: {fileID: 7129256788852573696}
   ReactionTime: 0.2
   TargetSpeed: 50
---- !u!114 &6945384243957958675
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504696418895441142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 265a0bf319c6acc4fa97bf0237316754, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Controller: {fileID: 7129256788852573696}
-  MaxDeviation: 15
-  ReactionTime: 0.2
-  SlopeSmoothing: 1
-  SmoothingFactor: 0.03
---- !u!114 &6945384243957958674
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504696418895441142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df01c8d34fdea9e45831649f42b95bad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Controller: {fileID: 7129256788852573696}
-  ReactionTime: 0.2
-  TargetSpeed: 50
---- !u!114 &6945384243957958677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504696418895441142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed71eab3ee15fc54faa911d4ea4190b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Simulate: 0
-  BlendGoals: 0
-  ProjectionSampleTime: 2
---- !u!66 &6745058967499059849
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 504696418895441142}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 1
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 4900372195565016161}
-    m_ColliderPaths:
-    - - X: 10000000
-        Y: 10000000
-      - X: 0
-        Y: 10000000
-      - X: 0
-        Y: 0
-      - X: 10000000
-        Y: 0
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 0.99997073, y: 0}
-      - {x: 0.99997073, y: 1}
-      - {x: 0, y: 0.99997073}
-      - {x: 0.000029300001, y: 0}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!1 &1134386259304749289
 GameObject:
   m_ObjectHideFlags: 0

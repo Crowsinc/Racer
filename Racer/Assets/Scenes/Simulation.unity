@@ -2220,7 +2220,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6871759410210138876, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
   m_PrefabInstance: {fileID: 792749548}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604004013}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51141bbcb5b32e747bf4ddb263d2a749, type: 3}
@@ -3022,58 +3022,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568099521}
   m_CullTransparentMesh: 1
---- !u!1 &604004013 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
-  m_PrefabInstance: {fileID: 792749548}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &604004018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604004013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 265a0bf319c6acc4fa97bf0237316754, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Controller: {fileID: 0}
-  MaxDeviation: 8
-  ReactionTime: 0.2
-  SlopeSmoothing: 1
-  SmoothingFactor: 0.03
---- !u!114 &604004019
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604004013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df01c8d34fdea9e45831649f42b95bad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Controller: {fileID: 0}
-  ReactionTime: 0.2
-  TargetSpeed: 50
---- !u!114 &604004020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604004013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed71eab3ee15fc54faa911d4ea4190b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Simulate: 0
-  BlendGoals: 0
-  ProjectionSampleTime: 2
 --- !u!1001 &654085848
 PrefabInstance:
   m_ObjectHideFlags: 0
