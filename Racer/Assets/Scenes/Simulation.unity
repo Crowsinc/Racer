@@ -4151,12 +4151,16 @@ MonoBehaviour:
   chassis:
   - {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
   - {fileID: 7624775858267870645, guid: 256e03067f1eccc4b931e177f4c5b967, type: 3}
+  - {fileID: 250273767811750508, guid: 1abd830b79625a24db87188cb02fb01c, type: 3}
+  - {fileID: 250273767811750508, guid: 916ad1e34aaf14c44b9ddcca9bffc650, type: 3}
+  - {fileID: 250273767811750508, guid: 192dee3de2257ad418ac57430a071e17, type: 3}
   energy:
   - {fileID: 3093684643717674156, guid: b08c3e8cd48071c438059d2beda283f6, type: 3}
   actuators:
   - {fileID: 3133470596941498217, guid: 6c8b49e9dce23e948a31bd9a60143e19, type: 3}
   - {fileID: 5131346333664289848, guid: 9a94027da4abc5847901771486f4d129, type: 3}
   - {fileID: 1860065509116655348, guid: 8ec1d31ebb1c0d84ba1633a684ffa037, type: 3}
+  - {fileID: 250273767811750508, guid: a799b3cccfa1b3445a85c93abde30f06, type: 3}
 --- !u!114 &986193012
 MonoBehaviour:
   m_ObjectHideFlags: 0

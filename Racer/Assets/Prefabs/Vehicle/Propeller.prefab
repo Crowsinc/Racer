@@ -144,17 +144,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.043528736, y: 0.37486297}
-      - {x: 0.000042661093, y: 0.7500251}
-      - {x: -0.044331558, y: 0.37721935}
-      - {x: -0.043652102, y: 0.051088393}
-      - {x: -0.50077486, y: 0.05012017}
-      - {x: -0.500508, y: -0.050872758}
-      - {x: -0.043349035, y: -0.050134055}
-      - {x: -0.04314424, y: -0.37830323}
-      - {x: 0.0012390018, y: -0.74988365}
-      - {x: 0.04421754, y: -0.3801371}
-      - {x: 0.044273823, y: 0.008382335}
+    - - {x: 0.04400003, y: 0.38}
+      - {x: 0, y: 0.75}
+      - {x: -0.044, y: 0.38}
+      - {x: -0.044, y: 0.049999952}
+      - {x: -0.5, y: 0.049999952}
+      - {x: -0.5, y: -0.049999952}
+      - {x: -0.044, y: -0.049999952}
+      - {x: -0.044, y: -0.3783033}
+      - {x: 0, y: -0.75}
+      - {x: 0.04400003, y: -0.38}
 --- !u!114 &4758518223659593155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,7 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sprite: {fileID: 21300000, guid: f085f636a8ceb9f4899e9711bb12ff98, type: 3}
   Cost: 30
   EnergyCapacity: 0
   Mass: 1
@@ -188,9 +186,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LocalActuationForce: {x: -40, y: 0}
+  LocalIdleForce: {x: 0, y: 0}
   LocalActuationPosition: {x: 0, y: 0}
+  ActivationCost: 1
+  IdleCost: 0
+  ProportionalControl: 1
+  AIControllable: 1
+  Disabled: 0
   LinkedVehicle: {fileID: 0}
-  EnergyPerSecond: 10
 --- !u!1 &5548186778762311475
 GameObject:
   m_ObjectHideFlags: 0

@@ -524,6 +524,9 @@ public class VehicleCore : MonoBehaviour
                 Debug.DrawRay(currPoint, segment, Color.yellow);
             }
 
+            Debug.Log($"Vehicle: {gameObject.name}  Drag Area: {dragArea}");
+
+
             // NOTE: we invert the force direction here, to make it drag (-0.5f)
             var aerodynamicDragForce = -0.5f * AerodynamicDragCoefficient * dragArea * velocitySqr;
 

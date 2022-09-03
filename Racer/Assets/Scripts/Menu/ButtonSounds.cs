@@ -24,7 +24,6 @@ public class ButtonSounds : MonoBehaviour
     public void PlayButtonSound()
     {
         var random = Random.Range(0, sounds.Length);
-        Debug.Log(random);
         GetComponent<AudioSource>().PlayOneShot(sounds[random]);
     }
 }
