@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using Codice.Client.BaseCommands;
 
 public class DraggableModule : MonoBehaviour
     , IDragHandler, IPointerUpHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
@@ -76,6 +77,7 @@ public class DraggableModule : MonoBehaviour
 
         // Adding hitbox that spans the size of the module
         BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
+        _draggableCollider.offset = _vehicleModule.Size / 2.0f;
         _draggableCollider.size = _vehicleModule.Size;
     }
 
