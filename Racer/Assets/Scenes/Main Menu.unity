@@ -1773,7 +1773,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 874441483}
         m_TargetAssemblyTypeName: LevelSelect, RacerScripts
-        m_MethodName: unlockLevel
+        m_MethodName: UnlockLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6730,7 +6730,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 874441483}
         m_TargetAssemblyTypeName: LevelSelect, RacerScripts
-        m_MethodName: lockLevel
+        m_MethodName: LockLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
