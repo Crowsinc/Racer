@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6399472887899380693}
-  - component: {fileID: 6820571646227126507}
   - component: {fileID: 6760783270837197127}
   - component: {fileID: 3083012168404271511}
+  - component: {fileID: 4449389387347680046}
   m_Layer: 31
   m_Name: Glider
   m_TagString: Untagged
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250273767811750508}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37,38 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &6820571646227126507
-PolygonCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 250273767811750508}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0.008615196, y: 0.12037316}
-      - {x: -1.4747461, y: -0.10207772}
-      - {x: -0.2441826, y: -0.28550342}
-      - {x: -0.24418262, y: -0.5}
-      - {x: 0.23018262, y: -0.5}
-      - {x: 0.2301826, y: -0.2855034}
-      - {x: 1.4838723, y: -0.1020777}
 --- !u!114 &6760783270837197127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +53,7 @@ MonoBehaviour:
   EnergyCapacity: 40
   Mass: 1
   Size: {x: 3, y: 1}
-  Collider: {fileID: 6820571646227126507}
+  Collider: {fileID: 4449389387347680046}
   Attachments: []
   LinkedVehicle: {fileID: 0}
 --- !u!114 &3083012168404271511
@@ -102,6 +70,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   drag: 3
   rb: {fileID: 0}
+--- !u!60 &4449389387347680046
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250273767811750508}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.5, y: 0.6}
+      - {x: 0, y: 0.4}
+      - {x: 1.25, y: 0}
+      - {x: 1.75, y: 0}
+      - {x: 3, y: 0.4}
 --- !u!1 &5912589036698538188
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,8 +125,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5912589036698538188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.21, y: -0.2979, z: 0}
-  m_LocalScale: {x: 0.06836523, y: 0.4042, z: 1}
+  m_LocalPosition: {x: 1.3, y: 0.2, z: 0}
+  m_LocalScale: {x: 0.07, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6399472887899380693}
@@ -211,8 +209,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8582990474780655181}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.196, y: -0.2979, z: 0}
-  m_LocalScale: {x: 0.06836523, y: 0.4042, z: 1}
+  m_LocalPosition: {x: 1.7004, y: 0.2, z: 0}
+  m_LocalScale: {x: 0.07, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6399472887899380693}
@@ -295,8 +293,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9103176591957776415}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.005, y: -0.1001, z: 0}
-  m_LocalScale: {x: 2.9531002, y: 0.86270595, z: 1}
+  m_LocalPosition: {x: 1.5, y: 0.4, z: 0}
+  m_LocalScale: {x: 3, y: 0.8, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6399472887899380693}
