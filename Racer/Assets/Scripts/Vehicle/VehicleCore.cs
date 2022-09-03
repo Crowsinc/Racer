@@ -501,8 +501,7 @@ public class VehicleCore : MonoBehaviour
             // velocity.
 
             // Velocity of vehicle, assuming zero wind speed.
-            //var velocityDir = Rigidbody.velocity.normalized;
-            var velocityDir = GetComponent<AIController>().Forward.normalized;
+            var velocityDir = Rigidbody.velocity.normalized;
             var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
 
             // Find drag area
@@ -523,9 +522,6 @@ public class VehicleCore : MonoBehaviour
 
                 Debug.DrawRay(currPoint, segment, Color.yellow);
             }
-
-            Debug.Log($"Vehicle: {gameObject.name}  Drag Area: {dragArea}");
-
 
             // NOTE: we invert the force direction here, to make it drag (-0.5f)
             var aerodynamicDragForce = -0.5f * AerodynamicDragCoefficient * dragArea * velocitySqr;
