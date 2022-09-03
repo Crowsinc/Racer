@@ -45,25 +45,28 @@ public class BuildModeUIController : MonoBehaviour
         for (int i = 0; i < modulesList.Count; i++)
         {
             // Get module from list
-            GameObject module = modulesList[i];
+            GameObject moduleObject = modulesList[i];
+            VehicleModule module = moduleObject.GetComponent<VehicleModule>();
 
             // Calculate y displacement from half of the module's height
-            moduleYDisplacement -= (modulesList[i].GetComponent<VehicleModule>().Size.y) * (Camera.main.scaledPixelHeight / 20);
+            moduleYDisplacement -= module.Size.y * (Camera.main.scaledPixelHeight / 20);
 
             // Instantiate menu module into world space from canvas space
             Vector3 spawnPoint = new Vector3(initalPlacement.position.x, moduleYDisplacement, 0);
-            GameObject menuModule = Instantiate(module, Camera.main.ScreenToWorldPoint(spawnPoint), Quaternion.identity, moduleHolder);
-            menuModule.transform.Translate(Vector3.back * menuModule.transform.position.z);
+            GameObject menuModuleObject = Instantiate(moduleObject, Camera.main.ScreenToWorldPoint(spawnPoint), Quaternion.identity, moduleHolder);
+
+            // Translate object so that its on the correct plane and is centered in the list
+            menuModuleObject.transform.Translate(-module.Size.x / 2.0f, 0, -menuModuleObject.transform.position.z);
 
             // Adding small gap for next module
             moduleYDisplacement -= Camera.main.scaledPixelHeight / 20;
 
             // Add menu module component
-            menuModule.AddComponent<DraggableModule>();
-            menuModule.GetComponent<DraggableModule>().originalPrefab = module;
+            menuModuleObject.AddComponent<DraggableModule>();
+            menuModuleObject.GetComponent<DraggableModule>().originalPrefab = moduleObject;
 
             // TODO: disable vehicle module functions
-            menuModule.GetComponent<VehicleModule>().Freeze();
+            menuModuleObject.GetComponent<VehicleModule>().Freeze();
         }
     }
 
