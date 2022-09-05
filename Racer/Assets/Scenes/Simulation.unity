@@ -3624,6 +3624,14 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6712459232829532558, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712459232829532558, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 2072361357
+      objectReference: {fileID: 0}
     - target: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Name
       value: Vehicle
