@@ -51,7 +51,7 @@ public class LevelTerrain : MonoBehaviour
                 rbs[vehicleName].AddForce(new Vector2(0, 10000));
                 break;
             case 3:
-                rbs[vehicleName].AddForce(new Vector2(rbs[vehicleName].velocity.x * 1000, 0));
+                rbs[vehicleName].AddForce(new Vector2(rbs[vehicleName].velocity.x * 100, 0));
                 break;
         }
 
