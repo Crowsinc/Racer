@@ -184,6 +184,9 @@ public class DraggableModule : MonoBehaviour
             _placedGridPos = position;
             _savedPosition = transform.position;
             _savedRotation = transform.rotation.eulerAngles.z;
+
+            // Validate the design
+            _vehicleConstructor.ValidateDesign();
         }
         // If the module was dragged outside of the grid, then delete it
         else if(!VehicleConstructor.TestOnGrid(transform.position))
@@ -269,13 +272,14 @@ public class DraggableModule : MonoBehaviour
     }
 
 
+
     /// <summary>
-    /// Calculates the position offset caused by the module rotation
+    /// Calculates the position offset caused by a module's rotation
     /// </summary>
-    /// <returns></returns>
-    public Vector3 CalculateRotationOffset()
+    /// <param name="rotation"> The rotation </param>
+    /// <returns> The rotation offset </returns>
+    public static Vector3 CalculateRotationOffset(float rotation)
     {
-        int rotation = (int)(transform.rotation.eulerAngles.z / 90.0f) * 90;
         switch (rotation)
         {
             case 0:
@@ -289,6 +293,16 @@ public class DraggableModule : MonoBehaviour
             default:
                 return Vector3.zero;
         }
+    }
+
+    /// <summary>
+    /// Calculates the position offset caused by the module's current rotation
+    /// </summary>
+    /// <returns> The rotation offset </returns>
+    public Vector3 CalculateRotationOffset()
+    {
+        int rotation = (int)(transform.rotation.eulerAngles.z / 90.0f) * 90;
+        return CalculateRotationOffset(rotation);
     }
 
 

@@ -1,7 +1,9 @@
+using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class VehicleCore : MonoBehaviour
 {
@@ -83,6 +85,75 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     public bool IsBuilt { get; private set; }
 
+    public struct DesignFeedback
+    {
+        public float TotalEnergyCapacity;
+
+        public float TotalMass;
+        public Vector2 LocalCentreOfMass;
+
+        public bool ValidDesign;
+        public List<Vector2Int> DisjointModules;
+    };
+
+    public DesignFeedback ValidateDesign(Dictionary<Vector2Int, ModuleSchematic> design)
+    {
+        // This is a hack, but to validate our design we will just build a vehicle off-screen, then analyse it
+        var testCore = Instantiate<VehicleCore>(
+            GetComponent<VehicleCore>(),
+            new Vector3(-10000, -10000, -10000),
+            Quaternion.identity
+        );
+        testCore.Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+        var feedback = new DesignFeedback();
+        feedback.DisjointModules = new List<Vector2Int>();
+        feedback.ValidDesign = testCore.TryBuildStructure(design, false);
+        feedback.TotalMass = testCore.Rigidbody.mass;
+        feedback.LocalCentreOfMass = testCore.Rigidbody.centerOfMass;
+        feedback.TotalEnergyCapacity = testCore.EnergyCapacity;
+
+        // There are many ways to test for disjoint modules. To keep this simple,
+        // we will remove all colliders from the core, then substitute our own
+        // collider for the hull. By re-enabling the colliders of all vehicle modules,
+        // we should be able to test which modules are in the hull based on whether 
+        // they overlap the new hull collider. 
+
+        // Destroy colliders
+        var colliders = testCore.gameObject.GetComponents<Collider2D>();
+        foreach(var collider in colliders)
+        {
+            collider.enabled = false; 
+            Destroy(collider);
+        }
+
+        // Add our own collider
+        var hullCollider = testCore.gameObject.AddComponent<PolygonCollider2D>();
+        hullCollider.SetPath(0, testCore.LocalHull);
+
+        // Test each module's collider 
+        var modules = testCore.gameObject.GetComponentsInChildren<VehicleModule>();
+        foreach(var module in modules)
+        {
+            // If the module does not have a collider, then ignore it
+            if (module.Collider == null)
+                continue;
+            
+            // Offset should still be the difference between the core and
+            // module positions because the vehicle's rigidbody is frozen
+            var offset = module.transform.position - testCore.transform.position 
+                - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
+
+            // Test for collision with hull collider
+            module.Collider.enabled = true;
+            if (!module.Collider.IsTouching(hullCollider))
+                feedback.DisjointModules.Add(new Vector2Int((int)offset.x, (int)offset.y));
+        }
+
+        Destroy(testCore);
+
+        return feedback;
+    }
 
     /// <summary>
     /// Generates the given design of the vehicle onto the VehicleCore.
@@ -92,11 +163,15 @@ public class VehicleCore : MonoBehaviour
     /// Each ModuleSchematic is keyed by its positional offset from the VehicleCore. As such, the offset
     /// (0,0) will be reserved for the vehicle core and ignored. 
     /// </param>
+    /// <param name="clearOnFail">
+    /// If set to true, the vehicle state and structure will cleared if building fails to pass validation. 
+    /// Otherwise the failed structure is left behind and must be cleared manually with ClearStructure()
+    /// </param>
     /// <returns> 
     /// False if the provided design has an invalid hull, otherwise true.
     /// A hull is considered invalid if it isn't fully connected or has holes. 
     /// </returns>
-    public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design)
+    public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design, bool clearOnFail = true)
     {
         // Add ourselves to the design so our module properties are taken into account
         design[new Vector2Int(0, 0)] = new ModuleSchematic(gameObject);
@@ -110,8 +185,7 @@ public class VehicleCore : MonoBehaviour
         {
             //Debug.Log("off:" + offset);
             // Instantiate new vehicle module, unless this is the core
-            var position = transform.position + new Vector3(offset.x, offset.y) +
-                (rotation == 90 ? Vector3.right : rotation == 180 ? Vector3.one : rotation == 270 ? Vector3.up : Vector3.zero);
+            var position = transform.position + new Vector3(offset.x, offset.y) + DraggableModule.CalculateRotationOffset(rotation);
             var instance = prefab == gameObject ? gameObject
                 : Instantiate(prefab, position, Quaternion.identity, transform);
 
@@ -138,14 +212,6 @@ public class VehicleCore : MonoBehaviour
         Collider.GenerateGeometry();
         LocalHull = DetectHull(out bool disjoint);
 
-        // Validate our vehicles hull to make sure
-        if (disjoint)
-        {
-            Debug.LogError($"Vehicle hull is disjoint");
-            ClearStructure();
-            return false;
-        }
-
         // Set physical properties of the Vehicle
         EnergyCapacity = totalEnergyCapacity;
         Rigidbody.mass = totalMass;
@@ -156,10 +222,18 @@ public class VehicleCore : MonoBehaviour
         foreach (var actuator in Actuators)
             actuator.LinkedVehicle = this;
 
+        IsBuilt = true;
         ResetVehicle();
 
-        IsBuilt = true;
-        return true;
+        // Validate our vehicles hull to make sure it will function as expected.
+        // NOTE: any further validation tests should be evaluated here
+        var validated = !disjoint;
+        
+        // If the validation fails and clearOnFail is set, then we will clear and 'unbuild' the vehicle
+        if (!validated && clearOnFail)
+            ClearStructure();
+
+        return validated;
     }
 
 
@@ -373,7 +447,7 @@ public class VehicleCore : MonoBehaviour
             // Filter out any tiny collider paths, probably caused
             // by bad colliders on a module. This is a hack but
             // the problem lies with the colliders not the hull
-            // detection ¯\_(?)_/¯
+            // detection
 
             if (area > minColliderArea)
                 paths.Add(path);
@@ -389,8 +463,7 @@ public class VehicleCore : MonoBehaviour
         // composite collider, one path cannot collide with another path; otherwise
         // the composite collider would have merged them together into a single path.
         // All of this together means that we just need to test a single point of
-        // each path. Point in polygon tests are performed through the standard
-        // raycast crossing number test. 
+        // each path. 
 
         for (int p1 = 0; p1 < paths.Count; p1++)
         {
@@ -401,28 +474,7 @@ public class VehicleCore : MonoBehaviour
                 var polygonPath = paths[p1];
                 var testPoint = paths[p2][0];
 
-                int intersections = 0;
-                var s1 = polygonPath[^1];
-                foreach (var s2 in polygonPath)
-                {
-                    var segment = s2 - s1;
-                    var min = Vector2.Min(s1, s2);
-                    var max = Vector2.Max(s1, s2);
-                    var plane = new Plane(Vector2.Perpendicular(segment), s1);
-
-                    Ray ray = new Ray(testPoint, Vector2.right);
-                    if (plane.Raycast(ray, out float distance))
-                    {
-                        var intersectPoint = ray.GetPoint(distance);
-                        if (intersectPoint.x >= min.x && intersectPoint.x <= max.x 
-                         && intersectPoint.y >= min.y && intersectPoint.y <= max.y)
-                            intersections++;
-                    }
-                    
-                    s1 = s2;
-                }
-
-                if (intersections % 2 == 1)
+                if (Algorithms.PointInPolygon(testPoint, polygonPath))
                 {
                     // If there is an odd number of intersections, then the point
                     // must be inside an outer hull, so it must be a hole.
@@ -435,6 +487,17 @@ public class VehicleCore : MonoBehaviour
 
         // The hull is disjoint if we end up with more than one path here.
         disjoint = paths.Count > 1;
+        if(disjoint)
+        {
+            // If the hull is disjoint, then we need to find
+            // the path that contains the vehicle core, as this
+            // will be the main hull. This is in local space, so
+            // the core should be the point (0,0)
+            var corePosition = new Vector2(0, 0);
+            for (int p = 0; p < paths.Count; p++)
+                if (Algorithms.PointInPolygon(corePosition, paths[p]))
+                    return paths[p];
+        }
 
         // If the hull isnt disjoint than paths[0] should contain the hull.
         // This is not guaranteed if it is disjoint, but we could easily

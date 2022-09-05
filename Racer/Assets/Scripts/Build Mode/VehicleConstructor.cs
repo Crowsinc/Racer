@@ -197,6 +197,22 @@ public class VehicleConstructor : MonoBehaviour
         return gridSize;
     }
 
+    //TODO: implement properly
+    public void ValidateDesign()
+    {
+        var feedback = vehicleCore.ValidateDesign(GetDesign());
+        Debug.Log("NEW DESIGN");
+        if(feedback.ValidDesign)
+            Debug.Log("Valid: Yes");
+        else
+            Debug.Log("Valid: No");
+
+        Debug.Log($"Capacity: {feedback.TotalEnergyCapacity}");
+        Debug.Log($"Mass: {feedback.TotalMass}");
+        Debug.Log($"Centre of Mass: {feedback.LocalCentreOfMass}");
+
+
+    }
 
     public Dictionary<Vector2Int, ModuleSchematic> GetDesign()
     {

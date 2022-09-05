@@ -73,7 +73,6 @@ public class SimulationController : MonoBehaviour
             inBuildMode = false;
             cameraFollow.Target = playerVehicle.transform;
 
-
             // Change UI
             buildModeUI.SetActive(false);
             buildModeGrid.SetActive(false);
@@ -89,7 +88,7 @@ public class SimulationController : MonoBehaviour
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             // Start the AI simulation
-            var _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
+            _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
             if (_opponentAI != null)
                 _opponentAI.Simulate = true;
             else
