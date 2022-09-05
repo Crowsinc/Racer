@@ -39,6 +39,11 @@ public class DraggableModule : MonoBehaviour
     private bool _placed = false;
 
     /// <summary>
+    /// True if the mouse is over the module, otherwise false
+    /// </summary>
+    private bool _hover = false;
+
+    /// <summary>
     /// Position of the module relative to the vehicle core
     /// </summary>
     private Vector2Int _placedGridPos;
@@ -80,6 +85,8 @@ public class DraggableModule : MonoBehaviour
     public Color ErrorTintColor = new Color(1.0f, 0, 0, 0.5f);
 
 
+    private TooltipTrigger trigger;// Temp
+
     private void Awake()
     {
         // Getting necessary components and game objects
@@ -102,6 +109,11 @@ public class DraggableModule : MonoBehaviour
 
         // Default to non-tinted state
         ApplyTint(false);
+
+        // Add tooltip trigger for invalid state
+        trigger = gameObject.AddComponent<TooltipTrigger>();
+        trigger.header = "Module not connected";
+        trigger.content = "";
     }
 
     /// <summary>
@@ -115,6 +127,9 @@ public class DraggableModule : MonoBehaviour
 
         // Test our on the grid to check if we should be tinting for errors or not
         ApplyTint(!_vehicleConstructor.TestPlacement(gameObject));
+        
+        trigger.Hide();
+        trigger.enabled = false;
     }
 
 
@@ -124,6 +139,7 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        _hover = true;
         _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
         _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
             $"{_vehicleModule.Mass}\n" +
@@ -138,6 +154,7 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
+        _hover = false;
         if (!_dragging)
             _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
     }
@@ -204,6 +221,8 @@ public class DraggableModule : MonoBehaviour
         transform.position = _savedPosition;
         transform.rotation = Quaternion.Euler(0, 0, _savedRotation);
         ApplyTint(false);
+
+        _vehicleConstructor.ValidateDesign();
     }
 
 
@@ -231,10 +250,12 @@ public class DraggableModule : MonoBehaviour
 
             UpdatePosition();
 
-            // Deleting module
-            if (Input.GetKeyDown(KeyCode.Delete))
-                Delete();
+    
         }
+
+        // Deleting module
+        if (_hover && Input.GetKeyDown(KeyCode.Delete))
+            Delete();
     }
 
 
@@ -248,6 +269,8 @@ public class DraggableModule : MonoBehaviour
         else
             Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
         Destroy(gameObject);
+
+        _vehicleConstructor.ValidateDesign();
     }
 
 

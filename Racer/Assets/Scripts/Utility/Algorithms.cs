@@ -14,6 +14,7 @@ namespace Assets.Scripts.Utility
         /// <returns> True if the point is inside, otherwise false</returns>
         public static bool PointInPolygon(Vector2 point, List<Vector2> polygonPath)
         {
+
             // The Point in polygon test is performed through the standard raycast crossing number test. 
             int intersections = 0;
             var s1 = polygonPath[^1];
@@ -22,12 +23,20 @@ namespace Assets.Scripts.Utility
                 var segment = s2 - s1;
                 var min = Vector2.Min(s1, s2);
                 var max = Vector2.Max(s1, s2);
-                var plane = new Plane(Vector2.Perpendicular(segment), s1);
+                Plane plane = new Plane(Vector2.Perpendicular(segment), s1);
+                
+                Vector2 rayDir = Vector2.up;
+                Ray ray = new Ray(point, rayDir);
 
-                Ray ray = new Ray(point, Vector2.right);
-                if (plane.Raycast(ray, out float distance))
+                // Do not consider segments which are parallel to the ray direction
+                // for intersect testing. In order to hit such a segment, we must also
+                // hit the adjacent vertices. Adding in the collision of the parallel
+                // segment itself, leads to an extra collision, hence incorrect results. 
+                if (rayDir != segment.normalized && plane.Raycast(ray, out float distance))
                 {
-                    var intersectPoint = ray.GetPoint(distance);
+                    Vector2 intersectPoint = ray.GetPoint(distance);
+
+                    // We have an intersection if the intersection point is found on the segment
                     if (intersectPoint.x >= min.x && intersectPoint.x <= max.x
                      && intersectPoint.y >= min.y && intersectPoint.y <= max.y)
                         intersections++;

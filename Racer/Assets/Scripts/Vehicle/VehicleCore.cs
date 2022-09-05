@@ -93,6 +93,7 @@ public class VehicleCore : MonoBehaviour
         public Vector2 LocalCentreOfMass;
 
         public bool ValidDesign;
+        public List<Vector2Int> ValidModules;
         public List<Vector2Int> DisjointModules;
     };
 
@@ -107,50 +108,38 @@ public class VehicleCore : MonoBehaviour
         testCore.Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
 
         var feedback = new DesignFeedback();
+        feedback.ValidModules = new List<Vector2Int>();
         feedback.DisjointModules = new List<Vector2Int>();
         feedback.ValidDesign = testCore.TryBuildStructure(design, false);
         feedback.TotalMass = testCore.Rigidbody.mass;
         feedback.LocalCentreOfMass = testCore.Rigidbody.centerOfMass;
         feedback.TotalEnergyCapacity = testCore.EnergyCapacity;
 
-        // There are many ways to test for disjoint modules. To keep this simple,
-        // we will remove all colliders from the core, then substitute our own
-        // collider for the hull. By re-enabling the colliders of all vehicle modules,
-        // we should be able to test which modules are in the hull based on whether 
-        // they overlap the new hull collider. 
-
-        // Destroy colliders
-        var colliders = testCore.gameObject.GetComponents<Collider2D>();
-        foreach(var collider in colliders)
-        {
-            collider.enabled = false; 
-            Destroy(collider);
-        }
-
-        // Add our own collider
-        var hullCollider = testCore.gameObject.AddComponent<PolygonCollider2D>();
-        hullCollider.SetPath(0, testCore.LocalHull);
-
-        // Test each module's collider 
+        // Get all modules and detach them from the vehicle core
         var modules = testCore.gameObject.GetComponentsInChildren<VehicleModule>();
-        foreach(var module in modules)
+        
+        // Test for disjoint modules by checking if each
+        // module's collider has at least one point within the hull
+        foreach (var module in modules)
         {
             // If the module does not have a collider, then ignore it
             if (module.Collider == null)
                 continue;
-            
-            // Offset should still be the difference between the core and
-            // module positions because the vehicle's rigidbody is frozen
-            var offset = module.transform.position - testCore.transform.position 
-                - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
 
-            // Test for collision with hull collider
+            var offset = module.transform.position - testCore.transform.position
+                - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
+            var gridOffset = new Vector2Int((int)offset.x, (int)offset.y);
+
             module.Collider.enabled = true;
-            if (!module.Collider.IsTouching(hullCollider))
-                feedback.DisjointModules.Add(new Vector2Int((int)offset.x, (int)offset.y));
+            var testPoint = module.Collider.bounds.center;
+            
+            if(Algorithms.PointInPolygon(testPoint, testCore.Hull))
+                feedback.ValidModules.Add(gridOffset);
+            else
+                feedback.DisjointModules.Add(gridOffset);
         }
 
-        Destroy(testCore);
+        Destroy(testCore.gameObject);
 
         return feedback;
     }
@@ -211,6 +200,7 @@ public class VehicleCore : MonoBehaviour
         // Merge all our module colliders together into one composite collider
         Collider.GenerateGeometry();
         LocalHull = DetectHull(out bool disjoint);
+        UpdateHull();
 
         // Set physical properties of the Vehicle
         EnergyCapacity = totalEnergyCapacity;
@@ -265,6 +255,7 @@ public class VehicleCore : MonoBehaviour
 
         Collider.GenerateGeometry();
         LocalHull = DetectHull(out bool disjoint);
+        UpdateHull();
 
         // Validate our vehicles hull to make sure
         if (disjoint)
@@ -492,20 +483,25 @@ public class VehicleCore : MonoBehaviour
             // If the hull is disjoint, then we need to find
             // the path that contains the vehicle core, as this
             // will be the main hull. This is in local space, so
-            // the core should be the point (0,0)
-            var corePosition = new Vector2(0, 0);
+            // the center of the core should be the point (0.5,0.5)
+            var corePosition = new Vector2(0.5f, 0.5f);
             for (int p = 0; p < paths.Count; p++)
                 if (Algorithms.PointInPolygon(corePosition, paths[p]))
                     return paths[p];
+
+            Debug.LogError("Failed to find disjoint hull!");
         }
 
-        // If the hull isnt disjoint than paths[0] should contain the hull.
-        // This is not guaranteed if it is disjoint, but we could easily
-        // guarantee it if required by testing for the hull which contains
-        // the vehicle core (0,0) point inside of it. 
+        // If the hull isnt disjoint than paths[0] must contain the hull.
         return paths[0];
     }
 
+    private void UpdateHull()
+    {
+        Hull.Clear();
+        for (int i = 0; i < LocalHull.Count; i++)
+            Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
+    }
 
     void Awake()
     {
@@ -534,9 +530,7 @@ public class VehicleCore : MonoBehaviour
         if(IsBuilt)
         {
             // Update the vehicle hull
-            Hull.Clear();
-            for (int i = 0; i < LocalHull.Count; i++)
-                Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
+            UpdateHull();
 
             // Calculate aerodynamic drag
             // The aerodynamic drag formula is:

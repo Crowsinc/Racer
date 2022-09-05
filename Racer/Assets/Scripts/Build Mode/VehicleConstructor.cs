@@ -9,7 +9,7 @@ public class VehicleConstructor : MonoBehaviour
     private Vector2Int _coreWorldPos;
 
     private Dictionary<Vector2Int, ModuleSchematic> _design = new Dictionary<Vector2Int, ModuleSchematic>();
-    private Dictionary<Vector2Int, int> _occupancy = new Dictionary<Vector2Int, int>();
+    private Dictionary<Vector2Int, GameObject> _occupancy = new Dictionary<Vector2Int, GameObject>();
 
     void Start()
     {
@@ -17,7 +17,7 @@ public class VehicleConstructor : MonoBehaviour
         vehicleCore.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
         // Add the vehicle core to the occupancy list so that nothing can ever overlap it. 
-        _occupancy[new Vector2Int(0, 0)] = 0;
+        _occupancy[new Vector2Int(0, 0)] = vehicleCore.gameObject;
     }
 
 
@@ -71,7 +71,7 @@ public class VehicleConstructor : MonoBehaviour
                 // If the coord is taken by a different object, or is outside the grid
                 if (!TestOnGrid(coord))
                     return false;
-                if (_occupancy.ContainsKey(coord) && _occupancy[coord] != module.GetInstanceID())
+                if (_occupancy.ContainsKey(coord) && _occupancy[coord] != module)
                     return false;
             }
         }
@@ -115,7 +115,7 @@ public class VehicleConstructor : MonoBehaviour
             for (int dy = 0; dy != gridSize.y; dy += Math.Sign(gridSize.y))
             {
                 var coord = new Vector2Int(gridPos.x + dx, gridPos.y + dy);
-                _occupancy[coord] = module.GetInstanceID();
+                _occupancy[coord] = module;
             }
         }
         return (true, gridPos);
@@ -197,7 +197,6 @@ public class VehicleConstructor : MonoBehaviour
         return gridSize;
     }
 
-    //TODO: implement properly
     public void ValidateDesign()
     {
         var feedback = vehicleCore.ValidateDesign(GetDesign());
@@ -211,7 +210,28 @@ public class VehicleConstructor : MonoBehaviour
         Debug.Log($"Mass: {feedback.TotalMass}");
         Debug.Log($"Centre of Mass: {feedback.LocalCentreOfMass}");
 
+        // Remove error feedback from valid modules
+        foreach(var offset in feedback.ValidModules)
+        {
+            var module = _occupancy[offset];
 
+            module.GetComponent<DraggableModule>().ApplyTint(false);
+            if(module.TryGetComponent<TooltipTrigger>(out var trigger))
+            {
+                trigger.Hide();
+                trigger.enabled = false;
+            }
+        }
+
+        // Add error feedback to bad disjoint modules
+        foreach (var offset in feedback.DisjointModules)
+        {
+            var module = _occupancy[offset];
+
+            module.GetComponent<DraggableModule>().ApplyTint(true);
+            if (module.TryGetComponent<TooltipTrigger>(out var trigger))
+                trigger.enabled = true;
+        }
     }
 
     public Dictionary<Vector2Int, ModuleSchematic> GetDesign()
