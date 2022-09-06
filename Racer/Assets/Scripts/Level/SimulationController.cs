@@ -24,7 +24,7 @@ public class SimulationController : MonoBehaviour
     private bool inBuildMode = true;
     private CameraFollow cameraFollow;
     private float raceDistance;
-    private GameObject opponentInstance;
+    public GameObject opponentInstance;
     private VehicleConstructor _vehicleConstructor;
 
     private AIController _playerAI;
@@ -89,7 +89,7 @@ public class SimulationController : MonoBehaviour
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             // Start the AI simulation
-            var _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
+            _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
             if (_opponentAI != null)
                 _opponentAI.Simulate = true;
             else
@@ -117,6 +117,8 @@ public class SimulationController : MonoBehaviour
 
     public void LoseRace()
     {
+        raceUI.SetActive(false);
+        winUI.SetActive(true);
         //TODO
     }
 }
