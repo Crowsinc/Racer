@@ -40,6 +40,12 @@ TagManager:
   - Vehicle
   - Module
   m_SortingLayers:
+  - name: Opponent Vehicle
+    uniqueID: 946074223
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Vehicle
+    uniqueID: 2072361357
     locked: 0

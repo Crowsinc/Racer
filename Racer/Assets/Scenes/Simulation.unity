@@ -3625,8 +3625,12 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6712459232829532558, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
-      propertyPath: m_SortingOrder
-      value: 0
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6712459232829532558, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 2072361357
       objectReference: {fileID: 0}
     - target: {fileID: 7450075921007583163, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Name
@@ -5546,8 +5550,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  MapStart: {fileID: 0}
-  MapEnd: {fileID: 0}
 --- !u!114 &1611231223
 MonoBehaviour:
   m_ObjectHideFlags: 0
