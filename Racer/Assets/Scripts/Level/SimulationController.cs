@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SimulationController : MonoBehaviour
@@ -11,6 +12,7 @@ public class SimulationController : MonoBehaviour
     public GameObject buildModeGrid;
     public GameObject buildModeModuleHolder;
     public GameObject moduleStatsDisplay;
+    public TMP_Text timer;
 
     public GameObject raceUI;
     public GameObject winUI;
@@ -22,6 +24,7 @@ public class SimulationController : MonoBehaviour
     public Vector3 raceFinishPoint;
 
     private bool inBuildMode = true;
+    private bool isFinished = false;
     private CameraFollow cameraFollow;
     private float raceDistance;
     private GameObject opponentInstance;
@@ -30,11 +33,15 @@ public class SimulationController : MonoBehaviour
     private AIController _playerAI;
     private AIController _opponentAI;
 
+    private float _totalTime;
+
     private void Awake()
     {
         cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
         _vehicleConstructor = GetComponent<VehicleConstructor>();
         _vehicleConstructor.vehicleCore = playerVehicle;
+        _totalTime = 0;
+        Time.timeScale = 1;
     }
     void Start()
     {
@@ -43,6 +50,10 @@ public class SimulationController : MonoBehaviour
 
     private void Update()
     {
+        if (inBuildMode) return;
+        if (isFinished) return;
+        _totalTime += Time.deltaTime;
+        timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString();
         raceProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance, 0), 1, 1);
     }
 
@@ -113,10 +124,12 @@ public class SimulationController : MonoBehaviour
 
         _playerAI.Simulate = false;
         _opponentAI.Simulate = false;
+        isFinished = true;
     }
 
     public void LoseRace()
     {
+        isFinished = true;
         //TODO
     }
 }
