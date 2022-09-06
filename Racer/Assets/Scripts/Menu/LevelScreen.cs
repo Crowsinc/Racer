@@ -50,6 +50,7 @@ public class LevelScreen : MonoBehaviour
         Vector3 startPos = levelPreview.transform.Find("Start").localPosition;
         Vector3 endPos = levelPreview.transform.Find("Flag").localPosition;
         terrainRenderer.position = new Vector3(-50 + startPos.x + endPos.x / 2, -50, -10);
+        terrainRenderer.GetComponent<Camera>().orthographicSize = endPos.x / 2;
     }
 
     public void RemoveLevelPreview()
