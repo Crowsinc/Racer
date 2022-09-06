@@ -14,6 +14,7 @@ public class LevelInitialiser : MonoBehaviour
         Instantiate(selectedLevel.terrain, Vector3.zero, Quaternion.identity);
 
         GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().opponentVehicle = selectedLevel.opponentVehicle;
+        Physics2D.gravity = selectedLevel.gravity;
     }
 
     // Find level in collection that matches id

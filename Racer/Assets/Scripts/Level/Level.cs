@@ -9,6 +9,7 @@ public class Level : ScriptableObject
     public GameObject terrain;
     public GameObject opponentVehicle;
     public float budget;
+    public Vector3 gravity = new Vector3(0, -9.81f, 0);
      
     public void SetHighScore(float score)
     {
