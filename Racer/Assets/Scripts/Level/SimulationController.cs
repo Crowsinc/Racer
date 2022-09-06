@@ -62,6 +62,7 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     public void EnterBuildMode()
     {
+        Time.timeScale = 0;
         inBuildMode = true;
         cameraFollow.Target = buildModeCamPos;
 
@@ -81,6 +82,7 @@ public class SimulationController : MonoBehaviour
     {
         if (playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign()))
         {
+            Time.timeScale = 1;
             inBuildMode = false;
             cameraFollow.Target = playerVehicle.transform;
 

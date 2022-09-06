@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Freeze time when in menu
+        Time.timeScale = 0;
         if (PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 1) == 0)
         {
             //Level Select button leads here
