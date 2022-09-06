@@ -64,6 +64,7 @@ public class LevelSelect : MonoBehaviour
 
     public void CloseLevelScreen()
     {
+        levelScreen.GetComponent<LevelScreen>().RemoveLevelPreview();
         levelScreen.SetActive(false);
     }
 

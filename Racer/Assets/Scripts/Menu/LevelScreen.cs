@@ -8,7 +8,9 @@ public class LevelScreen : MonoBehaviour
     // Start is called before the first frame update
     public TMP_Text levelTitle;
     public List<Level> levelCollection = new List<Level>();
+    public Transform terrainRenderer;
     private Level level;
+    private GameObject levelPreview;
     
     void Start()
     {
@@ -20,6 +22,7 @@ public class LevelScreen : MonoBehaviour
         int levelNum = PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0);
         levelTitle.text = "Level " + levelNum.ToString();
         level = FindLevelById(levelNum);
+        CreateLevelPreview();
     }
     
     public void LoadGameScene()
@@ -39,5 +42,18 @@ public class LevelScreen : MonoBehaviour
             }
         }
         return levelCollection[0];
+    }
+
+    private void CreateLevelPreview()
+    {
+        levelPreview = Instantiate(level.terrain, new Vector3(-50, -50, 0), Quaternion.identity);   
+        Vector3 startPos = levelPreview.transform.Find("Start").localPosition;
+        Vector3 endPos = levelPreview.transform.Find("Flag").localPosition;
+        terrainRenderer.position = new Vector3(-50 + startPos.x + endPos.x / 2, -50, -10);
+    }
+
+    public void RemoveLevelPreview()
+    {
+        Destroy(levelPreview);
     }
 }
