@@ -50,6 +50,10 @@ public class StabilityGoal : AIGoal
             (a, b) => Mathf.Abs(b.AngularAcceleration / b.LinearAcceleration.magnitude)
             .CompareTo(Mathf.Abs(a.AngularAcceleration / a.LinearAcceleration.magnitude))
         );
+
+        // Reset state
+        _targetSlope = 0;
+        _targetAcceleration = 0;
     }
 
 

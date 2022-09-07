@@ -79,14 +79,9 @@ public class SimulationController : MonoBehaviour
         Rigidbody2D rb = playerVehicle.GetComponent<Rigidbody2D>();
         rb.velocity = Vector2.zero;
         rb.angularVelocity = 0;
-        for (int i = 0; i < playerVehicle.transform.childCount; i++)
-        {
-            GameObject child = playerVehicle.transform.GetChild(i).gameObject;
-            if (child.name != "Vehicle Core")
-            {
-                Destroy(child);
-            }   
-        }
+
+        playerVehicle.ClearStructure();
+        _playerAI.Stop();
 
         DestroyImmediate(opponentInstance, true);
     }
@@ -118,14 +113,14 @@ public class SimulationController : MonoBehaviour
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             // Start the AI simulation
-            var _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
+            _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
             if (_opponentAI != null)
-                _opponentAI.Simulate = true;
+                _opponentAI.Start();
             else
                 Debug.LogError("Opponent vehicle has no AI");
 
             if (playerVehicle.gameObject.TryGetComponent<AIController>(out _playerAI))
-                _playerAI.Simulate = true;
+                _playerAI.Start();
             else
                 Debug.LogError("Player vehicle has no AI");
         }
@@ -140,8 +135,8 @@ public class SimulationController : MonoBehaviour
         raceUI.SetActive(false);
         winUI.SetActive(true);
 
-        _playerAI.Simulate = false;
-        _opponentAI.Simulate = false;
+        _playerAI.Stop();
+        _opponentAI.Stop();
         isFinished = true;
     }
 

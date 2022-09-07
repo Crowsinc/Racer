@@ -5,10 +5,6 @@ using System;
 
 public class AIController : MonoBehaviour
 {
-    /// <summary>
-    /// Set to true to run the AI controller, otherwise set to false. 
-    /// </summary>
-    public bool Simulate = false;
     private bool _running = false;
 
     /// <summary>
@@ -214,14 +210,28 @@ public class AIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Starts the simulation of the AI controller.
+    /// Does nothing if its already running
+    /// </summary>
+    public void Start()
+    {
+        if (!_running)
+            Initialize();
+        _running = true;
+    }
+
+    /// <summary>
+    /// Stops the simulation of the AI controller
+    /// </summary>
+    public void Stop()
+    {
+        _running = false;
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        // If we just started simulating, initialize the controller and all goals
-        if (Simulate && !_running)
-            Initialize();
-
-        _running = Simulate;
         if (!_running || Vehicle.EnergyLevel <= 0) 
             return;
 

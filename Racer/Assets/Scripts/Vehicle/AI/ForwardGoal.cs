@@ -29,7 +29,9 @@ public class ForwardGoal : AIGoal
 
     public override void Begin()
     {
+        // Reset state
         _linearActuators = Actuators;
+        _targetAcceleration = Vector2.zero;
     }
 
 
