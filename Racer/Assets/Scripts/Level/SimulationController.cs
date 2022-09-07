@@ -72,7 +72,9 @@ public class SimulationController : MonoBehaviour
         buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
 
-        DestroyImmediate(opponentVehicle, true);
+        playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;
+
+        DestroyImmediate(opponentInstance, true);
     }
 
     /// <summary>
