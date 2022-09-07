@@ -9,13 +9,18 @@ public class Level : ScriptableObject
     public GameObject terrain;
     public GameObject opponentVehicle;
     public float budget;
+    public int highScore;
      
-    public void SetHighScore(float score)
+    public void SetHighScore(int score)
     {
-        PlayerPrefs.SetFloat("LevelHS" + levelId.ToString(), score);
+        if (score < highScore) return;
+
+        highScore = score;
+        PlayerPrefs.SetInt("LevelHS" + levelId.ToString(), score);
     }
-    public float GetHighScore()
+
+    private void OnEnable()
     {
-        return PlayerPrefs.GetFloat("LevelHS" + levelId.ToString());
+        highScore = PlayerPrefs.GetInt("LevelHS" + levelId.ToString(), 0);
     }
 }

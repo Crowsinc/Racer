@@ -100,7 +100,7 @@ public class SimulationController : MonoBehaviour
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             // Start the AI simulation
-            var _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
+            _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
             if (_opponentAI != null)
                 _opponentAI.Simulate = true;
             else
@@ -119,6 +119,13 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     public void WinRace()
     {
+        foreach (var level in GetComponent<LevelInitialiser>().levelCollection)
+        {
+            if (PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL) == level.levelId)
+            {
+                level.SetHighScore(Mathf.RoundToInt(CalculateScore()));
+            }
+        }
         raceUI.SetActive(false);
         winUI.SetActive(true);
 
@@ -131,5 +138,10 @@ public class SimulationController : MonoBehaviour
     {
         isFinished = true;
         //TODO
+    }
+
+    private int CalculateScore()
+    {
+        return ((int)_totalTime);
     }
 }
