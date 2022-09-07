@@ -2839,7 +2839,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 986193010}
         m_TargetAssemblyTypeName: SimulationController, RacerScripts
-        m_MethodName: 
+        m_MethodName: EnterBuildMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4136,6 +4136,7 @@ MonoBehaviour:
   buildModeGrid: {fileID: 70451257}
   buildModeModuleHolder: {fileID: 237265510}
   moduleStatsDisplay: {fileID: 768739795}
+  timer: {fileID: 0}
   raceUI: {fileID: 1495715875}
   winUI: {fileID: 1233391753}
   raceProgressBar: {fileID: 1817601886}
@@ -5550,6 +5551,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
+  MapStart: {fileID: 0}
+  MapEnd: {fileID: 0}
 --- !u!114 &1611231223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5695,7 +5698,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1898344579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 3.5, z: -10}
+  m_LocalPosition: {x: 0, y: 3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

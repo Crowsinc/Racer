@@ -72,7 +72,21 @@ public class SimulationController : MonoBehaviour
         buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
 
+        // Resetting player vehicle
         playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;
+        playerVehicle.transform.rotation = Quaternion.identity;
+
+        Rigidbody2D rb = playerVehicle.GetComponent<Rigidbody2D>();
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0;
+        for (int i = 0; i < playerVehicle.transform.childCount; i++)
+        {
+            GameObject child = playerVehicle.transform.GetChild(i).gameObject;
+            if (child.name != "Vehicle Core")
+            {
+                Destroy(child);
+            }   
+        }
 
         DestroyImmediate(opponentInstance, true);
     }
