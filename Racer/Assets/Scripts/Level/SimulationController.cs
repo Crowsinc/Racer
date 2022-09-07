@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class SimulationController : MonoBehaviour
     public TMP_Text timer;
 
     public GameObject raceUI;
+    public GameObject pauseUI;
     public GameObject winUI;
 
     public Transform raceProgressBar;
@@ -71,6 +73,7 @@ public class SimulationController : MonoBehaviour
         buildModeGrid.SetActive(true);
         buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
+        pauseUI.SetActive(false);
 
         // Resetting player vehicle
         playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;
