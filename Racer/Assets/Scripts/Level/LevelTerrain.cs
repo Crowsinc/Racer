@@ -33,7 +33,7 @@ public class LevelTerrain : MonoBehaviour
         // Return if collided object is not a vehicle
         if (parent == null || parent.gameObject.layer != 30) return;
 
-        var vehicleName = parent.root.name;
+        var vehicleName = parent.root.GetInstanceID().ToString();
         if (!rbs.ContainsKey(vehicleName))
         {
             rbs[vehicleName] = parent.GetComponent<Rigidbody2D>();
