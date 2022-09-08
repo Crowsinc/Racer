@@ -25,7 +25,7 @@ public class SimulationController : MonoBehaviour
     [HideInInspector]
     public Vector3 raceFinishPoint;
 
-    private bool inBuildMode = true;
+    public bool inBuildMode = true;
     private bool isFinished = false;
     private CameraFollow cameraFollow;
     private float raceDistance;

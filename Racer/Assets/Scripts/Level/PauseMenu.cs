@@ -6,15 +6,21 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {
     private bool _menuOpen = false;
-    private bool buttonDown = false;
+    private bool _buttonDown = false;
     public GameObject pauseMenu;
+    private SimulationController _simulationController;
+
+    private void Awake()
+    {
+        _simulationController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
+    }
 
     void Update()
     {
         Debug.Log(Input.GetAxisRaw("Cancel"));
-        if (Input.GetAxisRaw("Cancel") > 0 && !buttonDown)
+        if (Input.GetAxisRaw("Cancel") > 0 && !_buttonDown && !_simulationController.inBuildMode)
         {
-            buttonDown = true;
+            _buttonDown = true;
             if (_menuOpen)
             {
                 Time.timeScale = 1;
@@ -30,7 +36,7 @@ public class PauseMenu : MonoBehaviour
         }
         else if (!(Input.GetAxisRaw("Cancel") > 0))
         {
-            buttonDown = false;
+            _buttonDown = false;
         }
     }
 
