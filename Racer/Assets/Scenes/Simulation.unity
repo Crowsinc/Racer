@@ -4485,6 +4485,7 @@ GameObject:
   - component: {fileID: 986193010}
   - component: {fileID: 986193011}
   - component: {fileID: 986193012}
+  - component: {fileID: 986193013}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: GameController
@@ -4543,7 +4544,7 @@ MonoBehaviour:
   moduleStatsDisplay: {fileID: 768739795}
   timer: {fileID: 0}
   raceUI: {fileID: 1495715875}
-  pauseUI: {fileID: 0}
+  pauseUI: {fileID: 1802570291}
   winUI: {fileID: 1233391753}
   raceProgressBar: {fileID: 1817601886}
   opponentVehicle: {fileID: 0}
@@ -4589,6 +4590,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vehicleCore: {fileID: 342518299}
+--- !u!114 &986193013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986193007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c21c654bfcd4e934fa8a2c63e0a34461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 1802570291}
 --- !u!1 &1019928877
 GameObject:
   m_ObjectHideFlags: 0
@@ -6059,8 +6073,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 986193010}
-        m_TargetAssemblyTypeName: SimulationController, RacerScripts
+      - m_Target: {fileID: 986193013}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: ReturnToMenu
         m_Mode: 1
         m_Arguments:
@@ -6163,7 +6177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.41844082, b: 0, a: 0.392}
+  m_Color: {r: 1, g: 0.41844082, b: 0, a: 0.6862745}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
