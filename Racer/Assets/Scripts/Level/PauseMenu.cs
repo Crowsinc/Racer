@@ -22,17 +22,10 @@ public class PauseMenu : MonoBehaviour
         {
             _buttonDown = true;
             if (_menuOpen)
-            {
-                Time.timeScale = 1;
-                pauseMenu.SetActive(false);
-                _menuOpen = false;
-            }
+                ClosePauseMenu();
+
             else
-            {
-                Time.timeScale = 0;
-                pauseMenu.SetActive(true);
-                _menuOpen = true;
-            }
+                OpenPauseMenu();
         }
         else if (!(Input.GetAxisRaw("Cancel") > 0))
         {
@@ -43,5 +36,19 @@ public class PauseMenu : MonoBehaviour
     public void ReturnToMenu()
     {
         SceneManager.LoadSceneAsync(GameConstants.MAIN_MENU_SCENE_ID);
+    }
+
+    public void OpenPauseMenu()
+    {
+        Time.timeScale = 0;
+        pauseMenu.SetActive(true);
+        _menuOpen = true;
+    }
+
+    public void ClosePauseMenu()
+    {
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+        _menuOpen = false;
     }
 }

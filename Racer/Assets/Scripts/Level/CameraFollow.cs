@@ -25,7 +25,7 @@ public class CameraFollow : MonoBehaviour
         {
             //transform.position = new Vector3(MapStart.position.x + half, transform.position.y, transform.position.z);
         }
-        else if (transform.position.x + half > MapEnd.position.x)
+        else if (Target.position.x + half > MapEnd.position.x)
         {
             transform.position = new Vector3(MapEnd.position.x - half + 0.001f, transform.position.y, transform.position.z);
             return;
