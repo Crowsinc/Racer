@@ -17,6 +17,7 @@ public class SimulationController : MonoBehaviour
 
     public GameObject raceUI;
     public GameObject pauseUI;
+    public GameObject resetPrompt;
     public GameObject winUI;
 
     public Transform raceProgressBar;
@@ -74,6 +75,7 @@ public class SimulationController : MonoBehaviour
         buildModeModuleHolder.SetActive(true);
         raceUI.SetActive(false);
         pauseUI.SetActive(false);
+        resetPrompt.SetActive(false);
 
         // Resetting player vehicle
         playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;

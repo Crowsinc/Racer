@@ -27,7 +27,11 @@ public class CameraFollow : MonoBehaviour
         }
         else if (Target.position.x + half > MapEnd.position.x)
         {
-            transform.position = new Vector3(MapEnd.position.x - half + 0.001f, transform.position.y, transform.position.z);
+            transform.position = Vector3.Lerp(
+                new Vector3(transform.position.x, transform.position.y, -10.0f),
+                new Vector3(MapEnd.position.x - half + 0.001f, Target.position.y, -10.0f),
+                0.1f
+            );
             return;
         }
 
