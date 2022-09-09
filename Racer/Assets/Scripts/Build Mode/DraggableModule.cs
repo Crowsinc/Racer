@@ -96,6 +96,11 @@ public class DraggableModule : MonoBehaviour
         BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
         _draggableCollider.size = _vehicleModule.Size;
         _draggableCollider.offset = CentreOffset;
+
+        // Initialise tooltip
+        TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
+        tooltipTrigger.content = _vehicleModule.Cost.ToString() + "$";
+        tooltipTrigger.header = _vehicleModule.Name;
     }
 
     /// <summary>

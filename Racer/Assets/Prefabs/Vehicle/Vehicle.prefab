@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: Driver
   Cost: 0
   EnergyCapacity: 50
   Mass: 1
@@ -217,7 +218,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed71eab3ee15fc54faa911d4ea4190b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Simulate: 0
   BlendGoals: 0
   ProjectionSampleTime: 10
 --- !u!114 &1456849907175484206

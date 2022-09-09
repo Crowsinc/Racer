@@ -5,6 +5,11 @@ using UnityEngine;
 public class VehicleModule : MonoBehaviour
 {
     /// <summary>
+    /// Name of the module
+    /// </summary>
+    public string Name;
+
+    /// <summary>
     /// The cost of buying this module
     /// </summary>
     public float Cost = 0;
