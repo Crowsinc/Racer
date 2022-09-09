@@ -122,8 +122,8 @@ public class DraggableModule : MonoBehaviour
             $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
         
         //Text stats
-        _simulationController.moduleInfoDisplay.SetActive(true);
-        Debug.Log("awww yisss");
+        _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
+        _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Description;
     }
 
 
@@ -136,7 +136,7 @@ public class DraggableModule : MonoBehaviour
         if (!_dragging)
         {
             _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
-            _simulationController.moduleInfoDisplay.SetActive(false);
+            _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(false);
         }
     }
 
