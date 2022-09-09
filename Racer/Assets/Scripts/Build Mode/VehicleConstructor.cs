@@ -169,4 +169,23 @@ public class VehicleConstructor : MonoBehaviour
     {
         return _design;
     }
+
+    /// <summary>
+    /// Calculates the sum cost of the vehicle in the design
+    /// </summary>
+    /// <returns>total sum</returns>
+    public float SumVehicleCost()
+    {
+        float total = 0;
+        foreach (KeyValuePair<Vector2Int, ModuleSchematic> pair in _design)
+        {
+            total += pair.Value.Prefab.GetComponent<VehicleModule>().Cost;
+        }
+        return total;
+    }
+
+    public int ModuleCount()
+    {
+        return _design.Count;
+    }
 }

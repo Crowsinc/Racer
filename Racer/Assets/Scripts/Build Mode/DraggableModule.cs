@@ -99,7 +99,7 @@ public class DraggableModule : MonoBehaviour
 
         // Initialise tooltip
         TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
-        tooltipTrigger.content = _vehicleModule.Cost.ToString() + "$";
+        tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
         tooltipTrigger.header = _vehicleModule.Name;
     }
 

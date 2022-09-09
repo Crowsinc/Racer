@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Level/New Level")]
 public class Level : ScriptableObject
 {
+    public string name;
     public int levelId;
     public GameObject terrain;
     public GameObject opponentVehicle;
