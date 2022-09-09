@@ -93,7 +93,10 @@ public class BuildModeUIController : MonoBehaviour
                 break;
         }
     }
-
+    
+    /// <summary>
+    /// Function called by UI button to turn on and off the controls panel
+    /// </summary>
     public void toggleControls()
     {
         if (controlsPanel.activeSelf)

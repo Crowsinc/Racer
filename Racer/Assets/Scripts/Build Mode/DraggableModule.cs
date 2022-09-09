@@ -114,11 +114,16 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //Numeric stats
         _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
         _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
             $"{_vehicleModule.Mass}\n" +
             $"{_vehicleModule.EnergyCapacity}\n" +
             $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
+        
+        //Text stats
+        _simulationController.moduleInfoDisplay.SetActive(true);
+        Debug.Log("awww yisss");
     }
 
 
@@ -129,7 +134,10 @@ public class DraggableModule : MonoBehaviour
     public void OnPointerExit(PointerEventData eventData)
     {
         if (!_dragging)
+        {
             _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
+            _simulationController.moduleInfoDisplay.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -144,8 +152,7 @@ public class DraggableModule : MonoBehaviour
         // If the mouse is let go outside of the grid, then delete the module
         if (!MouseOverGrid())
         {
-            Delete();
-            return;
+            Delete(); return;
         }
 
         // Clamp the module to the grid
