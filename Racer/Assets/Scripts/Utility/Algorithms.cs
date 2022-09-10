@@ -8,6 +8,13 @@ namespace Assets.Scripts.Utility
     public class Algorithms
     {
         /// <summary>
+        /// Maximum amount of difference before two floats are considered identical.
+        /// This is required because Unity geometry operations aren't always very
+        /// exact, so slack is required to keep things working as intended. 
+        /// </summary>
+        public static float Slack = 0.1f;
+
+        /// <summary>
         /// Tests if three points are collinear
         /// </summary>
         /// <param name="a"> point a </param>
@@ -17,8 +24,9 @@ namespace Assets.Scripts.Utility
         public static bool Collinear(Vector2 a, Vector2 b, Vector2 c)
         {
             // This is a standard collinearity test, which forms vectors from a to b,
-            // and b to c, then checks if their cross product is zero (or close to).
-            return Mathf.Abs((c.y - b.y) * (b.x - a.x) - (b.y - a.y) * (c.x - b.x)) <= 0.001;
+            // and b to c, then checks if their cross product is zero, or close enough.
+            // The Unity geometry aren't exactly precise so some slack is required
+            return Mathf.Abs((c.y - b.y) * (b.x - a.x) - (b.y - a.y) * (c.x - b.x)) <= Slack;
         }
 
 
@@ -50,7 +58,8 @@ namespace Assets.Scripts.Utility
                 min = Vector2.Min(min, p);
 
                 // If the given point is equal to (or close to) a vertex, then it must be inside
-                if ((point - p).magnitude < 0.001)
+                // The Unity geometry aren't exactly precise so some slack is required
+                if ((point - p).magnitude < Slack)
                     return true;
             }
 

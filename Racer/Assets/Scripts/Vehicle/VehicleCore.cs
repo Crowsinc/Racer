@@ -118,8 +118,7 @@ public class VehicleCore : MonoBehaviour
             TotalEnergyCapacity = testCore.EnergyCapacity
         };
 
-        // Find any disjoint modules by checking whether
-        // their colliders are within the hull of the vehicle. 
+        // Analyse individual modules
         var modules = testCore.gameObject.GetComponentsInChildren<VehicleModule>();
         foreach (var module in modules)
         {
@@ -127,25 +126,21 @@ public class VehicleCore : MonoBehaviour
             if (module.Collider == null)
                 continue;
 
-
             var offset = module.transform.position - testCore.transform.position
                 - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
             var gridOffset = new Vector2Int((int)offset.x, (int)offset.y);
 
-            bool inside = true;
             module.Collider.enabled = true;
-            for (int path = 0; path < module.Collider.pathCount; path++)
-            {
-                var polygon = module.Collider.GetPath(path);
-                foreach(var localPoint in polygon)
-                {
-                    // The collider path is local to the module, so needs to be transformed
-                    var point = module.transform.TransformDirection(localPoint + module.Collider.offset);
-                    inside |= Algorithms.PointInPolygon(point, testCore.Hull);
-                }
-            }
 
-            if(inside)
+            // We consider a module to be disjoint if it is not found within the hull polygon.
+            // To test this, we will grab a point from the center of the module and perform
+            // a point in polygon test with the hull. It is possible that some colliders may
+            // have a center point which is outside the collider, so intead we grab the colliders
+            // closest point to the center. 
+            var testPoint = module.Collider.ClosestPoint(module.Collider.bounds.center);
+            bool inside = Algorithms.PointInPolygon(testPoint, testCore.Hull);
+
+            if (inside)
                 feedback.ValidModules.Add(gridOffset);
             else
                 feedback.DisjointModules.Add(gridOffset);
