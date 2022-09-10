@@ -111,17 +111,20 @@ public class AIController : MonoBehaviour
 
         // Get the dimensions of the vehicle in its local state. 
         var localHull = Vehicle.LocalHull;
-
-        Vector2 min = localHull[0], max = localHull[0];
-        foreach (var point in localHull)
+        
+        if(localHull.Count > 0)
         {
-            min = Vector2.Min(min, point);
-            max = Vector2.Max(max, point);
+            Vector2 min = localHull[0], max = localHull[0];
+            foreach (var point in localHull)
+            {
+                min = Vector2.Min(min, point);
+                max = Vector2.Max(max, point);
+            }
+            LocalSize = new Vector2(
+                Mathf.Abs(max.x - min.x),
+                Mathf.Abs(max.y - min.y)
+            );
         }
-        LocalSize = new Vector2(
-            Mathf.Abs(max.x - min.x),
-            Mathf.Abs(max.y - min.y)
-        );
 
         DetectActuators();
 

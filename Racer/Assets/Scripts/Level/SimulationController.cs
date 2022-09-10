@@ -78,16 +78,18 @@ public class SimulationController : MonoBehaviour
         resetPrompt.SetActive(false);
 
         // Resetting player vehicle
-        playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;
-        playerVehicle.transform.rotation = Quaternion.identity;
+        if(playerVehicle.IsBuilt)
+        {
+            playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;
+            playerVehicle.transform.rotation = Quaternion.identity;
 
-        Rigidbody2D rb = playerVehicle.GetComponent<Rigidbody2D>();
-        rb.velocity = Vector2.zero;
-        rb.angularVelocity = 0;
+            Rigidbody2D rb = playerVehicle.GetComponent<Rigidbody2D>();
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0;
 
-        playerVehicle.ClearStructure();
-        _playerAI.Stop();
-
+            playerVehicle.ClearStructure();
+            _playerAI?.Stop();
+        }
         DestroyImmediate(opponentInstance, true);
     }
 

@@ -99,41 +99,53 @@ public class VehicleCore : MonoBehaviour
 
     public DesignFeedback ValidateDesign(Dictionary<Vector2Int, ModuleSchematic> design)
     {
-        // This is a hack, but to validate our design we will just build a vehicle off-screen, then analyse it
+        // To validate our design we will just build a vehicle off-screen, then analyse it
         var testCore = Instantiate<VehicleCore>(
             GetComponent<VehicleCore>(),
-            new Vector3(-10000, -10000, -10000),
+            new Vector3(0, 0, 0),
+            //new Vector3(-10000, -10000, -10000),
             Quaternion.identity
         );
         testCore.Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
 
-        var feedback = new DesignFeedback();
-        feedback.ValidModules = new List<Vector2Int>();
-        feedback.DisjointModules = new List<Vector2Int>();
-        feedback.ValidDesign = testCore.TryBuildStructure(design, false);
-        feedback.TotalMass = testCore.Rigidbody.mass;
-        feedback.LocalCentreOfMass = testCore.Rigidbody.centerOfMass;
-        feedback.TotalEnergyCapacity = testCore.EnergyCapacity;
+        var feedback = new DesignFeedback
+        {
+            ValidModules = new List<Vector2Int>(),
+            DisjointModules = new List<Vector2Int>(),
+            ValidDesign = testCore.TryBuildStructure(design, false),
+            TotalMass = testCore.Rigidbody.mass,
+            LocalCentreOfMass = testCore.Rigidbody.centerOfMass,
+            TotalEnergyCapacity = testCore.EnergyCapacity
+        };
 
-        // Get all modules and detach them from the vehicle core
+        // Find any disjoint modules by checking whether
+        // their colliders are within the hull of the vehicle. 
         var modules = testCore.gameObject.GetComponentsInChildren<VehicleModule>();
-        
-        // Test for disjoint modules by checking if each
-        // module's collider has at least one point within the hull
         foreach (var module in modules)
         {
             // If the module does not have a collider, then ignore it
             if (module.Collider == null)
                 continue;
 
+
             var offset = module.transform.position - testCore.transform.position
                 - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
             var gridOffset = new Vector2Int((int)offset.x, (int)offset.y);
 
+            bool inside = true;
             module.Collider.enabled = true;
-            var testPoint = module.Collider.bounds.center;
-            
-            if(Algorithms.PointInPolygon(testPoint, testCore.Hull))
+            for (int path = 0; path < module.Collider.pathCount; path++)
+            {
+                var polygon = module.Collider.GetPath(path);
+                foreach(var localPoint in polygon)
+                {
+                    // The collider path is local to the module, so needs to be transformed
+                    var point = module.transform.TransformDirection(localPoint + module.Collider.offset);
+                    inside |= Algorithms.PointInPolygon(point, testCore.Hull);
+                }
+            }
+
+            if(inside)
                 feedback.ValidModules.Add(gridOffset);
             else
                 feedback.DisjointModules.Add(gridOffset);

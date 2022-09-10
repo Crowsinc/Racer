@@ -114,6 +114,7 @@ public class DraggableModule : MonoBehaviour
         trigger = gameObject.AddComponent<TooltipTrigger>();
         trigger.header = "Module not connected";
         trigger.content = "";
+        trigger.enabled = false;
     }
 
     /// <summary>
