@@ -257,13 +257,13 @@ public class VehicleConstructor : MonoBehaviour
 
     public void HideUIElements()
     {
-        if (_cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
+        if (_cogIndicator != null && _cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
             r.enabled = false;
     }
 
     public void ShowUIElements()
     {
-        if (_cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
+        if (_cogIndicator != null && _cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
             r.enabled = true;
     }
 
