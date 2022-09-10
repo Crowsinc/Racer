@@ -464,14 +464,10 @@ public class VehicleCore : MonoBehaviour
         }
 
         // Remove all paths representing holes within a hull defined by another path.
-        // We can determine if one path is inside another, if any of its points is
+        // We can determine if one path is inside another, if all of its points are
         // inside the (potentially convex) polygon formed by another path. Similarly,
-        // we can determine if one path is outside of another if any of its points 
-        // are outside of this polygon. This holds because by definition of the 
-        // composite collider, one path cannot collide with another path; otherwise
-        // the composite collider would have merged them together into a single path.
-        // All of this together means that we just need to test a single point of
-        // each path. 
+        // we can determine if one path is outside of another if all of its points 
+        // are outside of this polygon. 
 
         for (int p1 = 0; p1 < paths.Count; p1++)
         {
@@ -479,13 +475,14 @@ public class VehicleCore : MonoBehaviour
             {
                 if (p1 == p2) continue;
 
+                bool inside = true;
                 var polygonPath = paths[p1];
-                var testPoint = paths[p2][0];
-
-                if (Algorithms.PointInPolygon(testPoint, polygonPath))
+                foreach(var testPoint in paths[p2])
+                    inside &= Algorithms.PointInPolygon(testPoint, polygonPath);
+                
+                // If all points in polygon p2 are inside p2, remove p2
+                if(inside)
                 {
-                    // If there is an odd number of intersections, then the point
-                    // must be inside an outer hull, so it must be a hole.
                     paths.RemoveAt(p2--);
                     if (p2 < p1)
                         p1--;

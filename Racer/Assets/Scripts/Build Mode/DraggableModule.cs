@@ -121,9 +121,9 @@ public class DraggableModule : MonoBehaviour
         trigger.enabled = false;
 
         // If we are an actuator, then add a force indicator object
-        if(TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
+        if (TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
         {
-            float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y,actuator.LocalActuationForce.x);
+            float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y, actuator.LocalActuationForce.x);
 
             _forceIndicator = Instantiate(
                 ForceIndicatorPrefab,
@@ -134,7 +134,6 @@ public class DraggableModule : MonoBehaviour
             _forceIndicatorRenderer = _forceIndicator.GetComponentInChildren<SpriteRenderer>();
             _forceIndicatorRenderer.enabled = false;
         }
-
     }
 
     /// <summary>
@@ -277,7 +276,8 @@ public class DraggableModule : MonoBehaviour
             Delete();
 
         // Draw thrust arrows if its an actuator and we are hovering over it
-        _forceIndicatorRenderer.enabled = _hover && _forceIndicator != null && _forceIndicatorRenderer != null;
+        if(_forceIndicatorRenderer != null)
+            _forceIndicatorRenderer.enabled = _hover;
     }
 
 
