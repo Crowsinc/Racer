@@ -49,3 +49,9 @@ TagManager:
   - name: Vehicle
     uniqueID: 2072361357
     locked: 0
+  - name: Module
+    uniqueID: 1716745209
+    locked: 0
+  - name: UI
+    uniqueID: 3153179475
+    locked: 0

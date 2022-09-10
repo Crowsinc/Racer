@@ -13,6 +13,7 @@ public class BuildModeUIController : MonoBehaviour
 
     public RectTransform initalPlacement; // Rect in UI space for the initial placement
 
+
     private GameObject _currentTab;
     private ModuleCollection _moduleCollection;
     private float moduleYDisplacement;

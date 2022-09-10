@@ -29,7 +29,7 @@ public class StuckDetector : MonoBehaviour
             {
                 sum += movementChange;
             }
-            Debug.Log("sum:" + sum.ToString());
+            //Debug.Log("sum:" + sum.ToString());
             if (sum < 2 && !resetPrompt.activeSelf)
             {
                 OpenPrompt();

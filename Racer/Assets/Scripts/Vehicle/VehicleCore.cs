@@ -2,6 +2,7 @@ using Assets.Scripts.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -102,8 +103,7 @@ public class VehicleCore : MonoBehaviour
         // To validate our design we will just build a vehicle off-screen, then analyse it
         var testCore = Instantiate<VehicleCore>(
             GetComponent<VehicleCore>(),
-            new Vector3(0, 0, 0),
-            //new Vector3(-10000, -10000, -10000),
+            new Vector3(-10000, -10000, -10000),
             Quaternion.identity
         );
         testCore.Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -122,13 +122,13 @@ public class VehicleCore : MonoBehaviour
         var modules = testCore.gameObject.GetComponentsInChildren<VehicleModule>();
         foreach (var module in modules)
         {
-            // If the module does not have a collider, then ignore it
-            if (module.Collider == null)
-                continue;
-
             var offset = module.transform.position - testCore.transform.position
                 - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
             var gridOffset = new Vector2Int((int)offset.x, (int)offset.y);
+
+            // If the module does not have a collider or is the core, then ignore it
+            if (module.Collider == null || gridOffset == new Vector2Int(0,0))
+                continue;
 
             module.Collider.enabled = true;
 
@@ -179,21 +179,31 @@ public class VehicleCore : MonoBehaviour
         Vector2 centreOfMass = Vector2.zero;
         foreach (var (offset, (prefab, rotation)) in design)
         {
-            //Debug.Log("off:" + offset);
             // Instantiate new vehicle module, unless this is the core
             var position = transform.position + new Vector3(offset.x, offset.y) + DraggableModule.CalculateRotationOffset(rotation);
             var instance = prefab == gameObject ? gameObject
-                : Instantiate(prefab, position, Quaternion.identity, transform);
-
-            // Rotate module to desired orientation
-            instance.transform.rotation = Quaternion.Euler(0, 0, rotation);
+                : Instantiate(prefab, position, Quaternion.Euler(0, 0, rotation), transform);
 
             // Register VehicleModule to the vehicle
             if (instance.TryGetComponent<VehicleModule>(out VehicleModule module))
             {
                 totalEnergyCapacity += module.EnergyCapacity;
-                centreOfMass += module.Mass * (Vector2)offset;
                 totalMass += module.Mass;
+            
+                // We take the objects mass from the centroid of all colliders, 
+                Collider2D[] colliders = {module.Collider};
+                if(module.Attachments.Count > 0)
+                    colliders = module.gameObject.GetComponentsInChildren<Collider2D>();
+
+                if (colliders.Length > 0)
+                {
+                    Vector2 moduleCentre = Vector2.zero;
+                    foreach (var c in colliders)
+                        moduleCentre += (Vector2)c.bounds.center;
+                    moduleCentre /= colliders.Length;
+
+                    centreOfMass += module.Mass * (moduleCentre - (Vector2)transform.position);
+                }
 
                 RegisterModule(module, rotation);
             }

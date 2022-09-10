@@ -56,7 +56,7 @@ public class SimulationController : MonoBehaviour
         if (inBuildMode) return;
         if (isFinished) return;
         _totalTime += Time.deltaTime;
-        timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString();
+        //timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString();
         raceProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance, 0), 1, 1);
     }
 
@@ -76,6 +76,8 @@ public class SimulationController : MonoBehaviour
         raceUI.SetActive(false);
         pauseUI.SetActive(false);
         resetPrompt.SetActive(false);
+        _vehicleConstructor.ShowUIElements();
+
 
         // Resetting player vehicle
         if(playerVehicle.IsBuilt)
@@ -105,6 +107,7 @@ public class SimulationController : MonoBehaviour
             cameraFollow.Target = playerVehicle.transform;
 
             // Change UI
+            _vehicleConstructor.HideUIElements();
             buildModeUI.SetActive(false);
             buildModeGrid.SetActive(false);
             buildModeModuleHolder.SetActive(false);

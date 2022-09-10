@@ -50,7 +50,7 @@ public class ForwardGoal : AIGoal
         Debug.DrawRay(CentreOfMass, 10.0f * Velocity.normalized, Color.black);
 
         // The AI goal will be prioritised when its velocity is in the direction of the
-        // target velocity.That is, when it is most efficient to speed up. This also helps
+        // target velocity. That is, when it is most efficient to speed up. This also helps
         // with stability as the goal will prioritise speed less when on tricky terrain.
         return Mathf.Clamp01(Mathf.Abs(Vector2.Dot(Velocity.normalized, targetDirection)));
     }

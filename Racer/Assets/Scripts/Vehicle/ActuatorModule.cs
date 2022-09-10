@@ -139,7 +139,6 @@ public class ActuatorModule : MonoBehaviour
     public float Proportion { get; private set; }
     private float _proportion = 0.0f;
 
-
     /// <summary>
     /// Attempts to generate a force on the linked vehicle by activating the actuator. 
     /// The linked vehicle must supply the required energy from its energy stores.
@@ -297,14 +296,13 @@ public class ActuatorModule : MonoBehaviour
         Proportion = _proportion;
         _proportion = 0.0f;
 
-        ActuationPosition = transform.position + transform.TransformDirection(LocalActuationPosition);
+        ActuationPosition = transform.TransformPoint(LocalActuationPosition);
         
         ActuationForce = transform.TransformDirection(LocalActuationForce);
         ReactionForce = -ActuationForce;
         
         IdleForce = transform.TransformDirection(LocalIdleForce);
         IdleReactionForce = -IdleForce;
-
 
         // Update physical effects of the actuator
         if (LinkedVehicle != null)
@@ -349,4 +347,5 @@ public class ActuatorModule : MonoBehaviour
         ActivationCost = Mathf.Max(ActivationCost, 0);
         IdleCost = Mathf.Max(IdleCost, 0);
     }
+
 }

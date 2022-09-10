@@ -5,6 +5,13 @@ using UnityEngine;
 
 public class VehicleConstructor : MonoBehaviour
 {
+
+    /// <summary>
+    /// Centre of gravity indicator prefab
+    /// </summary>
+    public GameObject COGIndicatorPrefab;
+    private GameObject _cogIndicator;
+
     public VehicleCore vehicleCore;
     private Vector2Int _coreWorldPos;
 
@@ -18,6 +25,8 @@ public class VehicleConstructor : MonoBehaviour
 
         // Add the vehicle core to the occupancy list so that nothing can ever overlap it. 
         _occupancy[new Vector2Int(0, 0)] = vehicleCore.gameObject;
+
+        _cogIndicator = Instantiate(COGIndicatorPrefab, new Vector3(-1000, -1000, 0), Quaternion.identity);
     }
 
 
@@ -210,12 +219,17 @@ public class VehicleConstructor : MonoBehaviour
         Debug.Log($"Mass: {feedback.TotalMass}");
         Debug.Log($"Centre of Mass: {feedback.LocalCentreOfMass}");
 
+        // Move centre of mass prefab
+        _cogIndicator.transform.position = feedback.LocalCentreOfMass + _coreWorldPos;
+
         // Remove error feedback from valid modules
         foreach(var offset in feedback.ValidModules)
         {
             var module = _occupancy[offset];
 
-            module.GetComponent<DraggableModule>().ApplyTint(false);
+            if (module.TryGetComponent<DraggableModule>(out var draggable))
+                draggable.ApplyTint(false);
+
             if(module.TryGetComponent<TooltipTrigger>(out var trigger))
             {
                 trigger.Hide();
@@ -228,7 +242,9 @@ public class VehicleConstructor : MonoBehaviour
         {
             var module = _occupancy[offset];
 
-            module.GetComponent<DraggableModule>().ApplyTint(true);
+            if (module.TryGetComponent<DraggableModule>(out var draggable))
+                draggable.ApplyTint(true);
+
             if (module.TryGetComponent<TooltipTrigger>(out var trigger))
                 trigger.enabled = true;
         }
@@ -238,4 +254,17 @@ public class VehicleConstructor : MonoBehaviour
     {
         return _design;
     }
+
+    public void HideUIElements()
+    {
+        if (_cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
+            r.enabled = false;
+    }
+
+    public void ShowUIElements()
+    {
+        if (_cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
+            r.enabled = true;
+    }
+
 }

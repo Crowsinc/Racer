@@ -5065,6 +5065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3e440fcb817b6a4a9520a7e4b25a7ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  COGIndicatorPrefab: {fileID: 1714719775490835173, guid: ca1bfba0d8720c1419a44495e645bc0e, type: 3}
+  ActuatorIndicatorPrefab: {fileID: 6405938184008447771, guid: b8ba2b0f1bf090a44845606302ecf1f7, type: 3}
   vehicleCore: {fileID: 342518299}
 --- !u!114 &986193013
 MonoBehaviour:
