@@ -4027,6 +4027,7 @@ MonoBehaviour:
   energyHolder: {fileID: 896776907}
   chassisHolder: {fileID: 1533115367}
   actuatorHolder: {fileID: 335126142}
+  ForceIndicatorPrefab: {fileID: 6405938184008447771, guid: b8ba2b0f1bf090a44845606302ecf1f7, type: 3}
   initalPlacement: {fileID: 1985114239}
 --- !u!1 &779926916
 GameObject:
@@ -5066,7 +5067,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   COGIndicatorPrefab: {fileID: 1714719775490835173, guid: ca1bfba0d8720c1419a44495e645bc0e, type: 3}
-  ActuatorIndicatorPrefab: {fileID: 6405938184008447771, guid: b8ba2b0f1bf090a44845606302ecf1f7, type: 3}
   vehicleCore: {fileID: 342518299}
 --- !u!114 &986193013
 MonoBehaviour:

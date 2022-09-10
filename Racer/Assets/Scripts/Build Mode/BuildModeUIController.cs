@@ -11,6 +11,8 @@ public class BuildModeUIController : MonoBehaviour
     public GameObject chassisHolder;
     public GameObject actuatorHolder;
 
+    public GameObject ForceIndicatorPrefab;
+
     public RectTransform initalPlacement; // Rect in UI space for the initial placement
 
 
@@ -63,8 +65,9 @@ public class BuildModeUIController : MonoBehaviour
             moduleYDisplacement -= Camera.main.scaledPixelHeight / 20;
 
             // Add menu module component
-            menuModuleObject.AddComponent<DraggableModule>();
-            menuModuleObject.GetComponent<DraggableModule>().originalPrefab = moduleObject;
+            var draggable = menuModuleObject.AddComponent<DraggableModule>();
+            draggable.originalPrefab = moduleObject;
+            draggable.ForceIndicatorPrefab = ForceIndicatorPrefab;
 
             // TODO: disable vehicle module functions
             menuModuleObject.GetComponent<VehicleModule>().Freeze();

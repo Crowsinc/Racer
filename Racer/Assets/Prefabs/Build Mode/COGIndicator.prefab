@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8313094685494418605}
   - component: {fileID: 2977476948646580071}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: COGIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}

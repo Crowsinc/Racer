@@ -85,7 +85,11 @@ public class DraggableModule : MonoBehaviour
     public Color ErrorTintColor = new Color(1.0f, 0, 0, 0.5f);
 
 
-    private TooltipTrigger trigger;// Temp
+    public GameObject ForceIndicatorPrefab;
+    private GameObject _forceIndicator = null;
+    private SpriteRenderer _forceIndicatorRenderer = null;
+
+    private TooltipTrigger trigger;
 
     private void Awake()
     {
@@ -115,6 +119,22 @@ public class DraggableModule : MonoBehaviour
         trigger.header = "Module not connected";
         trigger.content = "";
         trigger.enabled = false;
+
+        // If we are an actuator, then add a force indicator object
+        if(TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
+        {
+            float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y,actuator.LocalActuationForce.x);
+
+            _forceIndicator = Instantiate(
+                ForceIndicatorPrefab,
+                actuator.LocalActuationPosition + (Vector2)actuator.transform.position,
+                Quaternion.Euler(0, 0, rotation),
+                gameObject.transform
+            );
+            _forceIndicatorRenderer = _forceIndicator.GetComponentInChildren<SpriteRenderer>();
+            _forceIndicatorRenderer.enabled = false;
+        }
+
     }
 
     /// <summary>
@@ -250,13 +270,14 @@ public class DraggableModule : MonoBehaviour
             }
 
             UpdatePosition();
-
-    
         }
 
         // Deleting module
         if (_hover && Input.GetKeyDown(KeyCode.Delete))
             Delete();
+
+        // Draw thrust arrows if its an actuator and we are hovering over it
+        _forceIndicatorRenderer.enabled = _hover && _forceIndicator != null && _forceIndicatorRenderer != null;
     }
 
 
@@ -350,7 +371,8 @@ public class DraggableModule : MonoBehaviour
         List<SpriteRenderer> renderers = new List<SpriteRenderer>();
         GetComponentsInChildren<SpriteRenderer>(renderers);
         foreach (var r in renderers)
-            r.color = tintColor;
+            if(r != _forceIndicatorRenderer)
+                r.color = tintColor;
     }
 
 
