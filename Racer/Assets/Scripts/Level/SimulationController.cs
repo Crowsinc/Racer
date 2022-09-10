@@ -102,7 +102,6 @@ public class SimulationController : MonoBehaviour
             inBuildMode = false;
             cameraFollow.Target = playerVehicle.transform;
 
-
             // Change UI
             buildModeUI.SetActive(false);
             buildModeGrid.SetActive(false);

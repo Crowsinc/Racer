@@ -38,6 +38,10 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     private bool _placed = false;
 
+    /// <summary>
+    /// True if the mouse is over the module, otherwise false
+    /// </summary>
+    private bool _hover = false;
 
     /// <summary>
     /// Position of the module relative to the vehicle core
@@ -60,12 +64,10 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     private Vector2 _spawnPosition;
 
-
     /// <summary>
     /// Original prefab of the module
     /// </summary>
     public GameObject originalPrefab;
-
 
     /// <summary>
     ///  Offset from bottom left origin to the centre of the module
@@ -76,6 +78,14 @@ public class DraggableModule : MonoBehaviour
     /// Offset from bottom left origin to the position grabbed by the user
     /// </summary>
     public Vector3 DragOffset { get; private set; }
+
+    /// <summary>
+    /// The color tint applied to modules when they are in an error state
+    /// </summary>
+    public Color ErrorTintColor = new Color(1.0f, 0, 0, 0.5f);
+
+
+    private TooltipTrigger trigger;// Temp
 
     private void Awake()
     {
@@ -96,6 +106,14 @@ public class DraggableModule : MonoBehaviour
         BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
         _draggableCollider.size = _vehicleModule.Size;
         _draggableCollider.offset = CentreOffset;
+
+        // Default to non-tinted state
+        ApplyTint(false);
+
+        // Add tooltip trigger for invalid state
+        trigger = gameObject.AddComponent<TooltipTrigger>();
+        trigger.header = "Module not connected";
+        trigger.content = "";
     }
 
     /// <summary>
@@ -106,7 +124,14 @@ public class DraggableModule : MonoBehaviour
     {
         UpdatePosition();
         _dragging = true;
+
+        // Test our on the grid to check if we should be tinting for errors or not
+        ApplyTint(!_vehicleConstructor.TestPlacement(gameObject));
+        
+        trigger.Hide();
+        trigger.enabled = false;
     }
+
 
     /// <summary>
     /// Called whenever the mouse pointer enters the module to display the module stats
@@ -114,6 +139,7 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        _hover = true;
         _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
         _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
             $"{_vehicleModule.Mass}\n" +
@@ -128,9 +154,11 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
+        _hover = false;
         if (!_dragging)
             _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
     }
+
 
     /// <summary>
     /// Called when the mouse pointer releases on the module
@@ -141,14 +169,7 @@ public class DraggableModule : MonoBehaviour
         _dragging = false;
         DragOffset = Vector3.zero;
 
-        // If the mouse is let go outside of the grid, then delete the module
-        if (!MouseOverGrid())
-        {
-            Delete();
-            return;
-        }
-
-        // Clamp the module to the grid
+        // Clamp the module's position to the grid
         transform.position = VehicleConstructor.ClampToGrid(transform.position);
 
         // Test if the module can be placed into the grid
@@ -156,9 +177,10 @@ public class DraggableModule : MonoBehaviour
         {
             // The grid placement allows conditions where a module may be placed in a spot which overlaps itself.
             // In such a case, we need to remove the module first before adding it, otherwise the grid gets messed up.
+            // TODO: this ^^ is really just a failure in the design and should be fixed if it becomes a problem.
             if (_placed)
                 _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
-            
+
             // Place the module 
             var (pass, position) = _vehicleConstructor.TryAddModule(gameObject, originalPrefab);
             if (!pass)
@@ -179,19 +201,30 @@ public class DraggableModule : MonoBehaviour
             _placedGridPos = position;
             _savedPosition = transform.position;
             _savedRotation = transform.rotation.eulerAngles.z;
+
+            // Validate the design
+            _vehicleConstructor.ValidateDesign();
         }
-        else Reset();
+        // If the module was dragged outside of the grid, then delete it
+        else if(!VehicleConstructor.TestOnGrid(transform.position))
+            Delete();
+        else // Otherwise just reset its position
+            Reset();
     }
 
 
     /// <summary>
-    /// Resets the vehicle module back to its previous position & rotation
+    /// Resets the vehicle module back to its last saved position and rotation
     /// </summary>
     public void Reset()
     {
         transform.position = _savedPosition;
         transform.rotation = Quaternion.Euler(0, 0, _savedRotation);
+        ApplyTint(false);
+
+        _vehicleConstructor.ValidateDesign();
     }
+
 
     private void Update()
     {
@@ -217,10 +250,12 @@ public class DraggableModule : MonoBehaviour
 
             UpdatePosition();
 
-            // Deleting module
-            if (Input.GetKeyDown(KeyCode.Delete))
-                Delete();
+    
         }
+
+        // Deleting module
+        if (_hover && Input.GetKeyDown(KeyCode.Delete))
+            Delete();
     }
 
 
@@ -234,7 +269,10 @@ public class DraggableModule : MonoBehaviour
         else
             Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
         Destroy(gameObject);
+
+        _vehicleConstructor.ValidateDesign();
     }
+
 
     /// <summary>
     /// Sets the position of the module to the mouse position
@@ -257,23 +295,14 @@ public class DraggableModule : MonoBehaviour
     }
 
 
-    /// <summary>
-    /// Returns whether or not the mouse is over the build grid
-    /// </summary>
-    /// <returns>true if the mouse is over the grid, otherwise false</returns>
-    private bool MouseOverGrid()
-    {
-        var gridPos = _vehicleConstructor.TransformToGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        return VehicleConstructor.TestOnGrid(gridPos);
-    }
 
     /// <summary>
-    /// Calculates the position offset caused by the module rotation
+    /// Calculates the position offset caused by a module's rotation
     /// </summary>
-    /// <returns></returns>
-    public Vector3 CalculateRotationOffset()
+    /// <param name="rotation"> The rotation </param>
+    /// <returns> The rotation offset </returns>
+    public static Vector3 CalculateRotationOffset(float rotation)
     {
-        int rotation = (int)(transform.rotation.eulerAngles.z / 90.0f) * 90;
         switch (rotation)
         {
             case 0:
@@ -289,6 +318,39 @@ public class DraggableModule : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Calculates the position offset caused by the module's current rotation
+    /// </summary>
+    /// <returns> The rotation offset </returns>
+    public Vector3 CalculateRotationOffset()
+    {
+        int rotation = (int)(transform.rotation.eulerAngles.z / 90.0f) * 90;
+        return CalculateRotationOffset(rotation);
+    }
 
-  
+
+    /// <summary>
+    /// Applys a tint to the module
+    /// </summary>
+    /// <param name="errorTint"> If true, sets the tint to the default error tint otherwise sets it to white </param>
+    public void ApplyTint(bool errorTint)
+    {
+        ApplyTint(errorTint ? ErrorTintColor : Color.white);
+    }
+
+
+    /// <summary>
+    /// Applys a tint color to the entire module
+    /// </summary>
+    /// <param name="tintColor"> The color to apply, this action is irreversible for non-textured objects</param>
+    public void ApplyTint(Color tintColor)
+    {
+        // Get all sprite rendering components
+        List<SpriteRenderer> renderers = new List<SpriteRenderer>();
+        GetComponentsInChildren<SpriteRenderer>(renderers);
+        foreach (var r in renderers)
+            r.color = tintColor;
+    }
+
+
 }
