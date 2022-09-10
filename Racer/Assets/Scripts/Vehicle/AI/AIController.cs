@@ -217,7 +217,7 @@ public class AIController : MonoBehaviour
     /// Starts the simulation of the AI controller.
     /// Does nothing if its already running
     /// </summary>
-    public void Start()
+    public void StartSimulating()
     {
         if (!_running)
             Initialize();
@@ -227,7 +227,7 @@ public class AIController : MonoBehaviour
     /// <summary>
     /// Stops the simulation of the AI controller
     /// </summary>
-    public void Stop()
+    public void StopSimulating()
     {
         _running = false;
     }

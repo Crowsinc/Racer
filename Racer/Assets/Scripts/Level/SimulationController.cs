@@ -56,7 +56,7 @@ public class SimulationController : MonoBehaviour
         if (inBuildMode) return;
         if (isFinished) return;
         _totalTime += Time.deltaTime;
-        //timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString();
+        timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString();
         raceProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance, 0), 1, 1);
     }
 
@@ -90,7 +90,7 @@ public class SimulationController : MonoBehaviour
             rb.angularVelocity = 0;
 
             playerVehicle.ClearStructure();
-            _playerAI?.Stop();
+            _playerAI.StopSimulating();
         }
         DestroyImmediate(opponentInstance, true);
     }
@@ -124,12 +124,12 @@ public class SimulationController : MonoBehaviour
             // Start the AI simulation
             _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
             if (_opponentAI != null)
-                _opponentAI.Start();
+                _opponentAI.StartSimulating();
             else
                 Debug.LogError("Opponent vehicle has no AI");
 
             if (playerVehicle.gameObject.TryGetComponent<AIController>(out _playerAI))
-                _playerAI.Start();
+                _playerAI.StartSimulating();
             else
                 Debug.LogError("Player vehicle has no AI");
         }
@@ -144,8 +144,8 @@ public class SimulationController : MonoBehaviour
         raceUI.SetActive(false);
         winUI.SetActive(true);
 
-        _playerAI.Stop();
-        _opponentAI.Stop();
+        _playerAI.StopSimulating();
+        _opponentAI.StopSimulating();
         isFinished = true;
     }
 
