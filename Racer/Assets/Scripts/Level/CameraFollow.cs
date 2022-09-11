@@ -21,25 +21,26 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         var half = (Camera.main.orthographicSize * Camera.main.aspect);
-        if (transform.position.x - half < MapStart.position.x)
-        {
-            //transform.position = new Vector3(MapStart.position.x + half, transform.position.y, transform.position.z);
-        }
-        else if (Target.position.x + half > MapEnd.position.x)
-        {
-            transform.position = Vector3.Lerp(
-                new Vector3(transform.position.x, transform.position.y, -10.0f),
-                new Vector3(MapEnd.position.x - half + 0.001f, Target.position.y, -10.0f),
-                0.1f
-            );
-            return;
-        }
 
         transform.position = Vector3.Lerp(
             new Vector3(transform.position.x, transform.position.y, -10.0f),
             new Vector3(Target.position.x, Target.position.y, -10.0f),
             0.1f
         );
-        
+
+        var yPos = transform.position.y;
+        if (transform.position.x - half < MapStart.position.x)
+        {
+            if (yPos < MapStart.position.y)
+                yPos = MapStart.position.y;
+            transform.position = new Vector3(MapStart.position.x + half, yPos, transform.position.z);
+        }
+        else if (Target.position.x + half > MapEnd.position.x)
+        {
+            if (yPos < MapEnd.position.y)
+                yPos = MapEnd.position.y;
+            transform.position = new Vector3(MapEnd.position.x - half, yPos, transform.position.z);
+        }
+
     }
 }
