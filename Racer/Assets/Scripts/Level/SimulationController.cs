@@ -31,7 +31,7 @@ public class SimulationController : MonoBehaviour
     private bool isFinished = false;
     private CameraFollow cameraFollow;
     private float raceDistance;
-    private GameObject opponentInstance;
+    public GameObject opponentInstance;
     private VehicleConstructor _vehicleConstructor;
 
     private AIController _playerAI;
@@ -69,6 +69,7 @@ public class SimulationController : MonoBehaviour
         Time.timeScale = 0;
         inBuildMode = true;
         _totalTime = 0;
+        isFinished = false;
         cameraFollow.Target = buildModeCamPos;
 
         // Change UI
@@ -154,7 +155,8 @@ public class SimulationController : MonoBehaviour
     public void LoseRace()
     {
         isFinished = true;
-        //TODO
+        raceUI.SetActive(false);
+        winUI.SetActive(true);
     }
 
     private void UpdateProgressBar()

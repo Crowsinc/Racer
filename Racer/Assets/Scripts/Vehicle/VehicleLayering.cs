@@ -13,7 +13,6 @@ public class VehicleLayering : MonoBehaviour
         isEnemy = GetComponent<VehicleCore>().Pregenerated;
         if (isEnemy)
         {
-            Debug.Log("Test");
             foreach (var renderer in GetComponentsInChildren<SpriteRenderer>())
             {
                 renderer.sortingLayerName = "Opponent Vehicle";

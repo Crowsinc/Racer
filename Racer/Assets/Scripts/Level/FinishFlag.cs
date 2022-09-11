@@ -5,6 +5,7 @@ using UnityEngine;
 public class FinishFlag : MonoBehaviour
 {
     private SimulationController sc;
+    private Transform opponent;
 
     private void Awake()
     {
@@ -12,7 +13,26 @@ public class FinishFlag : MonoBehaviour
         sc.raceFinishPoint = transform.position;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void Update()
+    {
+        if (opponent == null)
+        {
+            if (sc.opponentInstance == null)
+                return;
+
+            opponent = sc.opponentInstance.transform.Find("Vehicle");
+        }
+        if (opponent.position.x > sc.raceFinishPoint.x)
+        {
+            sc.LoseRace();
+        } 
+        else if (sc.playerVehicle.transform.position.x > sc.raceFinishPoint.x)
+        {
+            sc.WinRace();
+        }
+    }
+
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
@@ -22,5 +42,5 @@ public class FinishFlag : MonoBehaviour
         {
             sc.LoseRace();
         }
-    }
+    }*/
 }
