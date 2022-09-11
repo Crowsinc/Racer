@@ -17,7 +17,6 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(Input.GetAxisRaw("Cancel"));
         if (Input.GetAxisRaw("Cancel") > 0 && !_buttonDown && !_simulationController.inBuildMode)
         {
             _buttonDown = true;

@@ -31,7 +31,7 @@ public class BuildStats : MonoBehaviour
 
     private void UpdateStats()
     {
-        text.text = _level.name + "\n" +
+        text.text = _level.levelName + "\n" +
             "Budget: $" + _level.budget + "\n" +
             "Total Vehicle Cost: $" + vehicleConstructor.SumVehicleCost().ToString();
     }

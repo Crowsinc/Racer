@@ -184,6 +184,15 @@ public class VehicleConstructor : MonoBehaviour
         return total;
     }
 
+    public bool ValidateRestrictions(List<LevelRestrictions> restrictions)
+    {
+        foreach (LevelRestrictions restriction in restrictions)
+        {
+            if (!restriction.PassesRestrictions(_design)) return false;
+        }
+        return true;
+    }
+
     public int ModuleCount()
     {
         return _design.Count;

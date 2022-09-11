@@ -50,9 +50,9 @@ public class Tooltip : MonoBehaviour
 
 
       rectTransform.pivot = new Vector2(pivotX, pivotY);
-      Debug.Log("position" + position.ToString());
-      Debug.Log("pivot" + pivotX.ToString());
-      Debug.Log("pivoty" + pivotY.ToString());
+      //Debug.Log("position" + position.ToString());
+      //Debug.Log("pivot" + pivotX.ToString());
+      //Debug.Log("pivoty" + pivotY.ToString());
 
       if (position.y > 540)
       {

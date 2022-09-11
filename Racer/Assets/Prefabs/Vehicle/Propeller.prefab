@@ -132,7 +132,7 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 1.5}
+  m_Offset: {x: 0.5, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -144,16 +144,16 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.04400003, y: 0.38}
-      - {x: 0, y: 0.75}
-      - {x: -0.044, y: 0.38}
+    - - {x: 0.04400003, y: 0.25}
+      - {x: 0, y: 0.5}
+      - {x: -0.044, y: 0.25}
       - {x: -0.044, y: 0.049999952}
       - {x: -0.5, y: 0.049999952}
       - {x: -0.5, y: -0.049999952}
       - {x: -0.044, y: -0.049999952}
-      - {x: -0.044, y: -0.3783033}
-      - {x: 0, y: -0.75}
-      - {x: 0.04400003, y: -0.38}
+      - {x: -0.044, y: -0.25}
+      - {x: 0, y: -0.5}
+      - {x: 0.044, y: -0.25}
 --- !u!114 &4758518223659593155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   Cost: 30
   EnergyCapacity: 0
   Mass: 1
-  Size: {x: 1, y: 3}
+  Size: {x: 1, y: 1}
   Collider: {fileID: 8918917842448196127}
   Attachments: []
   LinkedVehicle: {fileID: 0}
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalActuationForce: {x: -40, y: 0}
   LocalIdleForce: {x: 0, y: 0}
-  LocalActuationPosition: {x: 0, y: 0}
+  LocalActuationPosition: {x: 0.5, y: 0.5}
   ActivationCost: 1
   IdleCost: 0
   ProportionalControl: 1
@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 5548186778762311475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 1.5, z: 1}
+  m_LocalScale: {x: 0.1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7624578219329187305}
@@ -303,7 +303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7144459328759555293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
