@@ -98,18 +98,6 @@ public class VehicleCore : MonoBehaviour
     /// </returns>
     public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design)
     {
-        // Check for budget
-        float totalCost = 0;
-        foreach (KeyValuePair<Vector2Int, ModuleSchematic> pair in design)
-        {
-            totalCost += pair.Value.Prefab.GetComponent<VehicleModule>().Cost;
-        }
-        if (totalCost > GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelInitialiser>().selectedLevel.budget)
-        {
-            Debug.LogError($"Vehicle cost over budget");
-            return false;
-        }
-
         // Add ourselves to the design so our module properties are taken into account
         design[new Vector2Int(0, 0)] = new ModuleSchematic(gameObject);
 
