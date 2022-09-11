@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a242634dc8c5b4a93e07be465b240a, type: 3}
   m_Name: Level1
   m_EditorClassIdentifier: 
+  name: 
   levelId: 1
   terrain: {fileID: 3751650358320115858, guid: 4441a7ce423e213448037c01a200e3cd, type: 3}
   opponentVehicle: {fileID: 6945384242340336323, guid: 83b1b27b7aa4eef4bb99b460886cd60d, type: 3}
   budget: 1000
+  gravity: {x: 0, y: -9.81, z: 0}
+  restritions: []
