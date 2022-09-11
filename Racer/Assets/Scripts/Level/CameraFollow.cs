@@ -31,13 +31,13 @@ public class CameraFollow : MonoBehaviour
         var yPos = transform.position.y;
         if (transform.position.x - half < MapStart.position.x)
         {
-            if (yPos < MapStart.position.y)
+            if (yPos < MapStart.position.y && Target.position.x < MapStart.position.x)
                 yPos = MapStart.position.y;
             transform.position = new Vector3(MapStart.position.x + half, yPos, transform.position.z);
         }
         else if (Target.position.x + half > MapEnd.position.x)
         {
-            if (yPos < MapEnd.position.y)
+            if (yPos < MapEnd.position.y && Target.position.x > MapEnd.position.x)
                 yPos = MapEnd.position.y;
             transform.position = new Vector3(MapEnd.position.x - half, yPos, transform.position.z);
         }
