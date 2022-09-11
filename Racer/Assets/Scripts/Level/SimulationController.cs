@@ -67,6 +67,7 @@ public class SimulationController : MonoBehaviour
     {
         Time.timeScale = 0;
         inBuildMode = true;
+        _totalTime = 0;
         cameraFollow.Target = buildModeCamPos;
 
         // Change UI
