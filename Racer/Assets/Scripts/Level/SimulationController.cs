@@ -21,6 +21,7 @@ public class SimulationController : MonoBehaviour
     public GameObject winUI;
 
     public Transform raceProgressBar;
+    public Transform opponentProgressBar;
     [HideInInspector]
     public GameObject opponentVehicle;
     [HideInInspector]
@@ -58,6 +59,7 @@ public class SimulationController : MonoBehaviour
         _totalTime += Time.deltaTime;
         timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString();
         raceProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance, 0), 1, 1);
+        opponentProgressBar.transform.localScale = new Vector3(Mathf.Max((raceDistance - Vector3.Distance(opponentInstance.transform.Find("Vehicle").position, raceFinishPoint)) / raceDistance, 0), 1, 1);
     }
 
     /// <summary>
