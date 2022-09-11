@@ -158,10 +158,12 @@ public class SimulationController : MonoBehaviour
 
     private void UpdateProgressBar()
     {
-        var playerProgressBarDistance = Mathf.Max((raceDistance - Vector3.Distance(playerVehicle.transform.position, raceFinishPoint)) / raceDistance, 0);
-        var opponentProgressBarDistance = Mathf.Max((raceDistance - Vector3.Distance(opponentInstance.transform.Find("Vehicle").position, raceFinishPoint)) / raceDistance, 0);
+        var playerProgressBarDistance = Mathf.Min(Mathf.Max((raceDistance - (raceFinishPoint.x - playerVehicle.transform.position.x)) / raceDistance, 0), 1);
+        var opponentProgressBarDistance = Mathf.Min(Mathf.Max((raceDistance - (raceFinishPoint.x - opponentInstance.transform.Find("Vehicle").position.x)) / raceDistance, 0), 1);
+
         raceProgressBar.transform.localScale = new Vector3(playerProgressBarDistance, 1, 1);
         opponentProgressBar.transform.localScale = new Vector3(opponentProgressBarDistance, 1, 1);
+
         if (playerProgressBarDistance > opponentProgressBarDistance)
             opponentProgressBar.transform.SetAsLastSibling();
         else
