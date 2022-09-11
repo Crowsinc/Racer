@@ -16,3 +16,4 @@ MonoBehaviour:
   terrain: {fileID: 3751650358320115858, guid: 39bd1f6a17656a44b97bddd65e3d527d, type: 3}
   opponentVehicle: {fileID: 6945384242340336323, guid: 83b1b27b7aa4eef4bb99b460886cd60d, type: 3}
   budget: 1000
+  gravity: {x: 0, y: -9.81, z: 0}
