@@ -10,9 +10,8 @@ public class LevelTerrain : MonoBehaviour
     public GameObject startPoint;
     public GameObject endPoint;
 
-    [Header("Friction Values")]
-    public float grass;
-    public float ice;
+    [Header("TerrainPhysics")]
+    public PhysicsMaterial2D material;
 
     private int startIndex;
     private int endIndex;
@@ -70,8 +69,6 @@ public class LevelTerrain : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if collision is with vehicle component
-
-        // Change component rb drag
+        collision.collider.sharedMaterial = material;
     }
 }

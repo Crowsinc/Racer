@@ -1236,8 +1236,7 @@ MonoBehaviour:
   spriteShapeController: {fileID: 3751650358320115857}
   startPoint: {fileID: 8173277997249453932}
   endPoint: {fileID: 1190693670795351690}
-  grass: 0
-  ice: 0
+  material: {fileID: 6200000, guid: 8f2355523abd02a4eb52e411fc56be30, type: 2}
 --- !u!1 &4106353316360747683
 GameObject:
   m_ObjectHideFlags: 0
@@ -2386,7 +2385,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -2543,8 +2542,7 @@ MonoBehaviour:
   spriteShapeController: {fileID: 8018101175077915988}
   startPoint: {fileID: 5907786208259942411}
   endPoint: {fileID: 826925217964483340}
-  grass: 0
-  ice: 0
+  material: {fileID: 6200000, guid: 61b9165f492faf24dabe610fc45635b9, type: 2}
 --- !u!60 &4134630753026665105
 PolygonCollider2D:
   m_ObjectHideFlags: 0

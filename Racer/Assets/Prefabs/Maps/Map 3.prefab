@@ -262,8 +262,7 @@ MonoBehaviour:
   spriteShapeController: {fileID: 3751650358320115857}
   startPoint: {fileID: 8173277997249453932}
   endPoint: {fileID: 1190693670795351690}
-  grass: 0
-  ice: 0
+  material: {fileID: 6200000, guid: 61b9165f492faf24dabe610fc45635b9, type: 2}
 --- !u!1 &8173277997249453932
 GameObject:
   m_ObjectHideFlags: 0

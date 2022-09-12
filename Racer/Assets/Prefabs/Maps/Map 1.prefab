@@ -85,8 +85,8 @@ SpriteShapeRenderer:
   m_Sprites:
   - {fileID: 21300000, guid: 96c9cbe746cb6be4481b168f6e4ce634, type: 3}
   - {fileID: 21300000, guid: 19e60baaa369e31478bb2424a8d964cb, type: 3}
-  - {fileID: 21300000, guid: fafdc92ac5776b84da041e7804e94c4b, type: 3}
-  - {fileID: 21300000, guid: c873c325f9b6625478030969e1dc036c, type: 3}
+  - {fileID: 21300000, guid: 6887f95ac3e1441468bd45ed76862be5, type: 3}
+  - {fileID: 21300000, guid: b3e02633ca15c9949bf694f656779fde, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
@@ -360,8 +360,7 @@ MonoBehaviour:
   spriteShapeController: {fileID: 3751650358320115857}
   startPoint: {fileID: 8173277997249453932}
   endPoint: {fileID: 1190693670795351690}
-  grass: 0
-  ice: 0
+  material: {fileID: 6200000, guid: 61b9165f492faf24dabe610fc45635b9, type: 2}
 --- !u!1 &8173277997249453932
 GameObject:
   m_ObjectHideFlags: 0
