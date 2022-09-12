@@ -8,6 +8,7 @@ public class LevelScreen : MonoBehaviour
     // Start is called before the first frame update
     public TMP_Text levelTitle;
     public TMP_Text levelScore;
+    public TMP_Text levelDesc;
     public List<Level> levelCollection = new List<Level>();
     private Level level;
     
@@ -32,6 +33,9 @@ public class LevelScreen : MonoBehaviour
         {
             levelScore.text = "Stats:\n \n Best Time: \n" + "N/A" + "\n \n Lowest Cost:\n $800";
         }
+        
+        //Can add description to level screen here
+        levelDesc.text = "Level Description goes here. We can include the lore of the level, etc!";
     }
     
     public void LoadGameScene()

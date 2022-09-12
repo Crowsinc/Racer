@@ -52,6 +52,8 @@ MonoBehaviour:
   Cost: 20
   EnergyCapacity: 40
   Mass: 1
+  Description: A glider that increases drag in a direction by increasing the effective
+    surface area!
   Size: {x: 3, y: 1}
   Collider: {fileID: 4449389387347680046}
   Attachments: []

@@ -229,6 +229,7 @@ MonoBehaviour:
   Cost: 30
   EnergyCapacity: 0
   Mass: 1
+  Description: A cheap wheel, with no suspension.
   Size: {x: 1, y: 1}
   Collider: {fileID: 172467704956253312}
   Attachments:
