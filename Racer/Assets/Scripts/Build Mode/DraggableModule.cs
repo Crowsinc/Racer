@@ -84,7 +84,6 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     public Color ErrorTintColor = new Color(1.0f, 0, 0, 0.5f);
 
-
     public GameObject ForceIndicatorPrefab;
     private GameObject _forceIndicator = null;
     private SpriteRenderer _forceIndicatorRenderer = null;
@@ -213,6 +212,10 @@ public class DraggableModule : MonoBehaviour
             // If the wasn't previously placed, then instantiate a new one
             if (!_placed)
             {
+                // Disable thrust lines on new gameobject
+                if (_forceIndicatorRenderer != null)
+                    _forceIndicatorRenderer.enabled = false;
+
                 Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
                 transform.parent = _moduleHolder;
             }
@@ -221,6 +224,8 @@ public class DraggableModule : MonoBehaviour
             _placedGridPos = position;
             _savedPosition = transform.position;
             _savedRotation = transform.rotation.eulerAngles.z;
+            
+
 
             // Validate the design
             _vehicleConstructor.ValidateDesign();
@@ -286,10 +291,16 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     private void Delete()
     {
-        if (_placed)
-            _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
-        else
+        if (!_placed)
+        {
+            // Disable thrust lines on new object
+            if (_forceIndicatorRenderer != null)
+                _forceIndicatorRenderer.enabled = false;
+
             Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+        }
+        else _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
+        
         Destroy(gameObject);
 
         _vehicleConstructor.ValidateDesign();
