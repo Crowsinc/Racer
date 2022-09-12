@@ -152,7 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalActuationForce: {x: -80, y: 0}
   LocalIdleForce: {x: 0, y: 0}
-  LocalActuationPosition: {x: 0.475, y: 0.5}
+  LocalActuationPosition: {x: 0.7, y: 0.5}
   ActivationCost: 1
   IdleCost: 0
   ProportionalControl: 1
