@@ -169,7 +169,8 @@ public class VehicleCore : MonoBehaviour
     /// </returns>
     public bool TryBuildStructure(Dictionary<Vector2Int, ModuleSchematic> design, bool clearOnFail = true)
     {
-        // Add ourselves to the design so our module properties are taken into account
+        // Add ourselves to a copy of the design so our module properties are taken into account
+        design = new Dictionary<Vector2Int, ModuleSchematic>(design); 
         design[new Vector2Int(0, 0)] = new ModuleSchematic(gameObject);
 
         ClearStructure();

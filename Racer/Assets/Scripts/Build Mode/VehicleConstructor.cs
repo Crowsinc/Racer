@@ -279,6 +279,7 @@ public class VehicleConstructor : MonoBehaviour
         {
             total += pair.Value.Prefab.GetComponent<VehicleModule>().Cost;
         }
+        
         return total;
     }
 

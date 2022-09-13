@@ -190,7 +190,6 @@ public class DraggableModule : MonoBehaviour
             _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(false);
         }
     }
-    }
 
 
     /// <summary>
