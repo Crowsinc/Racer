@@ -90,6 +90,7 @@ public class DraggableModule : MonoBehaviour
 
     private TooltipTrigger trigger;
 
+
     private void Awake()
     {
         // Getting necessary components and game objects
@@ -105,39 +106,45 @@ public class DraggableModule : MonoBehaviour
         // Offset from bottom left origin to the centre of the module
         CentreOffset = _vehicleModule.Size / 2.0f;
 
-        // Adding hitbox that spans the size of the module
-        BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
-        _draggableCollider.size = _vehicleModule.Size;
-        _draggableCollider.offset = CentreOffset;
-
         // Default to non-tinted state
         ApplyTint(false);
 
-        // Add tooltip trigger for invalid state
-        trigger = gameObject.AddComponent<TooltipTrigger>();
-        trigger.header = "Module not connected";
-        trigger.content = "";
-        trigger.enabled = false;
-
-        // If we are an actuator, then add a force indicator object
-        if (TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
+        // Do not re-initialize the following if the module is a clone of another draggable module
+        // That is, if its name has more than one (Clone) tag on it
+        if (gameObject.name.LastIndexOf("(Clone)") == gameObject.name.IndexOf("(Clone)"))
         {
-            float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y, actuator.LocalActuationForce.x);
+            // Adding hitbox that spans the size of the module
+            BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
+            _draggableCollider.size = _vehicleModule.Size;
+            _draggableCollider.offset = CentreOffset;
 
-            _forceIndicator = Instantiate(
-                ForceIndicatorPrefab,
-                actuator.LocalActuationPosition + (Vector2)actuator.transform.position,
-                Quaternion.Euler(0, 0, rotation),
-                gameObject.transform
-            );
-            _forceIndicatorRenderer = _forceIndicator.GetComponentInChildren<SpriteRenderer>();
-            _forceIndicatorRenderer.enabled = false;
+            // TODO: REMOVE THIS TOOLTIP TO ADD TO THE ITEM DESCRIPTION UI INSTEAD,
+            // LEAVE THE OTHER ONE THERE!
+            TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
+            tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
+            tooltipTrigger.header = _vehicleModule.Name;
+
+            // Add tooltip trigger for invalid state
+            trigger = gameObject.AddComponent<TooltipTrigger>();
+            trigger.header = "Module not connected";
+            trigger.content = "";
+            trigger.enabled = false;
+
+            // If we are an actuator, then add a force indicator object
+            if (TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
+            {
+                float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y, actuator.LocalActuationForce.x);
+
+                _forceIndicator = Instantiate(
+                    ForceIndicatorPrefab,
+                    actuator.LocalActuationPosition + (Vector2)actuator.transform.position,
+                    Quaternion.Euler(0, 0, rotation),
+                    gameObject.transform
+                );
+                _forceIndicatorRenderer = _forceIndicator.GetComponentInChildren<SpriteRenderer>();
+                _forceIndicatorRenderer.enabled = false;
+            }
         }
-
-        // Initialise tooltip
-        TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
-        tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
-        tooltipTrigger.header = _vehicleModule.Name;
     }
 
     /// <summary>
@@ -230,6 +237,7 @@ public class DraggableModule : MonoBehaviour
                     _forceIndicatorRenderer.enabled = false;
 
                 Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+
                 transform.parent = _moduleHolder;
             }
 
