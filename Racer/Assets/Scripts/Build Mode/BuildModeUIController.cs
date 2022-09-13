@@ -10,6 +10,7 @@ public class BuildModeUIController : MonoBehaviour
     public GameObject energyHolder;
     public GameObject chassisHolder;
     public GameObject actuatorHolder;
+    public GameObject controlsPanel;
 
     public GameObject ForceIndicatorPrefab;
 
@@ -94,6 +95,21 @@ public class BuildModeUIController : MonoBehaviour
             case "Actuator":
                 EnableUI(actuatorHolder);
                 break;
+        }
+    }
+    
+    /// <summary>
+    /// Function called by UI button to turn on and off the controls panel
+    /// </summary>
+    public void toggleControls()
+    {
+        if (controlsPanel.activeSelf)
+        {
+            controlsPanel.SetActive(false);
+        }
+        else
+        {
+            controlsPanel.SetActive(true);
         }
     }
 

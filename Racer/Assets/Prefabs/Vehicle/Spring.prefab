@@ -51,6 +51,8 @@ MonoBehaviour:
   Cost: 20
   EnergyCapacity: 0
   Mass: 1
+  Description: A spring to bounce off! Strength is proportional to vehicle weight.
+    Always fires when coming onto contact with a surface.
   Size: {x: 1, y: 1}
   Collider: {fileID: 452161253172875441}
   Attachments: []

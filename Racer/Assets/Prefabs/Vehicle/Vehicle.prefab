@@ -183,6 +183,7 @@ MonoBehaviour:
   Cost: 0
   EnergyCapacity: 50
   Mass: 1
+  Description: This is the vehicle core. The driver/pilot sits here!
   Size: {x: 1, y: 1}
   Collider: {fileID: 8494678887704816148}
   Attachments: []

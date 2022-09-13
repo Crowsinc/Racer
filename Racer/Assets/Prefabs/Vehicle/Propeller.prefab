@@ -169,6 +169,7 @@ MonoBehaviour:
   Cost: 30
   EnergyCapacity: 0
   Mass: 1
+  Description: A cheap, but weak propellor. Uses little fuel.
   Size: {x: 1, y: 1}
   Collider: {fileID: 8918917842448196127}
   Attachments: []

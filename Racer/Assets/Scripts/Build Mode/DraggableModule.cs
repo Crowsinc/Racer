@@ -158,12 +158,17 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //Numeric stats
         _hover = true;
         _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
         _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
             $"{_vehicleModule.Mass}\n" +
             $"{_vehicleModule.EnergyCapacity}\n" +
             $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
+        
+        //Text stats
+        _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
+        _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Description;
     }
 
 
@@ -175,7 +180,11 @@ public class DraggableModule : MonoBehaviour
     {
         _hover = false;
         if (!_dragging)
+        {
             _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
+            _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(false);
+        }
+    }
     }
 
 

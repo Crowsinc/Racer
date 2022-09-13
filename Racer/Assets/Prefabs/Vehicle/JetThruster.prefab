@@ -386,6 +386,7 @@ MonoBehaviour:
   Cost: 120
   EnergyCapacity: 0
   Mass: 10
+  Description: A powerful thruster. Uses a fair amount of fuel.
   Size: {x: 3, y: 1}
   Collider: {fileID: 2638166094455142260}
   Attachments: []

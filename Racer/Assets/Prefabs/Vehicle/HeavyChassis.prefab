@@ -133,6 +133,8 @@ MonoBehaviour:
   Cost: 60
   EnergyCapacity: 50
   Mass: 30
+  Description: A heavier chassis block. Use this to manipulate your vehicle's centre
+    of gravity, or make it heavier!
   Size: {x: 1, y: 1}
   Collider: {fileID: 3798563304595994547}
   Attachments: []

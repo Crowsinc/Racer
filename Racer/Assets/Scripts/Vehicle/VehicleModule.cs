@@ -21,13 +21,17 @@ public class VehicleModule : MonoBehaviour
     /// </summary>
     public float Mass = 1;
 
+    /// <summary>
+    /// The description of this module to show in the tooltip
+    /// </summary>
+    public string Description = "";
 
     /// <summary>
     /// The cell size (width, height) of this module.
     /// </summary>
     public Vector2 Size = Vector2.one;
 
-
+    
     /// <summary>
     /// An optional predicate function for validating the placement of this module onto 
     /// a vehicle building grid using per module restrictions. For example, a jet 

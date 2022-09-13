@@ -395,6 +395,8 @@ MonoBehaviour:
   Cost: 80
   EnergyCapacity: 0
   Mass: 4
+  Description: A wheel with suspension, for those bumpy roads. Somewhat expensive,
+    but worth it!
   Size: {x: 1, y: 2}
   Collider: {fileID: 2055665847356100098}
   Attachments:
