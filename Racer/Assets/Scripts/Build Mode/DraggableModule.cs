@@ -118,10 +118,10 @@ public class DraggableModule : MonoBehaviour
             _draggableCollider.size = _vehicleModule.Size;
             _draggableCollider.offset = CentreOffset;
 
-            // TODO: REMOVE THIS TOOLTIP TO ADD TO THE ITEM DESCRIPTION UI INSTEAD,
+            // REMOVE THIS TOOLTIP TO ADD TO THE ITEM DESCRIPTION UI INSTEAD, (Todo complete! - Ivan)
             // LEAVE THE OTHER ONE THERE!
             TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
-            tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
+            // tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
             tooltipTrigger.header = _vehicleModule.Name;
 
             // Add tooltip trigger for invalid state
@@ -178,9 +178,14 @@ public class DraggableModule : MonoBehaviour
             $"{_vehicleModule.EnergyCapacity}\n" +
             $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
         
-        //Text stats
+        //Text stats on left panel
         _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
         _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Description;
+        
+        //Numeric stats on left panel
+        _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text = 
+            $"${_vehicleModule.Cost.ToString()}\n" +
+            $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}";
     }
 
 

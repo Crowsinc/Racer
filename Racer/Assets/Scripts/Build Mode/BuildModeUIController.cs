@@ -11,6 +11,7 @@ public class BuildModeUIController : MonoBehaviour
     public GameObject chassisHolder;
     public GameObject actuatorHolder;
     public GameObject controlsPanel;
+    public GameObject controlsButton;
 
     public GameObject ForceIndicatorPrefab;
 
@@ -110,6 +111,15 @@ public class BuildModeUIController : MonoBehaviour
         else
         {
             controlsPanel.SetActive(true);
+        }
+        
+        if (controlsButton.activeSelf)
+        {
+            controlsButton.SetActive(false);
+        }
+        else
+        {
+            controlsButton.SetActive(true);
         }
     }
 
