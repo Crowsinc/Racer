@@ -120,9 +120,9 @@ public class DraggableModule : MonoBehaviour
 
             // REMOVE THIS TOOLTIP TO ADD TO THE ITEM DESCRIPTION UI INSTEAD, (Todo complete! - Ivan)
             // LEAVE THE OTHER ONE THERE!
-            TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
+            // TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
             // tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
-            tooltipTrigger.header = _vehicleModule.Name;
+            // tooltipTrigger.header = _vehicleModule.Name;
 
             // Add tooltip trigger for invalid state
             trigger = gameObject.AddComponent<TooltipTrigger>();
@@ -170,22 +170,31 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //Numeric stats
-        _hover = true;
-        _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
-        _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
-            $"{_vehicleModule.Mass}\n" +
-            $"{_vehicleModule.EnergyCapacity}\n" +
-            $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}";
-        
-        //Text stats on left panel
-        _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
-        _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Description;
-        
-        //Numeric stats on left panel
-        _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text = 
-            $"${_vehicleModule.Cost.ToString()}\n" +
-            $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}";
+        if (eventData.position.x > Screen.width / 2)
+        {
+            //Numeric stats
+            _hover = true;
+            // _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
+            // _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
+            ;
+
+            //Title for left panel
+            _simulationController.moduleNameDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Name;
+
+            //Text stats on left panel
+            _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
+            _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Description;
+
+            //Numeric stats on left panel
+            _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text =
+                $"{_vehicleModule.Mass}\n" +
+                $"{_vehicleModule.EnergyCapacity}\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}\n" +
+                $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}\n" +
+                $"${_vehicleModule.Cost.ToString()}\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : 0)}\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : 0)}\n";
+        }
     }
 
 
@@ -198,7 +207,7 @@ public class DraggableModule : MonoBehaviour
         _hover = false;
         if (!_dragging)
         {
-            _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
+            // _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(false);
             _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(false);
         }
     }

@@ -12,9 +12,9 @@ public class SimulationController : MonoBehaviour
     public GameObject buildModeUI;
     public GameObject buildModeGrid;
     public GameObject buildModeModuleHolder;
-    public GameObject moduleStatsDisplay;
     public GameObject moduleInfoDisplay;
     public GameObject moduleExtraStatsDisplay;
+    public GameObject moduleNameDisplay;
     public TMP_Text timer;
 
     public GameObject raceUI;
