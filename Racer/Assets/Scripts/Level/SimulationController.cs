@@ -144,6 +144,13 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     public void WinRace()
     {
+        foreach (var level in GetComponent<LevelInitialiser>().levelCollection)
+        {
+            if (PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL) == level.levelId)
+            {
+                level.SetHighScore(Mathf.RoundToInt(CalculateScore()));
+            }
+        }
         raceUI.SetActive(false);
         winUI.SetActive(true);
 
@@ -171,5 +178,10 @@ public class SimulationController : MonoBehaviour
             opponentProgressBar.transform.SetAsLastSibling();
         else
             raceProgressBar.transform.SetAsLastSibling();
+    }
+
+    private int CalculateScore()
+    {
+        return ((int)_totalTime);
     }
 }
