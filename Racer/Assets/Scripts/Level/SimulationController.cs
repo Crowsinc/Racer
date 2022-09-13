@@ -34,6 +34,7 @@ public class SimulationController : MonoBehaviour
     private float raceDistance;
     public GameObject opponentInstance;
     private VehicleConstructor _vehicleConstructor;
+    private Level _level;
 
     private AIController _playerAI;
     private AIController _opponentAI;
@@ -50,6 +51,7 @@ public class SimulationController : MonoBehaviour
     }
     void Start()
     {
+        _level = gameObject.GetComponent<LevelInitialiser>().selectedLevel;
         EnterBuildMode();
     }
 
@@ -104,7 +106,12 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     public void StartRace()
     {
-        if (playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign()))
+        // Check that design meets cost and module restrictions, and is valid
+        bool validDesign = _level.budget >= _vehicleConstructor.SumVehicleCost();
+        validDesign &= _vehicleConstructor.ValidateRestrictions(_level.restritions);
+        validDesign &= playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign());
+
+        if (validDesign)
         {
             Time.timeScale = 1;
             inBuildMode = false;
@@ -118,10 +125,10 @@ public class SimulationController : MonoBehaviour
             raceUI.SetActive(true);
 
             raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
-            
+
             // Build the opponent
             opponentInstance = Instantiate(opponentVehicle, new Vector3(0, 3, 0), Quaternion.identity);
-            
+
             // Unfreeze player vehicle
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
@@ -137,7 +144,10 @@ public class SimulationController : MonoBehaviour
             else
                 Debug.LogError("Player vehicle has no AI");
         }
-        else Debug.LogWarning("Player Vehicle Failed Validation");
+        else {
+            Debug.LogWarning("Player Vehicle Failed Validation");
+            playerVehicle.ClearStructure();
+         }
     }
 
     /// <summary>

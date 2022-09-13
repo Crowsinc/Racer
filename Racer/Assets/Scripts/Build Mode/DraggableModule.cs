@@ -133,6 +133,11 @@ public class DraggableModule : MonoBehaviour
             _forceIndicatorRenderer = _forceIndicator.GetComponentInChildren<SpriteRenderer>();
             _forceIndicatorRenderer.enabled = false;
         }
+
+        // Initialise tooltip
+        TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
+        tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
+        tooltipTrigger.header = _vehicleModule.Name;
     }
 
     /// <summary>

@@ -267,4 +267,32 @@ public class VehicleConstructor : MonoBehaviour
             r.enabled = true;
     }
 
+
+    /// <summary>
+    /// Calculates the sum cost of the vehicle in the design
+    /// </summary>
+    /// <returns>total sum</returns>
+    public float SumVehicleCost()
+    {
+        float total = 0;
+        foreach (KeyValuePair<Vector2Int, ModuleSchematic> pair in _design)
+        {
+            total += pair.Value.Prefab.GetComponent<VehicleModule>().Cost;
+        }
+        return total;
+    }
+
+    public bool ValidateRestrictions(List<LevelRestrictions> restrictions)
+    {
+        foreach (LevelRestrictions restriction in restrictions)
+        {
+            if (!restriction.PassesRestrictions(_design)) return false;
+        }
+        return true;
+    }
+
+    public int ModuleCount()
+    {
+        return _design.Count;
+    }
 }

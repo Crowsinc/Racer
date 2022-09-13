@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelInitialiser : MonoBehaviour
 {
-    private Level selectedLevel;
+    public Level selectedLevel;
     public List<Level> levelCollection;
     void Awake()
     {
