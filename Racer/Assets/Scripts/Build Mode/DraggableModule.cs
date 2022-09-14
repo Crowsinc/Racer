@@ -166,10 +166,10 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
+        _hover = true;
         if (eventData.position.x > Screen.width / 2)
         {
             //Numeric stats
-            _hover = true;
             // _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
             // _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text = ;
 
