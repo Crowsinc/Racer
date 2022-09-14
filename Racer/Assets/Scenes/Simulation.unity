@@ -5530,9 +5530,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wheels:
-  - {fileID: 2154514071067287247, guid: ac49c16f934b6f54e92e81b0c6d269b7, type: 3}
   - {fileID: 7776635038082980632, guid: bd5a02ec8ce099f41ab3637c27ec3139, type: 3}
+  - {fileID: 7776635038082980632, guid: d5eb282dde42b2b468167607a04498e5, type: 3}
   - {fileID: 2154514071067287247, guid: db202efad52d8f74dba7eaf80cad93dd, type: 3}
+  - {fileID: 2154514071067287247, guid: ac49c16f934b6f54e92e81b0c6d269b7, type: 3}
   - {fileID: 2154514071067287247, guid: 3902fa90990ba7c469f7c03e74a84e94, type: 3}
   chassis:
   - {fileID: 250273767811750508, guid: ee50b618b143dd848b4012ee9acc4a47, type: 3}
