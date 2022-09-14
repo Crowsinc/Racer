@@ -109,7 +109,7 @@ public class SimulationController : MonoBehaviour
     {
         // Check that design meets cost and module restrictions, and is valid
         bool validDesign = _level.budget >= _vehicleConstructor.SumVehicleCost();
-        validDesign &= _vehicleConstructor.ValidateRestrictions(_level.restritions);
+        //validDesign &= _vehicleConstructor.ValidateRestrictions(_level.restritions);
         validDesign &= playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign());
 
         if (validDesign)

@@ -119,10 +119,7 @@ public class DraggableModule : MonoBehaviour
             _draggableCollider.offset = CentreOffset;
 
             // Add tooltip trigger for invalid state
-            trigger = gameObject.AddComponent<TooltipTrigger>();
-            trigger.header = "Module not connected";
-            trigger.content = "";
-            trigger.enabled = false;
+            gameObject.AddComponent<TooltipTrigger>();
 
             // If we are an actuator, then add a force indicator object
             if (TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
@@ -139,6 +136,11 @@ public class DraggableModule : MonoBehaviour
                 _forceIndicatorRenderer.enabled = false;
             }
         }
+
+        trigger = GetComponent<TooltipTrigger>();
+        trigger.header = "Module not connected";
+        trigger.content = "";
+        trigger.enabled = false;
     }
 
     /// <summary>
