@@ -7399,20 +7399,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Weight:
+  m_text: 'Mass:
 
     Energy:
 
-    Thrust:
+    Force:
 
     Size:
 
     Cost:
 
     Idle Energy
-    Cost:
+    Draw:
 
-    Active Energy Cost:'
+    Active Energy Draw:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

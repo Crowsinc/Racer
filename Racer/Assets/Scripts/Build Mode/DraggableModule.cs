@@ -118,12 +118,6 @@ public class DraggableModule : MonoBehaviour
             _draggableCollider.size = _vehicleModule.Size;
             _draggableCollider.offset = CentreOffset;
 
-            // REMOVE THIS TOOLTIP TO ADD TO THE ITEM DESCRIPTION UI INSTEAD, (Todo complete! - Ivan)
-            // LEAVE THE OTHER ONE THERE!
-            // TooltipTrigger tooltipTrigger = gameObject.AddComponent<TooltipTrigger>();
-            // tooltipTrigger.content = "$" + _vehicleModule.Cost.ToString();
-            // tooltipTrigger.header = _vehicleModule.Name;
-
             // Add tooltip trigger for invalid state
             trigger = gameObject.AddComponent<TooltipTrigger>();
             trigger.header = "Module not connected";
@@ -175,8 +169,7 @@ public class DraggableModule : MonoBehaviour
             //Numeric stats
             _hover = true;
             // _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
-            // _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text =
-            ;
+            // _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text = ;
 
             //Title for left panel
             _simulationController.moduleNameDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Name;
@@ -187,13 +180,13 @@ public class DraggableModule : MonoBehaviour
 
             //Numeric stats on left panel
             _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text =
-                $"{_vehicleModule.Mass}\n" +
-                $"{_vehicleModule.EnergyCapacity}\n" +
-                $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}\n" +
+                $"{_vehicleModule.Mass}kg\n" +
+                $"{_vehicleModule.EnergyCapacity} J\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)} N\n" +
                 $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}\n" +
                 $"${_vehicleModule.Cost.ToString()}\n" +
-                $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : 0)}\n" +
-                $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : 0)}\n";
+                $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : 0)} J/sec\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : 0)} J/sec\n";
         }
     }
 
