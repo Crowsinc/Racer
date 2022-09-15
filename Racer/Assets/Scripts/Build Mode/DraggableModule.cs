@@ -268,13 +268,11 @@ public class DraggableModule : MonoBehaviour
             _savedPosition = transform.position;
             _savedRotation = transform.rotation.eulerAngles.z;
             
-
-
             // Validate the design
             _vehicleConstructor.ValidateDesign();
         }
         // If the module was dragged outside of the grid, then delete it
-        else if(!VehicleConstructor.TestOnGrid(transform.position))
+        else if(!_vehicleConstructor.TestOnGrid(gameObject))
             Delete();
         else // Otherwise just reset its position
             Reset();

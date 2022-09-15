@@ -39,7 +39,7 @@ public class VehicleConstructor : MonoBehaviour
     /// <param name="position"> The position of the module </param>
     /// <param name="rotation"> The rotation of the module </param>
     /// <returns> The grid position of the module, whose grid coordinates are in the bottom left of the module </returns>
-    private Vector2Int TransformToGrid(GameObject module, Vector3 position, Quaternion rotation)
+    public Vector2Int TransformToGrid(GameObject module, Vector3 position, Quaternion rotation)
     {
         VehicleModule properties = module.GetComponent<VehicleModule>();
 
@@ -60,7 +60,7 @@ public class VehicleConstructor : MonoBehaviour
     /// </summary>
     /// <param name="module"> the VehicleModule in question </param>
     /// <returns> The grid position of the module, whose grid coordinates are in the bottom left of the module </returns>
-    private Vector2Int TransformToGrid(GameObject module)
+    public Vector2Int TransformToGrid(GameObject module)
     {
         return TransformToGrid(module, module.transform.position, module.transform.rotation);
     }
@@ -176,13 +176,23 @@ public class VehicleConstructor : MonoBehaviour
 
 
     /// <summary>
-    /// Tests whether the given grid point is valid (on the grid space)
+    /// Tests whether the given grid point is on the grid space
     /// </summary>
     /// <param name="worldPos">the grid coord to test</param>
     /// <returns>true, if on grid</returns>
     public static bool TestOnGrid(Vector2 gridPos)
     {
         return gridPos.x > -7 && gridPos.x < 7 && gridPos.y > -4 && gridPos.y < 4;
+    }
+
+    /// <summary>
+    /// Tests whether the given module is on the grid space)
+    /// </summary>
+    /// <param name="module">the module to test</param>
+    /// <returns>true, if on grid</returns>
+    public bool TestOnGrid(GameObject module)
+    {
+        return TestOnGrid(TransformToGrid(module));
     }
 
 
