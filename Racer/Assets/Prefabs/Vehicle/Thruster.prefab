@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 7591770197965334901}
   - component: {fileID: 4704317077709287435}
   - component: {fileID: 3855434626019958647}
+  - component: {fileID: 8158395961887477786}
   m_Layer: 31
   m_Name: Thruster
   m_TagString: Untagged
@@ -175,6 +176,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Texture: {fileID: 1171447812353665673}
   ActuatorModule: {fileID: 4704317077709287435}
+--- !u!114 &8158395961887477786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860065509116655348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e710cb0ee8f254bb33c97aec6b771f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2008394192195240479
 GameObject:
   m_ObjectHideFlags: 0
