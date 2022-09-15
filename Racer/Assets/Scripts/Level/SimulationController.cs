@@ -14,6 +14,7 @@ public class SimulationController : MonoBehaviour
     public GameObject moduleInfoDisplay;
     public GameObject moduleExtraStatsDisplay;
     public GameObject moduleNameDisplay;
+    public GameObject moduleCostDisplay;
     public TMP_Text timer;
 
     public GameObject raceUI;
@@ -34,6 +35,7 @@ public class SimulationController : MonoBehaviour
     private float raceDistance;
     public GameObject opponentInstance;
     private VehicleConstructor _vehicleConstructor;
+    public LevelCompleteScreen _levelCompleteScreen;
     private Level _level;
 
     private AIController _playerAI;
@@ -163,6 +165,7 @@ public class SimulationController : MonoBehaviour
         }
         raceUI.SetActive(false);
         winUI.SetActive(true);
+        _levelCompleteScreen.initLevelCompleteScreen(true, CalculateScore(), (int)_vehicleConstructor.SumVehicleCost());
 
         _playerAI.StopSimulating();
         _opponentAI.StopSimulating();
@@ -174,6 +177,7 @@ public class SimulationController : MonoBehaviour
         isFinished = true;
         raceUI.SetActive(false);
         winUI.SetActive(true);
+        _levelCompleteScreen.initLevelCompleteScreen(false, CalculateScore(), (int)_vehicleConstructor.SumVehicleCost());
     }
 
     private void UpdateProgressBar()

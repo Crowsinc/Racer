@@ -177,7 +177,7 @@ public class DraggableModule : MonoBehaviour
 
             //Text stats on left panel
             _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
-            _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Description;
+            _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = "Cost:\n\n" + _vehicleModule.Description;
 
             //Numeric stats on left panel
             _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text =
@@ -185,9 +185,11 @@ public class DraggableModule : MonoBehaviour
                 $"{_vehicleModule.EnergyCapacity} J\n" +
                 $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)} N\n" +
                 $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}\n" +
-                $"${_vehicleModule.Cost.ToString()}\n" +
                 $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : "0")} J/sec\n" +
                 $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : "0")} J/sec\n";
+
+            _simulationController.moduleCostDisplay.GetComponent<TextMeshProUGUI>().text =
+                $"${_vehicleModule.Cost.ToString()}";
         }
     }
 

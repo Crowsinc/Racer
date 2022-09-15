@@ -6,7 +6,7 @@ using TMPro;
 public class LevelCompleteScreen : MonoBehaviour
 {
 
-    public TMP_Text levelCompleteTitle;
+    public TMP_Text levelCompleteTitle, levelCompleteStats;
 
     public GameObject retryButton, nextLevelButton, levelCompleteScreen;
     // Start is called before the first frame update
@@ -15,8 +15,12 @@ public class LevelCompleteScreen : MonoBehaviour
         
     }
     
-    public void initLevelCompleteScreen(bool passed)
+    public void initLevelCompleteScreen(bool passed, int time, int cost)
     {
+        levelCompleteStats.text = "Stats: \n \n" +
+                                 $"Time: {time}\n" +
+                                 $"Cost: {cost}";
+            
         if (passed)
         {
             drawPassed();
