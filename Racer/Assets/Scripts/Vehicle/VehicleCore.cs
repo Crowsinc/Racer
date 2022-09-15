@@ -616,7 +616,8 @@ public class VehicleCore : MonoBehaviour
             // velocity.
 
             // Velocity of vehicle, assuming zero wind speed.
-            var velocityDir = Rigidbody.velocity.normalized;
+            //var velocityDir = Rigidbody.velocity.normalized;
+            var velocityDir = Vector2.right;
             var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
 
             // Find drag area
@@ -630,8 +631,11 @@ public class VehicleCore : MonoBehaviour
                 var segment = prevPoint - currPoint;
                 var outerNormal = Vector2.Perpendicular(segment).normalized;
 
-                var angle = Mathf.Acos(Mathf.Clamp01(Vector2.Dot(outerNormal, velocityDir)));
-                dragArea += segment.magnitude * (1.0f - (2 * angle) / Mathf.PI);
+                // The amount of drag area applied will scale based on how parallel the normal of
+                // the segment is to the velocity direction. If they are parallel (angle = 0), then
+                // the full drag area is added. If they are perpendicular or an obtuse angle, then
+                // zero drag area is added. 
+                dragArea += segment.magnitude * (1.0f - Mathf.Clamp01(Vector2.Angle(outerNormal, velocityDir) / 90.0f));
 
                 prevPoint = currPoint;
 
