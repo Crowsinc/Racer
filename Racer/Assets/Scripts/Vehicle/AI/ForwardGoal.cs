@@ -132,4 +132,12 @@ public class ForwardGoal : AIGoal
 
         return actions;
     }
+
+    void OnValidate()
+    {
+        MinimumPriority = Mathf.Max(MinimumPriority, 0.0f);
+        ReactionTime = Mathf.Max(ReactionTime, 0.0001f);
+        TargetSpeed = Mathf.Max(TargetSpeed, 0.1f);
+        Leniency = Mathf.Max(Leniency, 0.0f);
+    }
 }

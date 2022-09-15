@@ -123,5 +123,7 @@ public class StabilityGoal : AIGoal
     void OnValidate()
     {
         SmoothingFactor = Mathf.Clamp01(SmoothingFactor);
+        ReactionTime = Mathf.Max(ReactionTime, 0.0001f);
+        MaxDeviation = Mathf.Max(MaxDeviation, 0.1f);
     }
 }
