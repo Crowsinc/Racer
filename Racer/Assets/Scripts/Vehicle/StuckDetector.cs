@@ -41,6 +41,6 @@ public class StuckDetector : MonoBehaviour
     private void OpenPrompt()
     {
         resetPrompt.SetActive(true);
-        resetPrompt.transform.position = Camera.main.WorldToScreenPoint(_simulationController.playerVehicle.transform.position) + Vector3.up * 20f;
+        resetPrompt.transform.position = Camera.main.WorldToScreenPoint(_simulationController.playerVehicle.transform.position + 0.5f * Vector3.right) + Vector3.up * 100f;
     }
 }
