@@ -39,7 +39,7 @@ public class LevelCompleteScreen : MonoBehaviour
         levelCompleteTitle.text = "Level Complete!";
         retryButton.SetActive(false);
         nextLevelButton.SetActive(true);
-        Debug.Log("Passed");
+        //Debug.Log("Passed");
     }
 
     public void drawFailed()
@@ -47,7 +47,7 @@ public class LevelCompleteScreen : MonoBehaviour
         levelCompleteTitle.text = "Level Failed...";
         retryButton.SetActive(true);
         nextLevelButton.SetActive(false);
-        Debug.Log("Failed");
+        //Debug.Log("Failed");
     }
     
     public void OpenLevelCompleteScreen()

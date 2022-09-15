@@ -130,7 +130,7 @@ public class SimulationController : MonoBehaviour
             // Build the opponent, ensuring its on the opponent vehicle layer
             opponentInstance = Instantiate(opponentVehicle, new Vector3(0, 3, 0), Quaternion.identity);
             opponentInstance.layer = LayerMask.NameToLayer("Opponent Vehicle");
-
+            
             // Unfreeze player vehicle
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
@@ -145,6 +145,7 @@ public class SimulationController : MonoBehaviour
                 _playerAI.StartSimulating();
             else
                 Debug.LogError("Player vehicle has no AI");
+        
         }
         else {
             Debug.LogWarning("Player Vehicle Failed Validation");

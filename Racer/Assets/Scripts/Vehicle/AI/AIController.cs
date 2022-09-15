@@ -17,7 +17,7 @@ public class AIController : MonoBehaviour
     /// <summary>
     /// The number of FixedUpdate ticks that vehicle projections are estimated over.
     /// </summary>
-    public uint ProjectionSampleTime = 10;
+    public uint ProjectionSampleTime = 15;
 
 
     /// <summary>
@@ -196,7 +196,8 @@ public class AIController : MonoBehaviour
             var leftRay = Physics2D.Raycast(leftBound, Vector2.down, _maxRayDistance, _raycastLayerMask);
             var rightRay = Physics2D.Raycast(rightBound, Vector2.down, _maxRayDistance, _raycastLayerMask);
 
-            Vector2 projection = ProjectionSampleTime * Time.fixedDeltaTime * Vehicle.Rigidbody.velocity;
+            // NOTE: we add a right offset to the projection to ensure we are always looking forward some amount
+            Vector2 projection = ProjectionSampleTime * (Time.fixedDeltaTime * Vehicle.Rigidbody.velocity + 0.1f * Vector2.right);
             var projectedLeftRay = Physics2D.Raycast(leftBound + projection, Vector2.down, _maxRayDistance, _raycastLayerMask);
             var projectedRightRay = Physics2D.Raycast(rightBound + projection, Vector2.down, _maxRayDistance, _raycastLayerMask);
 
@@ -208,7 +209,7 @@ public class AIController : MonoBehaviour
 
             if (projectedLeftRay.collider != null || projectedRightRay.collider != null)
                 ProjectedShadow = projectedRightRay.point - projectedLeftRay.point;
-  
+
             Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, rightRay.point, Color.yellow);
             Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, leftRay.point, Color.yellow);
             Debug.DrawLine(Vehicle.Rigidbody.worldCenterOfMass, projectedLeftRay.point, Color.red);
@@ -245,7 +246,7 @@ public class AIController : MonoBehaviour
         UpdateSensors();
 
         // Run the controller for this update tick
-        if(BlendGoals)
+        if (BlendGoals)
             BlendController();
         else
             MaxController();

@@ -12,7 +12,7 @@ public class StabilityGoal : AIGoal
     /// The maximum amount of angle deviation from the ground slope 
     /// allowed before stability becomes a max priority goal of the vehicle.
     /// </summary>
-    public float MaxDeviation = 8.0f;
+    public float MaxDeviation = 15.0f;
 
 
     /// <summary>
@@ -20,7 +20,7 @@ public class StabilityGoal : AIGoal
     /// As the reaction time approaches zero, the required acceleration of each thruster
     /// approaches infinity as corrective actions cannot be applied instantaneously. 
     /// </summary>
-    public float ReactionTime = 0.2f;
+    public float ReactionTime = 0.4f;
 
 
     /// <summary>
@@ -33,7 +33,7 @@ public class StabilityGoal : AIGoal
     /// <summary>
     /// The smoothing factor (0,1) to use when slope smoothing is turned on.
     /// </summary>
-    public float SmoothingFactor = 0.03f;
+    public float SmoothingFactor = 0.005f;
 
     private float _targetSlope = 0.0f;
     private float _targetAcceleration = 0.0f;
@@ -60,7 +60,7 @@ public class StabilityGoal : AIGoal
     public override float Plan()
     {
         var groundSlope = Mathf.Rad2Deg * Mathf.Atan(ProjectedShadow.y / ProjectedShadow.x);
-        
+
         if (SlopeSmoothing)
             // Apply smoothing through an exponential moving average approximation
             _targetSlope = SmoothingFactor * groundSlope + (1.0f - SmoothingFactor) * _targetSlope;

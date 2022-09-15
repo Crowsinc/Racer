@@ -203,7 +203,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 20
   m_LinearDrag: 0
-  m_AngularDrag: 1
+  m_AngularDrag: 3
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BlendGoals: 0
-  ProjectionSampleTime: 10
+  ProjectionSampleTime: 15
 --- !u!114 &1456849907175484206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,9 +238,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controller: {fileID: 0}
   MaxDeviation: 15
-  ReactionTime: 1
+  ReactionTime: 0.4
   SlopeSmoothing: 1
-  SmoothingFactor: 0.03
+  SmoothingFactor: 0.005
 --- !u!114 &7818581992794470130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,4 +255,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Controller: {fileID: 0}
   ReactionTime: 0.2
-  TargetSpeed: 50
+  TargetSpeed: 100
+  MinimumPriority: 0.1
+  Leniency: 15
