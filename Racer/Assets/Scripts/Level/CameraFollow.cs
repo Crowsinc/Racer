@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
+    public Transform buildModeCamPos;
     public Transform Target;
     public Transform MapStart;
     public Transform MapEnd;
 
-    private void Start()
+    private void Awake()
     {
+        Target = buildModeCamPos;
         var map = GameObject.FindGameObjectWithTag("Ground");
         MapStart = map.transform.Find("Start");
         MapEnd = map.transform.Find("Flag");
 
         Time.timeScale = 1f;
+
+        // Call update once to initialise in correct position
+        Update();
     }
 
     // Update is called once per frame

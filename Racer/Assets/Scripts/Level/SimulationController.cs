@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class SimulationController : MonoBehaviour
 {
-    public Transform buildModeCamPos;
     public VehicleCore playerVehicle;
 
     public GameObject buildModeUI;
@@ -74,7 +73,6 @@ public class SimulationController : MonoBehaviour
         inBuildMode = true;
         _totalTime = 0;
         isFinished = false;
-        cameraFollow.Target = buildModeCamPos;
 
         // Change UI
         buildModeUI.SetActive(true);
@@ -89,7 +87,7 @@ public class SimulationController : MonoBehaviour
         // Resetting player vehicle
         if(playerVehicle.IsBuilt)
         {
-            playerVehicle.transform.position = buildModeCamPos.position - Vector3.back * 10;
+            playerVehicle.transform.position = new Vector3(0, 3, 0);
             playerVehicle.transform.rotation = Quaternion.identity;
 
             Rigidbody2D rb = playerVehicle.GetComponent<Rigidbody2D>();

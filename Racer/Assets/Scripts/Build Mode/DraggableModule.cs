@@ -90,7 +90,6 @@ public class DraggableModule : MonoBehaviour
 
     private TooltipTrigger trigger;
 
-
     private void Awake()
     {
         // Getting necessary components and game objects
@@ -170,7 +169,7 @@ public class DraggableModule : MonoBehaviour
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (eventData.position.x > Screen.width / 2)
+        if (!_placed && !_dragging)
         {
             //Numeric stats
             _hover = true;
@@ -192,8 +191,8 @@ public class DraggableModule : MonoBehaviour
                 $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)}\n" +
                 $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}\n" +
                 $"${_vehicleModule.Cost.ToString()}\n" +
-                $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : 0)}\n" +
-                $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : 0)}\n";
+                $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : "0")}\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : "0")}\n";
         }
     }
 

@@ -30,13 +30,15 @@ public class BuildModeUIController : MonoBehaviour
 
         // Get list of modules
         _moduleCollection = GameObject.FindGameObjectWithTag("GameController").GetComponent<ModuleCollection>();
+    }
 
+    private void Start()
+    {
         // Create menu modules
         CreateMenuModule(wheelsHolder.transform, _moduleCollection.wheels);
         CreateMenuModule(energyHolder.transform, _moduleCollection.energy);
         CreateMenuModule(chassisHolder.transform, _moduleCollection.chassis);
         CreateMenuModule(actuatorHolder.transform, _moduleCollection.actuators);
-        
     }
 
     /// <summary>
