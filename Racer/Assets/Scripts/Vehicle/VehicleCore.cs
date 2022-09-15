@@ -91,13 +91,26 @@ public class VehicleCore : MonoBehaviour
         public float TotalEnergyCapacity;
 
         public float TotalMass;
-        public Vector2 LocalCentreOfMass;
+        public Vector2 LocalCentreOfMass; 
 
-        public bool ValidDesign;
-        public List<Vector2Int> ValidModules;
-        public List<Vector2Int> DisjointModules;
+        public bool ValidDesign; // True if the design is valid, otherwise false
+        public List<Vector2Int> ValidModules; // Design offset of valid modules
+        public List<Vector2Int> DisjointModules; // Design offset of disjoint modules
     };
 
+
+    /// <summary>
+    /// Validates the given design of the vehicle, returning feedback statistics.
+    /// </summary>
+    /// <param name="design">
+    /// A dictionary of ModuleSchematics, describing a prefab that is to be placed as a vehicle module.
+    /// Each ModuleSchematic is keyed by its positional offset from the VehicleCore. All offsets are taken
+    /// from the bottom left of the set of cells onto which the prefab will be placed, regardless of its 
+    /// rotation. The offset (0,0) is reseved for the vehicle core and will be ignored. 
+    /// </param>
+    /// <returns> 
+    /// Feedback statistics on the vehicle design. 
+    /// </returns>
     public DesignFeedback ValidateDesign(Dictionary<Vector2Int, ModuleSchematic> design)
     {
         // To validate our design we will just build a vehicle off-screen, then analyse it
@@ -122,8 +135,16 @@ public class VehicleCore : MonoBehaviour
         var modules = testCore.gameObject.GetComponentsInChildren<VehicleModule>();
         foreach (var module in modules)
         {
-            var offset = module.transform.position - testCore.transform.position
-                - DraggableModule.CalculateRotationOffset(module.transform.rotation.eulerAngles.z);
+            // Get the offset to the bottom left cell of the module. If the rotated size
+            // of the module is negative, then it means that the origin has been shifted
+            // from the bottom left, so we need to shift it back
+            var rotatedSize = VehicleModule.RotateSize(module.Size, module.transform.rotation);
+            Vector3 originOffset = new Vector2(
+                Mathf.Min(rotatedSize.x, 0),
+                Mathf.Min(rotatedSize.y, 0)
+            );
+
+            var offset = (module.transform.position + originOffset) - testCore.transform.position;
             var gridOffset = new Vector2Int((int)offset.x, (int)offset.y);
 
             // If the module does not have a collider or is the core, then ignore it
@@ -156,8 +177,9 @@ public class VehicleCore : MonoBehaviour
     /// </summary>
     /// <param name="design">
     /// A dictionary of ModuleSchematics, describing a prefab that is to be placed as a vehicle module.
-    /// Each ModuleSchematic is keyed by its positional offset from the VehicleCore. As such, the offset
-    /// (0,0) will be reserved for the vehicle core and ignored. 
+    /// Each ModuleSchematic is keyed by its positional offset from the VehicleCore. All offsets are taken
+    /// from the bottom left of the set of cells onto which the prefab will be placed, regardless of its 
+    /// rotation. The offset (0,0) is reseved for the vehicle core and will be ignored. 
     /// </param>
     /// <param name="clearOnFail">
     /// If set to true, the vehicle state and structure will cleared if building fails to pass validation. 
@@ -180,18 +202,36 @@ public class VehicleCore : MonoBehaviour
         Vector2 centreOfMass = Vector2.zero;
         foreach (var (offset, (prefab, rotation)) in design)
         {
+            var position = transform.position + new Vector3(offset.x, offset.y);
+            var rotationQuat = Quaternion.Euler(0, 0, rotation);
+
             // Instantiate new vehicle module, unless this is the core
-            var position = transform.position + new Vector3(offset.x, offset.y) + DraggableModule.CalculateRotationOffset(rotation);
             var instance = prefab == gameObject ? gameObject
-                : Instantiate(prefab, position, Quaternion.Euler(0, 0, rotation), transform);
+                : Instantiate(prefab, position, rotationQuat, transform);
 
             // Register VehicleModule to the vehicle
             if (instance.TryGetComponent<VehicleModule>(out VehicleModule module))
             {
+                // The provided offset was to the bottom left corner of cells in which the prefab will recide. 
+                // While each prefab's origin is in the bottom left, this no longer holds for rotated modules. 
+                // For example, a module that is rotated 180 degrees will have its origin in the top right, 
+                // however the provided offset is still for the bottom left. If the rotated size of the module
+                // is negative, this means that the origin point switched to the opposite side of the module's
+                // cells, so we should add the size back as an offset
+                var rotatedSize = VehicleModule.RotateSize(module.Size, rotationQuat);
+                Vector3 originOffset = new Vector2(
+                    Mathf.Abs(Mathf.Min(rotatedSize.x, 0)),
+                    Mathf.Abs(Mathf.Min(rotatedSize.y, 0))
+                );
+                instance.transform.position += originOffset;
+
+
                 totalEnergyCapacity += module.EnergyCapacity;
                 totalMass += module.Mass;
             
-                // We take the objects mass from the centroid of all colliders, 
+                // We take the objects mass from the centroid of all colliders.
+                // NOTE: the origin offset hasn't had time to propogate to the colliders
+                // yet, so we need to add it ourselves to the centroids. 
                 Collider2D[] colliders = {module.Collider};
                 if(module.Attachments.Count > 0)
                     colliders = module.gameObject.GetComponentsInChildren<Collider2D>();
@@ -200,13 +240,13 @@ public class VehicleCore : MonoBehaviour
                 {
                     Vector2 moduleCentre = Vector2.zero;
                     foreach (var c in colliders)
-                        moduleCentre += (Vector2)c.bounds.center;
+                        moduleCentre += (Vector2)(c.bounds.center + originOffset);
                     moduleCentre /= colliders.Length;
 
                     centreOfMass += module.Mass * (moduleCentre - (Vector2)transform.position);
                 }
 
-                RegisterModule(module, rotation);
+                RegisterModule(module);
             }
             else Debug.LogError($"Vehicle module at {offset} has no VehicleModule component");
 
@@ -236,7 +276,7 @@ public class VehicleCore : MonoBehaviour
         // Validate our vehicles hull to make sure it will function as expected.
         // NOTE: any further validation tests should be evaluated here
         var validated = !disjoint;
-        
+
         // If the validation fails and clearOnFail is set, then we will clear and 'unbuild' the vehicle
         if (!validated && clearOnFail)
             ClearStructure();
@@ -280,6 +320,7 @@ public class VehicleCore : MonoBehaviour
         {
             Debug.LogError($"Pregenerated Vehicle hull is disjoint");
             ClearStructure();
+            return;
         }
 
         EnergyCapacity = totalEnergyCapacity;
@@ -354,27 +395,29 @@ public class VehicleCore : MonoBehaviour
     /// <param name="generateCollider"> 
     /// True, if the collider for this module should be generated automatically 
     /// </param>
-    private void RegisterModule(VehicleModule module, float rotation = 0)
+    private void RegisterModule(VehicleModule module)
     {
-        Vector2 offset = module.transform.position - transform.position;
-        
+        Vector2 gridOffset = module.transform.position - transform.position;
+
         // If the module has a collider, then absorb it into the vehicle core
         if (module.Collider != null)
         {
             // Get the collider vertices relative to the VehicleCore, taking  
             // into account any transforms and local offsets of the collider
-            Vector2 localColliderOffset = module.Collider.transform.position - module.transform.position;
-            localColliderOffset += (
-                rotation == 90 ? new Vector2(-module.Collider.offset.y, module.Collider.offset.x) : 
-                rotation == 180 ? -module.Collider.offset : 
-                rotation == 270 ? new Vector2(module.Collider.offset.y, -module.Collider.offset.x) : 
-                module.Collider.offset);
-            Vector2 localColliderScale = module.Collider.transform.localScale;
             Vector2[] localPoints = module.Collider.points;
             for (int i = 0; i < localPoints.Length; i++)
             {
-                localPoints[i] = module.transform.rotation * (localColliderScale * localPoints[i]);
-                localPoints[i] += offset + localColliderOffset;
+                // Scale the collider points
+                localPoints[i] *= module.Collider.transform.localScale;
+
+                // Add local collider offset
+                localPoints[i] += module.Collider.offset;
+                
+                // Transform point to world space, then obtain it relative to the vehicle core
+                localPoints[i] = module.transform.TransformPoint(localPoints[i]) - transform.position;
+                
+                // Add transform offset between the module, and the module child that the collider is placed on
+                localPoints[i] += (Vector2)(module.Collider.transform.position - module.transform.position);
             }
 
             // Create our own collider to represent the module's collider
@@ -387,7 +430,7 @@ public class VehicleCore : MonoBehaviour
             module.Collider.enabled = false;
         }
         else if (module.gameObject != gameObject)
-            Debug.LogWarning($"Vehicle module at {offset} has no PolygonCollider2D");
+            Debug.LogWarning($"Vehicle module at {gridOffset} has no PolygonCollider2D");
 
         module.LinkedVehicle = this;
         Modules.Add(module);
@@ -405,7 +448,7 @@ public class VehicleCore : MonoBehaviour
                 // NOTE: we treat the set connectedAnchor value (as set in the editor) as
                 // an offset from center of the rigidbody that holds the joint (i.e. the attachment). 
                 Vector2 localBodyOffset = joint.attachedRigidbody.transform.position - module.transform.position;
-                joint.connectedAnchor = (offset + localBodyOffset) + joint.connectedAnchor;
+                joint.connectedAnchor = (gridOffset + localBodyOffset) + (Vector2)module.transform.TransformDirection(joint.connectedAnchor);
             }
         }
     }

@@ -148,7 +148,7 @@ public class SimulationController : MonoBehaviour
         else {
             Debug.LogWarning("Player Vehicle Failed Validation");
             playerVehicle.ClearStructure();
-         }
+        }
     }
 
     /// <summary>

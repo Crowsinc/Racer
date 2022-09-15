@@ -30,33 +30,39 @@ public class VehicleConstructor : MonoBehaviour
     }
 
 
+
     /// <summary>
-    /// Determines the grid position and rotated size of a module on the grid
+    /// Transforms the given module's position and rotation to a grid location 
+    /// with the origin in the bottom left 
     /// </summary>
-    /// <param name="module"> The VehicleModule being placed </param>
+    /// <param name="module"> The VehicleModule in question </param>
     /// <param name="position"> The position of the module </param>
     /// <param name="rotation"> The rotation of the module </param>
-    /// <returns> A tuple containing the rotated size and resulting integer grid coordinates </returns>
-    private (Vector2, Vector2Int) GatherGridSpaceInfo(GameObject module, Vector3 position, Quaternion rotation)
+    /// <returns> The grid position of the module, whose grid coordinates are in the bottom left of the module </returns>
+    private Vector2Int TransformToGrid(GameObject module, Vector3 position, Quaternion rotation)
     {
         VehicleModule properties = module.GetComponent<VehicleModule>();
-        DraggableModule draggableModule = module.GetComponent<DraggableModule>();
 
-        var gridPos = TransformToGrid(position - draggableModule.CalculateRotationOffset());
-        var gridSize = TransformGridSize(properties.Size, rotation);
+        var gridPos = ClampToGrid(position) - _coreWorldPos;
+        var gridSize = VehicleModule.RotateSize(properties.Size, rotation);
 
-        return (gridSize, gridPos);
+        // Reset the grid position back to the bottom left in the case of any rotation
+        // We can do this by subtracting any negative grid sizes from the grid position
+        gridPos.x += (int)Math.Min(gridSize.x, 0);
+        gridPos.y += (int)Math.Min(gridSize.y, 0);
+
+        return new Vector2Int((int)gridPos.x, (int)gridPos.y);
     }
 
 
     /// <summary>
-    /// Overload of GatherGridSpaceInfo which gathers all information from the module itself
+    /// Overload of TransformToGrid which gathers all information from the module itself
     /// </summary>
-    /// <param name="module"> the VehicleModule being placed </param>
-    /// <returns> A tuple containing the rotated size and resulting integer grid coordinates </returns>
-    private (Vector2, Vector2Int) GatherGridSpaceInfo(GameObject module)
+    /// <param name="module"> the VehicleModule in question </param>
+    /// <returns> The grid position of the module, whose grid coordinates are in the bottom left of the module </returns>
+    private Vector2Int TransformToGrid(GameObject module)
     {
-        return GatherGridSpaceInfo(module, module.transform.position, module.transform.rotation);
+        return TransformToGrid(module, module.transform.position, module.transform.rotation);
     }
 
 
@@ -69,11 +75,13 @@ public class VehicleConstructor : MonoBehaviour
     /// <returns> true if it can be placed, the placement may overlap its old position </returns>
     public bool TestPlacement(GameObject module, Vector2 position, Quaternion rotation)
     {
-        var (gridSize, gridPos) = GatherGridSpaceInfo(module, position, rotation);
+        var properties = module.GetComponent<VehicleModule>();
+        var gridSize = VehicleModule.RotateSize(properties.Size, module.transform.rotation);
+        var gridPos = TransformToGrid(module, position, rotation);
 
-        for (int dx = 0; dx != gridSize.x; dx += Math.Sign(gridSize.x))
+        for (int dx = 0; dx < Mathf.Abs(gridSize.x); dx++)
         {
-            for (int dy = 0; dy != gridSize.y; dy += Math.Sign(gridSize.y))
+            for (int dy = 0; dy < Mathf.Abs(gridSize.y); dy++)
             {
                 var coord = new Vector2Int(gridPos.x + dx, gridPos.y + dy);
 
@@ -110,7 +118,9 @@ public class VehicleConstructor : MonoBehaviour
         if (!TestPlacement(module))
             return (false, Vector2Int.zero);
 
-        var (gridSize, gridPos) = GatherGridSpaceInfo(module);
+        var properties = module.GetComponent<VehicleModule>();
+        var gridSize = VehicleModule.RotateSize(properties.Size, module.transform.rotation);
+        var gridPos = TransformToGrid(module);
 
         // Add original prefab to design
         _design[gridPos] = new ModuleSchematic(
@@ -119,9 +129,9 @@ public class VehicleConstructor : MonoBehaviour
         );
 
         // Set size as unavailable module positions
-        for (int dx = 0; dx != gridSize.x; dx += Math.Sign(gridSize.x))
+        for (int dx = 0; dx < Mathf.Abs(gridSize.x); dx++)
         {
-            for (int dy = 0; dy != gridSize.y; dy += Math.Sign(gridSize.y))
+            for (int dy = 0; dy < Mathf.Abs(gridSize.y); dy++)
             {
                 var coord = new Vector2Int(gridPos.x + dx, gridPos.y + dy);
                 _occupancy[coord] = module;
@@ -133,33 +143,21 @@ public class VehicleConstructor : MonoBehaviour
     /// <summary>
     /// Removes the module at that position from the design
     /// </summary>
-    /// <param name="gridPos">position of the draggable module in the grid</param>
+    /// <param name="gridPos">position of the draggable module in the grid, taken from its bottom left</param>
     /// <param name="size">size of the module</param>
     public void RemoveModule(Vector2Int gridPos, Vector2 size, float rotation)
     {
-        var gridSize = TransformGridSize(size, Quaternion.Euler(0, 0, rotation));
+        var gridSize = VehicleModule.RotateSize(size, Quaternion.Euler(0, 0, rotation));
+
         _design.Remove(gridPos);
-        for (int dx = 0; dx != gridSize.x; dx += Math.Sign(gridSize.x))
+        for (int dx = 0; dx < Mathf.Abs(gridSize.x); dx++)
         {
-            for (int dy = 0; dy != gridSize.y; dy += Math.Sign(gridSize.y))
+            for (int dy = 0; dy < Mathf.Abs(gridSize.y); dy++)
             {
                 var coord = new Vector2Int(gridPos.x + dx, gridPos.y + dy);
                 _occupancy.Remove(coord);
             }
         }
-    }
-
-
-    /// <summary>
-    /// Converts the world position of the module to a grid position relative to the vehicle core
-    /// </summary>
-    /// <param name="worldPos">position of the module</param>
-    /// <returns>position of the module in the grid</returns>
-    public Vector2Int TransformToGrid(Vector2 worldPos)
-    {
-        var gridPos = ClampToGrid(worldPos);
-        return new Vector2Int((int)gridPos.x, (int)gridPos.y) - _coreWorldPos;
-
     }
 
 
@@ -189,23 +187,8 @@ public class VehicleConstructor : MonoBehaviour
 
 
     /// <summary>
-    /// Re-orients the given module size based on the direction of the module rotation.
-    /// The width and height has directionality from the origin point of the module, 
-    /// meaning they can be negative depending on the rotation. 
+    /// Validates the current vehicle design, showing the feedback on the builder grid
     /// </summary>
-    /// <param name="size"> the size of the module </param>
-    /// <param name="moduleRotation"> a Quaternion representing the rotation of the module </param>
-    /// <returns> The transformed grid size </returns>
-    public static Vector2 TransformGridSize(Vector2 size, Quaternion moduleRotation)
-    {
-        var rotSize = moduleRotation * size;
-        var gridSize = new Vector2(
-           Mathf.Round(rotSize.x),
-           Mathf.Round(rotSize.y)
-        );
-        return gridSize;
-    }
-
     public void ValidateDesign()
     {
         var feedback = vehicleCore.ValidateDesign(GetDesign());
@@ -250,17 +233,20 @@ public class VehicleConstructor : MonoBehaviour
         }
     }
 
-    public Dictionary<Vector2Int, ModuleSchematic> GetDesign()
-    {
-        return _design;
-    }
 
+    /// <summary>
+    /// Hides vehicle construction UI elements such as the centre of gravity indicator
+    /// </summary>
     public void HideUIElements()
     {
         if (_cogIndicator != null && _cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
             r.enabled = false;
     }
 
+
+    /// <summary>
+    /// Shows vehicle construction UI elements such as the centre of gravity indicator
+    /// </summary>
     public void ShowUIElements()
     {
         if (_cogIndicator != null && _cogIndicator.TryGetComponent<SpriteRenderer>(out var r))
@@ -296,4 +282,11 @@ public class VehicleConstructor : MonoBehaviour
     {
         return _design.Count;
     }
+
+
+    public Dictionary<Vector2Int, ModuleSchematic> GetDesign()
+    {
+        return _design;
+    }
+
 }

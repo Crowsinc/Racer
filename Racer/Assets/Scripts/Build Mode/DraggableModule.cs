@@ -359,40 +359,6 @@ public class DraggableModule : MonoBehaviour
     }
 
 
-
-    /// <summary>
-    /// Calculates the position offset caused by a module's rotation
-    /// </summary>
-    /// <param name="rotation"> The rotation </param>
-    /// <returns> The rotation offset </returns>
-    public static Vector3 CalculateRotationOffset(float rotation)
-    {
-        switch (rotation)
-        {
-            case 0:
-                return Vector3.zero;
-            case 90:
-                return Vector3.right;
-            case 180:
-                return Vector3.one;
-            case 270:
-                return Vector3.up;
-            default:
-                return Vector3.zero;
-        }
-    }
-
-    /// <summary>
-    /// Calculates the position offset caused by the module's current rotation
-    /// </summary>
-    /// <returns> The rotation offset </returns>
-    public Vector3 CalculateRotationOffset()
-    {
-        int rotation = (int)(transform.rotation.eulerAngles.z / 90.0f) * 90;
-        return CalculateRotationOffset(rotation);
-    }
-
-
     /// <summary>
     /// Applys a tint to the module
     /// </summary>

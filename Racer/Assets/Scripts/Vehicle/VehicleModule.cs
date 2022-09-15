@@ -91,4 +91,23 @@ public class VehicleModule : MonoBehaviour
         Mass = Mathf.Max(Mass, 1.0f);
         EnergyCapacity = Mathf.Max(EnergyCapacity, 0.0f);
     }
+
+    /// <summary>
+    /// Re-orients the given module size based on the direction of the module rotation.
+    /// The width and height has directionality from the origin point of the module, 
+    /// meaning they can be negative depending on the rotation. 
+    /// </summary>
+    /// <param name="size"> the size of the module </param>
+    /// <param name="moduleRotation"> a Quaternion representing the rotation of the module </param>
+    /// <returns> The rotated grid size </returns>
+    public static Vector2 RotateSize(Vector2 size, Quaternion moduleRotation)
+    {
+        var rotSize = moduleRotation * size;
+        var gridSize = new Vector2(
+           Mathf.Round(rotSize.x),
+           Mathf.Round(rotSize.y)
+        );
+        return gridSize;
+    }
+
 }

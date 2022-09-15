@@ -99,34 +99,38 @@ public class AIController : MonoBehaviour
 
     private void Initialize()
     {
-        // Collect all vehicle colliders
-        Colliders.Clear();
-        Colliders.Add(Vehicle.Collider);
-        foreach(var body in Vehicle.Attachments)
+        if (Vehicle.IsBuilt)
         {
-            var bodyColliders = new List<Collider2D>();
-            body.GetAttachedColliders(bodyColliders);
-            Colliders.AddRange(bodyColliders);
-        }
-
-        // Get the dimensions of the vehicle in its local state. 
-        var localHull = Vehicle.LocalHull;
-        
-        if(localHull.Count > 0)
-        {
-            Vector2 min = localHull[0], max = localHull[0];
-            foreach (var point in localHull)
+            // Collect all vehicle colliders
+            Colliders.Clear();
+            Colliders.Add(Vehicle.Collider);
+            foreach (var body in Vehicle.Attachments)
             {
-                min = Vector2.Min(min, point);
-                max = Vector2.Max(max, point);
+                var bodyColliders = new List<Collider2D>();
+                body.GetAttachedColliders(bodyColliders);
+                Colliders.AddRange(bodyColliders);
             }
-            LocalSize = new Vector2(
-                Mathf.Abs(max.x - min.x),
-                Mathf.Abs(max.y - min.y)
-            );
-        }
 
-        DetectActuators();
+            // Get the dimensions of the vehicle in its local state. 
+            var localHull = Vehicle.LocalHull;
+
+            if (localHull.Count > 0)
+            {
+                Vector2 min = localHull[0], max = localHull[0];
+                foreach (var point in localHull)
+                {
+                    min = Vector2.Min(min, point);
+                    max = Vector2.Max(max, point);
+                }
+                LocalSize = new Vector2(
+                    Mathf.Abs(max.x - min.x),
+                    Mathf.Abs(max.y - min.y)
+                );
+            }
+
+            DetectActuators();
+        }
+        else Debug.LogError("Starting AI on unbuilt vehicle!");
 
         // Gather all AI goals
         Goals.Clear();
