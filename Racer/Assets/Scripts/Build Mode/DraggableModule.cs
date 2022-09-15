@@ -84,11 +84,16 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     public Color ErrorTintColor = new Color(1.0f, 0, 0, 0.5f);
 
+    /// <summary>
+    /// The box collider used to drag the module around
+    /// </summary>
+    public BoxCollider2D DragCollider;
+
     public GameObject ForceIndicatorPrefab;
+
     private GameObject _forceIndicator = null;
     private SpriteRenderer _forceIndicatorRenderer = null;
-
-    private TooltipTrigger trigger;
+    private TooltipTrigger _trigger = null;
 
     private void Awake()
     {
@@ -106,16 +111,16 @@ public class DraggableModule : MonoBehaviour
         CentreOffset = _vehicleModule.Size / 2.0f;
 
         // Default to non-tinted state
-        ApplyTint(false);
+        ResetTint();
 
         // Do not re-initialize the following if the module is a clone of another draggable module
         // That is, if its name has more than one (Clone) tag on it
         if (gameObject.name.LastIndexOf("(Clone)") == gameObject.name.IndexOf("(Clone)"))
         {
             // Adding hitbox that spans the size of the module
-            BoxCollider2D _draggableCollider = gameObject.AddComponent<BoxCollider2D>();
-            _draggableCollider.size = _vehicleModule.Size;
-            _draggableCollider.offset = CentreOffset;
+            DragCollider = gameObject.AddComponent<BoxCollider2D>();
+            DragCollider.size = _vehicleModule.Size;
+            DragCollider.offset = CentreOffset;
 
             // Add tooltip trigger for invalid state
             gameObject.AddComponent<TooltipTrigger>();
@@ -136,10 +141,10 @@ public class DraggableModule : MonoBehaviour
             }
         }
 
-        trigger = GetComponent<TooltipTrigger>();
-        trigger.header = "Module not connected";
-        trigger.content = "";
-        trigger.enabled = false;
+        _trigger = GetComponent<TooltipTrigger>();
+        _trigger.header = "";
+        _trigger.content = "";
+        _trigger.enabled = false;
     }
 
     /// <summary>
@@ -152,10 +157,14 @@ public class DraggableModule : MonoBehaviour
         _dragging = true;
 
         // Test our on the grid to check if we should be tinting for errors or not
-        ApplyTint(!_vehicleConstructor.TestPlacement(gameObject));
+        if (!_vehicleConstructor.TestPlacement(gameObject))
+            ApplyTint(Color.gray);
+        else
+            ResetTint();
+
         
-        trigger.Hide();
-        trigger.enabled = false;
+        _trigger.Hide();
+        _trigger.enabled = false;
     }
 
 
@@ -276,7 +285,7 @@ public class DraggableModule : MonoBehaviour
     {
         transform.position = _savedPosition;
         transform.rotation = Quaternion.Euler(0, 0, _savedRotation);
-        ApplyTint(false);
+        ResetTint();
 
         _vehicleConstructor.ValidateDesign();
     }
@@ -331,7 +340,11 @@ public class DraggableModule : MonoBehaviour
             Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
         }
         else _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
-        
+
+        // Hide any open tooltips
+        _trigger.Hide();
+        _trigger.enabled = false;
+
         Destroy(gameObject);
 
         _vehicleConstructor.ValidateDesign();
@@ -358,19 +371,17 @@ public class DraggableModule : MonoBehaviour
         DragOffset = worldPosition - transform.position;
     }
 
-
     /// <summary>
-    /// Applys a tint to the module
+    /// Resets the tint for the module
     /// </summary>
-    /// <param name="errorTint"> If true, sets the tint to the default error tint otherwise sets it to white </param>
-    public void ApplyTint(bool errorTint)
+    public void ResetTint()
     {
-        ApplyTint(errorTint ? ErrorTintColor : Color.white);
+        ApplyTint(Color.white);
     }
 
 
     /// <summary>
-    /// Applys a tint color to the entire module
+    /// Applies a tint color to the entire module
     /// </summary>
     /// <param name="tintColor"> The color to apply, this action is irreversible for non-textured objects</param>
     public void ApplyTint(Color tintColor)

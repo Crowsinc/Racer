@@ -192,15 +192,10 @@ public class VehicleConstructor : MonoBehaviour
     public void ValidateDesign()
     {
         var feedback = vehicleCore.ValidateDesign(GetDesign());
-        Debug.Log("NEW DESIGN");
         if(feedback.ValidDesign)
-            Debug.Log("Valid: Yes");
+            Debug.Log("Design Valid: Yes");
         else
-            Debug.Log("Valid: No");
-
-        Debug.Log($"Capacity: {feedback.TotalEnergyCapacity}");
-        Debug.Log($"Mass: {feedback.TotalMass}");
-        Debug.Log($"Centre of Mass: {feedback.LocalCentreOfMass}");
+            Debug.Log("Design Valid: No");
 
         // Move centre of mass prefab
         _cogIndicator.transform.position = feedback.LocalCentreOfMass + _coreWorldPos;
@@ -210,13 +205,27 @@ public class VehicleConstructor : MonoBehaviour
         {
             var module = _occupancy[offset];
 
-            if (module.TryGetComponent<DraggableModule>(out var draggable))
-                draggable.ApplyTint(false);
-
-            if(module.TryGetComponent<TooltipTrigger>(out var trigger))
+            if (module.TryGetComponent<DraggableModule>(out var draggable) && module.TryGetComponent<TooltipTrigger>(out var trigger))
             {
                 trigger.Hide();
                 trigger.enabled = false;
+                draggable.ResetTint();
+                
+                // Test if the valid component is a blocked actuator,
+                // if it is, then add error feedback for it. Note that
+                // we only do this for valid modules because disjoint
+                // errors take priority.
+                if(module.TryGetComponent<ActuatorLineOfSightTest>(out var tester))
+                {
+                    draggable.DragCollider.enabled = false;
+                    if(tester.TestBlocked())
+                    {
+                        trigger.enabled = true;
+                        trigger.header = "Actuator output is blocked";
+                        draggable.ApplyTint(Color.yellow);
+                    }
+                    draggable.DragCollider.enabled = true;
+                }
             }
         }
 
@@ -225,11 +234,12 @@ public class VehicleConstructor : MonoBehaviour
         {
             var module = _occupancy[offset];
 
-            if (module.TryGetComponent<DraggableModule>(out var draggable))
-                draggable.ApplyTint(true);
-
-            if (module.TryGetComponent<TooltipTrigger>(out var trigger))
+            if (module.TryGetComponent<DraggableModule>(out var draggable) && module.TryGetComponent<TooltipTrigger>(out var trigger))
+            {
                 trigger.enabled = true;
+                trigger.header = "Module is not connected";
+                draggable.ApplyTint(Color.red);
+            }
         }
     }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4125432442110161424}
   - component: {fileID: 1426049067015520836}
   - component: {fileID: 2094661645023921067}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Thruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,9 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 60
   EnergyCapacity: 0
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 341106534327594721}
   Attachments: []
@@ -100,7 +102,7 @@ GameObject:
   - component: {fileID: 8260967201422967776}
   - component: {fileID: 5562179047787872906}
   - component: {fileID: 341106534327594721}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,7 +236,7 @@ GameObject:
   - component: {fileID: 7802104978182512765}
   - component: {fileID: 5034455448497162145}
   - component: {fileID: 6630078863186392492}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6899851788871058819}
   - component: {fileID: 3467733645262746480}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -468,7 +470,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8707824129085405094}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -511,7 +513,7 @@ GameObject:
   - component: {fileID: 8382662830615484515}
   - component: {fileID: 928824328201569727}
   - component: {fileID: 8943454723750554975}
-  m_Layer: 30
+  m_Layer: 20
   m_Name: Vehicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -581,9 +583,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 0
   EnergyCapacity: 50
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 0}
   Attachments: []
@@ -647,7 +651,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed71eab3ee15fc54faa911d4ea4190b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Simulate: 0
   BlendGoals: 0
   ProjectionSampleTime: 10
 --- !u!114 &8382662830615484515
@@ -694,6 +697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734745623a0a57344951c93748309704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  opponentAlpha: 0.5
 --- !u!1 &1134386259304749289
 GameObject:
   m_ObjectHideFlags: 0
@@ -706,7 +710,7 @@ GameObject:
   - component: {fileID: 557188411239588134}
   - component: {fileID: 1468537050298653761}
   - component: {fileID: 9066392284137978482}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Thruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -741,9 +745,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 60
   EnergyCapacity: 0
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 7438380600479595184}
   Attachments: []
@@ -794,7 +800,7 @@ GameObject:
   - component: {fileID: 2606101443678005504}
   - component: {fileID: 4131652937943864185}
   - component: {fileID: 1465681696889506143}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -907,7 +913,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3079144581503172321}
   - component: {fileID: 545221189764577820}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -993,7 +999,7 @@ GameObject:
   - component: {fileID: 5572497137163702753}
   - component: {fileID: 6693045173351201199}
   - component: {fileID: 5866671147309301894}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1029,9 +1035,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 10
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 6693045173351201199}
   Attachments: []
@@ -1087,7 +1095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4269948449024010569}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1123,7 +1131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5014091737897855578}
   - component: {fileID: 2854000118819918550}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1207,7 +1215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8510860536882396601}
   - component: {fileID: 3213406786506219951}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Suspension
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1290,7 +1298,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3990266233230293572}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1326,7 +1334,7 @@ GameObject:
   - component: {fileID: 3023668734001316191}
   - component: {fileID: 1241398588151860643}
   - component: {fileID: 6326736478609204881}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1471,7 +1479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6424627040773452181}
   - component: {fileID: 6285842929182866095}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Suspension
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1554,7 +1562,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4212182212563324355}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1592,7 +1600,7 @@ GameObject:
   - component: {fileID: 1442225469974669850}
   - component: {fileID: 3604564952265190572}
   - component: {fileID: 7466055325326834577}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Thruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1627,9 +1635,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 60
   EnergyCapacity: 0
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 1100479643980768705}
   Attachments: []
@@ -1678,7 +1688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2492998158872683393}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1716,7 +1726,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5561091881077134414}
   - component: {fileID: 5861745937917543037}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1799,7 +1809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1614986547404144697}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1835,7 +1845,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3007121322964853972}
   - component: {fileID: 851285411645582906}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1920,7 +1930,7 @@ GameObject:
   - component: {fileID: 8366494899470638944}
   - component: {fileID: 20955534922882799}
   - component: {fileID: 400684302598336526}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1955,9 +1965,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 20
   EnergyCapacity: 10
   Mass: 5
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 400684302598336526}
   Attachments: []
@@ -2001,7 +2013,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4153321605018381666}
   - component: {fileID: 3820953455856253751}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2086,7 +2098,7 @@ GameObject:
   - component: {fileID: 1495397047433813975}
   - component: {fileID: 41670053929690278}
   - component: {fileID: 7722663325680240821}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2121,9 +2133,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 20
   EnergyCapacity: 10
   Mass: 5
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 7722663325680240821}
   Attachments: []
@@ -2168,7 +2182,7 @@ GameObject:
   - component: {fileID: 299743169004890409}
   - component: {fileID: 4929427486765825095}
   - component: {fileID: 6189148978041378304}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2203,9 +2217,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 20
   EnergyCapacity: 10
   Mass: 5
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 6189148978041378304}
   Attachments: []
@@ -2249,7 +2265,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7183286206032662998}
   - component: {fileID: 6084326665937516317}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2336,7 +2352,7 @@ GameObject:
   - component: {fileID: 4916443298940565397}
   - component: {fileID: 2951935334591230390}
   - component: {fileID: 7721934411116892032}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: JetThruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2409,9 +2425,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 120
   EnergyCapacity: 0
   Mass: 10
+  Description: 
   Size: {x: 3, y: 1}
   Collider: {fileID: 8305637226592066360}
   Attachments: []
@@ -2461,7 +2479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1201818657890624368}
   - component: {fileID: 5362164220424806695}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2545,7 +2563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1308031277101835527}
   - component: {fileID: 1475584044294671155}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2629,7 +2647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 414434962222619062}
   - component: {fileID: 5395151239787939962}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2714,7 +2732,7 @@ GameObject:
   - component: {fileID: 3659599022096316520}
   - component: {fileID: 5950366218351680960}
   - component: {fileID: 7416885394882698485}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: SuspensionWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2749,9 +2767,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 0
   Mass: 4
+  Description: 
   Size: {x: 1, y: 2}
   Collider: {fileID: 1465681696889506143}
   Attachments:
@@ -2781,7 +2801,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2092359648254183098}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2815,7 +2835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7960291238902053112}
   - component: {fileID: 2536271505851755818}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2902,7 +2922,7 @@ GameObject:
   - component: {fileID: 8299459617226345034}
   - component: {fileID: 7881413971674195368}
   - component: {fileID: 8257063427782694130}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3053,7 +3073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6203779797427824790}
   - component: {fileID: 8385694698864935367}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3138,7 +3158,7 @@ GameObject:
   - component: {fileID: 3667056327231740978}
   - component: {fileID: 1664086219677338521}
   - component: {fileID: 939315369415576901}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3173,9 +3193,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 20
   EnergyCapacity: 10
   Mass: 5
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 939315369415576901}
   Attachments: []
@@ -3220,7 +3242,7 @@ GameObject:
   - component: {fileID: 6719001825618658643}
   - component: {fileID: 6024991142235854554}
   - component: {fileID: 1100479643980768705}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3352,7 +3374,7 @@ GameObject:
   - component: {fileID: 406905657813609302}
   - component: {fileID: 3525970462847108601}
   - component: {fileID: 8610057224022023631}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3465,7 +3487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4543984456436290913}
   - component: {fileID: 8763789383859686655}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Suspension
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3550,7 +3572,7 @@ GameObject:
   - component: {fileID: 930873160127638103}
   - component: {fileID: 6721113490091462191}
   - component: {fileID: 2505042003147910320}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: SuspensionWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3585,9 +3607,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 0
   Mass: 4
+  Description: 
   Size: {x: 1, y: 2}
   Collider: {fileID: 8610057224022023631}
   Attachments:
@@ -3617,7 +3641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2067709938429568797}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3650,7 +3674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7254794060719203107}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3684,7 +3708,7 @@ GameObject:
   - component: {fileID: 4334556348149483936}
   - component: {fileID: 8148443813503493253}
   - component: {fileID: 7438380600479595184}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3814,7 +3838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1765846164021049410}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3851,7 +3875,7 @@ GameObject:
   - component: {fileID: 4333388615566362169}
   - component: {fileID: 4691833697612319918}
   - component: {fileID: 2101244337138859205}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4002,7 +4026,7 @@ GameObject:
   m_Component:
   - component: {fileID: 233777238861030567}
   - component: {fileID: 3021487685729127010}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Cone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4086,7 +4110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7421744510387972316}
   - component: {fileID: 3495046716392426582}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4173,7 +4197,7 @@ GameObject:
   - component: {fileID: 2393579935000010121}
   - component: {fileID: 3724935958754087012}
   - component: {fileID: 4941797513228113513}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4319,7 +4343,7 @@ GameObject:
   - component: {fileID: 5212361526488187226}
   - component: {fileID: 6161147593928943129}
   - component: {fileID: 609350150720520190}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4432,7 +4456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8006042203120986868}
   - component: {fileID: 2879021116497732110}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4517,7 +4541,7 @@ GameObject:
   - component: {fileID: 2312239800431803622}
   - component: {fileID: 4821558398515010767}
   - component: {fileID: 4793096152518565364}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4630,7 +4654,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2537102560069243917}
   - component: {fileID: 2663658692747161480}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4716,7 +4740,7 @@ GameObject:
   - component: {fileID: 3706398773486448158}
   - component: {fileID: 2713929289822074938}
   - component: {fileID: 3192363549173611698}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4752,9 +4776,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 10
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 2713929289822074938}
   Attachments: []
@@ -4811,7 +4837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2031202613151606774}
   - component: {fileID: 4415080352824810179}
-  m_Layer: 30
+  m_Layer: 21
   m_Name: Vehicle Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4898,7 +4924,7 @@ GameObject:
   - component: {fileID: 2308224946210018363}
   - component: {fileID: 6247031927083192005}
   - component: {fileID: 7027949107785674940}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5045,7 +5071,7 @@ GameObject:
   - component: {fileID: 6652722815872555277}
   - component: {fileID: 2601797999602630265}
   - component: {fileID: 2519043444807218632}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5081,9 +5107,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 10
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 2601797999602630265}
   Attachments: []
@@ -5140,7 +5168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7732232908949042892}
   - component: {fileID: 1829165697645419589}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wings
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5224,7 +5252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 366795986253261572}
   - component: {fileID: 4559116101519326822}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Strap 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5307,7 +5335,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6945384242340336322}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Opponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5340,7 +5368,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9085851706657105607}
   - component: {fileID: 4646124087116934240}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5425,7 +5453,7 @@ GameObject:
   - component: {fileID: 1147569829028555768}
   - component: {fileID: 3236878308964412468}
   - component: {fileID: 8222502349638298562}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: SuspensionWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5460,9 +5488,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 0
   Mass: 4
+  Description: 
   Size: {x: 1, y: 2}
   Collider: {fileID: 4793096152518565364}
   Attachments:
@@ -5494,7 +5524,7 @@ GameObject:
   - component: {fileID: 9070956907835920582}
   - component: {fileID: 1422463640665459219}
   - component: {fileID: 7986160527655689747}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: SuspensionWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5529,9 +5559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 0
   Mass: 4
+  Description: 
   Size: {x: 1, y: 2}
   Collider: {fileID: 609350150720520190}
   Attachments:
@@ -5564,7 +5596,7 @@ GameObject:
   - component: {fileID: 2326468631627487823}
   - component: {fileID: 8413697903208771903}
   - component: {fileID: 4188668415533804050}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Thruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5599,9 +5631,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 60
   EnergyCapacity: 0
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 7257112690316315254}
   Attachments: []
@@ -5650,7 +5684,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2585727090594549197}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5686,7 +5720,7 @@ GameObject:
   - component: {fileID: 2124978953693548542}
   - component: {fileID: 2849235291153313697}
   - component: {fileID: 3760641304870926352}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5831,7 +5865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1971652406453398447}
   - component: {fileID: 5802184459236600282}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Suspension
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5915,7 +5949,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6211516813178777867}
   - component: {fileID: 4386727543413291744}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5998,7 +6032,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3837917949110205248}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6033,7 +6067,7 @@ GameObject:
   - component: {fileID: 2726411238870536158}
   - component: {fileID: 170528287454292274}
   - component: {fileID: 8743833966616676960}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: SuspensionWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6068,9 +6102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 0
   Mass: 4
+  Description: 
   Size: {x: 1, y: 2}
   Collider: {fileID: 3781568273575274342}
   Attachments:
@@ -6100,7 +6136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1652958470492084895}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6136,7 +6172,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5483096845930994638}
   - component: {fileID: 5316182048233282858}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Strap 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6219,7 +6255,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2702848669635412152}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6252,7 +6288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2339248872717128011}
   - component: {fileID: 5362264143314581490}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Suspension
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6336,7 +6372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3081082081340382758}
   - component: {fileID: 6482209910614129743}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: MainBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6421,7 +6457,7 @@ GameObject:
   - component: {fileID: 547483249389616930}
   - component: {fileID: 3267134007939422256}
   - component: {fileID: 4030110143396272930}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6456,9 +6492,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 20
   EnergyCapacity: 10
   Mass: 5
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 4030110143396272930}
   Attachments: []
@@ -6502,7 +6540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 327533233449127865}
   - component: {fileID: 3354714284041087193}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6589,7 +6627,7 @@ GameObject:
   - component: {fileID: 4810421856445928018}
   - component: {fileID: 2639230132075136122}
   - component: {fileID: 3792494971454135377}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6736,7 +6774,7 @@ GameObject:
   - component: {fileID: 7037880918091514179}
   - component: {fileID: 7523491154176119864}
   - component: {fileID: 5691399760686476072}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6772,9 +6810,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Name: 
   Cost: 80
   EnergyCapacity: 10
   Mass: 1
+  Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 7523491154176119864}
   Attachments: []
@@ -6834,7 +6874,7 @@ GameObject:
   - component: {fileID: 563677946921221808}
   - component: {fileID: 7657614610296010795}
   - component: {fileID: 214420500358080734}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6986,7 +7026,7 @@ GameObject:
   - component: {fileID: 8591653967142094002}
   - component: {fileID: 3449285334671898105}
   - component: {fileID: 3781568273575274342}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7100,7 +7140,7 @@ GameObject:
   - component: {fileID: 3483470501068246102}
   - component: {fileID: 3762100693322719569}
   - component: {fileID: 7257112690316315254}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7234,7 +7274,7 @@ GameObject:
   - component: {fileID: 6635561325926427928}
   - component: {fileID: 2340877886702655191}
   - component: {fileID: 9151230509129995139}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

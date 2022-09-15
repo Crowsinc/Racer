@@ -162,18 +162,6 @@ public class ActuatorModule : MonoBehaviour
         if (Disabled)
             return false;
 
-        // Check if a module is blocking
-        LayerMask mask;
-        if (gameObject.layer == LayerMask.NameToLayer("Vehicle") || gameObject.layer == LayerMask.NameToLayer("Module"))
-            mask = LayerMask.GetMask("Vehicle", "Module");
-        else
-            mask = LayerMask.GetMask("Opponent Vehicle", "Opponent Module");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -LinearForce, 10, mask);
-        if (hit.collider != null)
-        {
-            return false;
-        }
-
         if(_locked)
         {
             Debug.LogWarning("Actuator has already been activated this fixed update");
@@ -300,6 +288,18 @@ public class ActuatorModule : MonoBehaviour
         linearAcceleration = linearForce / mass;
     }
 
+
+    void Update()
+    {
+        ActuationPosition = transform.TransformPoint(LocalActuationPosition);
+
+        ActuationForce = transform.TransformDirection(LocalActuationForce);
+        ReactionForce = -ActuationForce;
+
+        IdleForce = transform.TransformDirection(LocalIdleForce);
+        IdleReactionForce = -IdleForce;
+    }
+
     void FixedUpdate()
     {
         Activated = _locked;
@@ -309,10 +309,10 @@ public class ActuatorModule : MonoBehaviour
         _proportion = 0.0f;
 
         ActuationPosition = transform.TransformPoint(LocalActuationPosition);
-        
+
         ActuationForce = transform.TransformDirection(LocalActuationForce);
         ReactionForce = -ActuationForce;
-        
+
         IdleForce = transform.TransformDirection(LocalIdleForce);
         IdleReactionForce = -IdleForce;
 
@@ -320,7 +320,7 @@ public class ActuatorModule : MonoBehaviour
         if (LinkedVehicle != null)
         {
             // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
-            if(!Activated)
+            if(!Activated && !Disabled)
             {
                 LinkedVehicle.Rigidbody.AddForceAtPosition(IdleReactionForce, ActuationPosition);
                 LinkedVehicle.EnergyLevel -= IdleCost * Time.fixedDeltaTime;

@@ -127,8 +127,9 @@ public class SimulationController : MonoBehaviour
 
             raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
 
-            // Build the opponent
+            // Build the opponent, ensuring its on the opponent vehicle layer
             opponentInstance = Instantiate(opponentVehicle, new Vector3(0, 3, 0), Quaternion.identity);
+            opponentInstance.layer = LayerMask.NameToLayer("Opponent Vehicle");
 
             // Unfreeze player vehicle
             playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;

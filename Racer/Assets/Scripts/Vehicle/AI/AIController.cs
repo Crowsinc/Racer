@@ -245,7 +245,7 @@ public class AIController : MonoBehaviour
         UpdateSensors();
 
         // Run the controller for this update tick
-        if (BlendGoals)
+        if(BlendGoals)
             BlendController();
         else
             MaxController();
@@ -263,13 +263,16 @@ public class AIController : MonoBehaviour
             var priority = goal.Plan();
             var actions = goal.GenerateActions();
 
-            totalPriority += priority;
-            foreach (var (actuator, proportion) in actions)
+            // Only accept the goal if it can actually action its plans
+            if (actions.Count > 0)
             {
-                if(!globalActions.TryAdd(actuator, priority * proportion))
-                    globalActions[actuator] += priority * proportion;
+                totalPriority += priority;
+                foreach (var (actuator, proportion) in actions)
+                {
+                    if(!globalActions.TryAdd(actuator, priority * proportion))
+                        globalActions[actuator] += priority * proportion;
+                }
             }
-                
         }
 
         // Blend and run all required actuators 
@@ -282,26 +285,30 @@ public class AIController : MonoBehaviour
 
     private void MaxController()
     {
-        // Run highest priority goal.
+        // Always run the highest priority goal which also has actions.
+        var priorityActions = new List<Tuple<ActuatorModule, float>>();
         AIGoal priorityGoal = null;
-        float highestPriority = float.NegativeInfinity;
 
+        float highestPriority = float.NegativeInfinity;
         foreach (var goal in Goals)
         {
             var priority = goal.Plan();
             if (priority > highestPriority)
             {
-                highestPriority = priority;
-                priorityGoal = goal;
+                var actions = goal.GenerateActions();
+
+                // Only accept the goal if it can actually action its plans
+                if(actions.Count > 0)
+                {
+                    highestPriority = priority;
+                    priorityActions = actions;
+                    priorityGoal = goal;
+                }
             }
         }
 
-        if (priorityGoal != null)
-        {
-            var actions = priorityGoal.GenerateActions();
-            foreach (var (actuator, proportion) in actions)
-                actuator.TryActivate(proportion, true);
-        }
+        foreach (var (actuator, proportion) in priorityActions)
+            actuator.TryActivate(proportion, true);
     }
 
 }
