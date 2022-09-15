@@ -89,11 +89,13 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     public BoxCollider2D DragCollider;
 
-    public GameObject ForceIndicatorPrefab;
+    public GameObject ForceIndicatorPrefab = null;
 
-    private GameObject _forceIndicator = null;
+    public TooltipTrigger FeedbackTrigger = null;
+    
+    public  GameObject ForceIndicatorObject = null;
+    
     private SpriteRenderer _forceIndicatorRenderer = null;
-    private TooltipTrigger _trigger = null;
 
     private void Awake()
     {
@@ -110,41 +112,42 @@ public class DraggableModule : MonoBehaviour
         // Offset from bottom left origin to the centre of the module
         CentreOffset = _vehicleModule.Size / 2.0f;
 
-        // Default to non-tinted state
-        ResetTint();
-
-        // Do not re-initialize the following if the module is a clone of another draggable module
-        // That is, if its name has more than one (Clone) tag on it
-        if (gameObject.name.LastIndexOf("(Clone)") == gameObject.name.IndexOf("(Clone)"))
+        // Add a hitbox that spans the size of the module
+        if(DragCollider == null)
         {
-            // Adding hitbox that spans the size of the module
             DragCollider = gameObject.AddComponent<BoxCollider2D>();
             DragCollider.size = _vehicleModule.Size;
             DragCollider.offset = CentreOffset;
+        }
 
-            // Add tooltip trigger for invalid state
-            gameObject.AddComponent<TooltipTrigger>();
+        // Add tooltip trigger for invalid state
+        if (FeedbackTrigger == null)
+        {
+            FeedbackTrigger = gameObject.AddComponent<TooltipTrigger>();
+            FeedbackTrigger.header = "";
+            FeedbackTrigger.content = "";
+            FeedbackTrigger.enabled = false;
+        }
 
-            // If we are an actuator, then add a force indicator object
-            if (TryGetComponent<ActuatorModule>(out var actuator) && ForceIndicatorPrefab != null)
-            {
-                float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y, actuator.LocalActuationForce.x);
+        // If we are an actuator, then add a force indicator object
+        if(TryGetComponent<ActuatorModule>(out var actuator))
+        {
+            float rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y, actuator.LocalActuationForce.x);
 
-                _forceIndicator = Instantiate(
+            if(ForceIndicatorObject == null && ForceIndicatorPrefab != null)
+                ForceIndicatorObject = Instantiate(
                     ForceIndicatorPrefab,
                     actuator.LocalActuationPosition + (Vector2)actuator.transform.position,
                     Quaternion.Euler(0, 0, rotation),
                     gameObject.transform
                 );
-                _forceIndicatorRenderer = _forceIndicator.GetComponentInChildren<SpriteRenderer>();
-                _forceIndicatorRenderer.enabled = false;
-            }
+
+            _forceIndicatorRenderer = ForceIndicatorObject.GetComponentInChildren<SpriteRenderer>();
+            _forceIndicatorRenderer.enabled = false;
         }
 
-        _trigger = GetComponent<TooltipTrigger>();
-        _trigger.header = "";
-        _trigger.content = "";
-        _trigger.enabled = false;
+        // Default to non-tinted state
+        ResetTint();
     }
 
     /// <summary>
@@ -163,8 +166,8 @@ public class DraggableModule : MonoBehaviour
             ResetTint();
 
         
-        _trigger.Hide();
-        _trigger.enabled = false;
+        FeedbackTrigger.Hide();
+        FeedbackTrigger.enabled = false;
     }
 
 
@@ -342,8 +345,8 @@ public class DraggableModule : MonoBehaviour
         else _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
 
         // Hide any open tooltips
-        _trigger.Hide();
-        _trigger.enabled = false;
+        FeedbackTrigger.Hide();
+        FeedbackTrigger.enabled = false;
 
         Destroy(gameObject);
 

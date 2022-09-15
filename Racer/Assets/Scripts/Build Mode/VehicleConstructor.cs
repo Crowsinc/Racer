@@ -205,10 +205,10 @@ public class VehicleConstructor : MonoBehaviour
         {
             var module = _occupancy[offset];
 
-            if (module.TryGetComponent<DraggableModule>(out var draggable) && module.TryGetComponent<TooltipTrigger>(out var trigger))
+            if (module.TryGetComponent<DraggableModule>(out var draggable))
             {
-                trigger.Hide();
-                trigger.enabled = false;
+                draggable.FeedbackTrigger.Hide();
+                draggable.FeedbackTrigger.enabled = false;
                 draggable.ResetTint();
                 
                 // Test if the valid component is a blocked actuator,
@@ -220,8 +220,8 @@ public class VehicleConstructor : MonoBehaviour
                     draggable.DragCollider.enabled = false;
                     if(tester.TestBlocked())
                     {
-                        trigger.enabled = true;
-                        trigger.header = "Actuator output is blocked";
+                        draggable.FeedbackTrigger.enabled = true;
+                        draggable.FeedbackTrigger.header = "Actuator output is blocked";
                         draggable.ApplyTint(Color.yellow);
                     }
                     draggable.DragCollider.enabled = true;
@@ -234,10 +234,10 @@ public class VehicleConstructor : MonoBehaviour
         {
             var module = _occupancy[offset];
 
-            if (module.TryGetComponent<DraggableModule>(out var draggable) && module.TryGetComponent<TooltipTrigger>(out var trigger))
+            if (module.TryGetComponent<DraggableModule>(out var draggable))
             {
-                trigger.enabled = true;
-                trigger.header = "Module is not connected";
+                draggable.FeedbackTrigger.enabled = true;
+                draggable.FeedbackTrigger.header = "Module is not connected";
                 draggable.ApplyTint(Color.red);
             }
         }
