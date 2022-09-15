@@ -616,8 +616,7 @@ public class VehicleCore : MonoBehaviour
             // velocity.
 
             // Velocity of vehicle, assuming zero wind speed.
-            //var velocityDir = Rigidbody.velocity.normalized;
-            var velocityDir = Vector2.right;
+            var velocityDir = Rigidbody.velocity.normalized;
             var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
 
             // Find drag area
