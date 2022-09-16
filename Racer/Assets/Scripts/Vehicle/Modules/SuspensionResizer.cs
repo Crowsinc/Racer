@@ -17,7 +17,6 @@ public class SuspensionResizer : MonoBehaviour
 
     private Vector2 _origScale = Vector2.zero;
     private Vector2 _origPosition = Vector2.zero;
-    private float _scaleRatio = 1.0f;
 
     void Awake()
     {
@@ -29,7 +28,6 @@ public class SuspensionResizer : MonoBehaviour
 
         _origScale = SuspensionObject.transform.localScale;
         _origPosition = SuspensionObject.transform.localPosition;
-        _scaleRatio = (SliderJoint.limits.max - SliderJoint.limits.min) / _origScale.y;
     }
 
     // Update is called once per frame
@@ -44,7 +42,7 @@ public class SuspensionResizer : MonoBehaviour
             SuspensionObject.transform.position = centre;
             SuspensionObject.transform.localScale = new Vector2(
                 SuspensionObject.transform.localScale.x,
-                SliderJoint.jointTranslation * _scaleRatio
+                SliderJoint.jointTranslation
             );
         }
         else

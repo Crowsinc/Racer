@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5062785554429552611}
   - component: {fileID: 898240808525002504}
+  - component: {fileID: 1283029474861553845}
   m_Layer: 31
   m_Name: Suspension-front
   m_TagString: Untagged
@@ -84,6 +85,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1283029474861553845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286224562368117269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88160804c5fa394479855f2d6fc5f3ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SliderJoint: {fileID: 4256529680677977402}
+  SuspensionObject: {fileID: 1286224562368117269}
 --- !u!1 &1912540312878362119
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,8 +223,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4833245629951839725}
   - component: {fileID: 890184813542121816}
-  - component: {fileID: 916654759253918324}
-  - component: {fileID: 5763856884044307965}
   m_Layer: 31
   m_Name: SledWheel
   m_TagString: Untagged
@@ -261,34 +274,6 @@ MonoBehaviour:
   - {fileID: 4256529680677977402}
   - {fileID: 822261453477531285}
   LinkedVehicle: {fileID: 0}
---- !u!114 &916654759253918324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2154514071067287247}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88160804c5fa394479855f2d6fc5f3ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SliderJoint: {fileID: 4256529680677977402}
-  SuspensionObject: {fileID: 1286224562368117269}
---- !u!114 &5763856884044307965
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2154514071067287247}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88160804c5fa394479855f2d6fc5f3ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SliderJoint: {fileID: 8781680067543562426}
-  SuspensionObject: {fileID: 7499967825046111301}
 --- !u!1 &6344876993783825201
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,8 +290,8 @@ GameObject:
   - component: {fileID: 8848539405590859781}
   - component: {fileID: 822261453477531285}
   - component: {fileID: 8302089282882284839}
-  - component: {fileID: 8781680067543562426}
   - component: {fileID: 4256529680677977402}
+  - component: {fileID: 8781680067543562426}
   m_Layer: 31
   m_Name: Sled
   m_TagString: Untagged
@@ -505,32 +490,6 @@ SpringJoint2D:
   m_Distance: 0.8
   m_DampingRatio: 1
   m_Frequency: 5
---- !u!234 &8781680067543562426
-SliderJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6344876993783825201}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: -0.295, y: 0}
-  m_ConnectedAnchor: {x: -0.5, y: 0.8}
-  m_AutoConfigureAngle: 0
-  m_Angle: 90
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_TranslationLimits:
-    m_LowerTranslation: 0
-    m_UpperTranslation: 0.8
 --- !u!234 &4256529680677977402
 SliderJoint2D:
   m_ObjectHideFlags: 0
@@ -557,6 +516,32 @@ SliderJoint2D:
   m_TranslationLimits:
     m_LowerTranslation: 0
     m_UpperTranslation: 0.8
+--- !u!234 &8781680067543562426
+SliderJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6344876993783825201}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: -0.295, y: 0}
+  m_ConnectedAnchor: {x: -0.5, y: 0.8}
+  m_AutoConfigureAngle: 0
+  m_Angle: 90
+  m_UseMotor: 0
+  m_Motor:
+    m_MotorSpeed: 0
+    m_MaximumMotorForce: 10000
+  m_UseLimits: 0
+  m_TranslationLimits:
+    m_LowerTranslation: 0
+    m_UpperTranslation: 0.8
 --- !u!1 &7499967825046111301
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,6 +552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7159465578075041234}
   - component: {fileID: 247827405276926001}
+  - component: {fileID: 4428502559306887520}
   m_Layer: 31
   m_Name: Suspension-back
   m_TagString: Untagged
@@ -641,3 +627,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4428502559306887520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7499967825046111301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88160804c5fa394479855f2d6fc5f3ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SliderJoint: {fileID: 8781680067543562426}
+  SuspensionObject: {fileID: 7499967825046111301}
