@@ -289,7 +289,10 @@ public class ActuatorModule : MonoBehaviour
     }
 
 
-    void Update()
+    /// <summary>
+    /// Forces an update on all force and dynamics measures for the actuator
+    /// </summary>
+    public void UpdateDynamics()
     {
         ActuationPosition = transform.TransformPoint(LocalActuationPosition);
 
@@ -298,34 +301,9 @@ public class ActuatorModule : MonoBehaviour
 
         IdleForce = transform.TransformDirection(LocalIdleForce);
         IdleReactionForce = -IdleForce;
-    }
 
-    void FixedUpdate()
-    {
-        Activated = _locked;
-        _locked = false;
-
-        Proportion = _proportion;
-        _proportion = 0.0f;
-
-        ActuationPosition = transform.TransformPoint(LocalActuationPosition);
-
-        ActuationForce = transform.TransformDirection(LocalActuationForce);
-        ReactionForce = -ActuationForce;
-
-        IdleForce = transform.TransformDirection(LocalIdleForce);
-        IdleReactionForce = -IdleForce;
-
-        // Update physical effects of the actuator
-        if (LinkedVehicle != null)
+        if(LinkedVehicle != null)
         {
-            // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
-            if(!Activated && !Disabled)
-            {
-                LinkedVehicle.Rigidbody.AddForceAtPosition(IdleReactionForce, ActuationPosition);
-                LinkedVehicle.EnergyLevel -= IdleCost * Time.fixedDeltaTime;
-            }
-
             FindPhysicsCharacteristics(
                 LinkedVehicle.Rigidbody.mass,
                 LinkedVehicle.Rigidbody.inertia,
@@ -350,6 +328,28 @@ public class ActuatorModule : MonoBehaviour
             LinearForce = Vector2.zero;
             AngularAcceleration = 0.0f;
             LinearAcceleration = Vector2.zero;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        Activated = _locked;
+        _locked = false;
+
+        Proportion = _proportion;
+        _proportion = 0.0f;
+
+        UpdateDynamics();
+
+        // Update physical effects of the actuator
+        if (LinkedVehicle != null)
+        {
+            // NOTE: we apply the reaction force onto the vehicle (Newton's Third Law)
+            if (!Activated && !Disabled)
+            {
+                LinkedVehicle.Rigidbody.AddForceAtPosition(IdleReactionForce, ActuationPosition);
+                LinkedVehicle.EnergyLevel -= IdleCost * Time.fixedDeltaTime;
+            }
         }
     }
 

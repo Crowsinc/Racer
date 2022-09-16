@@ -83,7 +83,19 @@ namespace Assets.Scripts.Utility
             return totalAngle > slack;
         }
 
+        /// <summary>
+        /// Updates all layers of an object and its children to the given mask
+        /// </summary>
+        /// <param name="obj"> The object to update </param>
+        /// <param name="layerMask"> The mask for the layer to set </param>
+        public static void SetLayers(GameObject obj, int layerMask)
+        {
+            var transforms = obj.GetComponentsInChildren<Transform>();
+            foreach(var t in transforms)
+                t.gameObject.layer = layerMask;
+        }
     }
+
 }
 
 

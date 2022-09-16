@@ -185,6 +185,7 @@ public class VehicleConstructor : MonoBehaviour
         return gridPos.x > -7 && gridPos.x < 7 && gridPos.y > -4 && gridPos.y < 4;
     }
 
+
     /// <summary>
     /// Tests whether the given module is on the grid space)
     /// </summary>
@@ -225,16 +226,16 @@ public class VehicleConstructor : MonoBehaviour
                 // if it is, then add error feedback for it. Note that
                 // we only do this for valid modules because disjoint
                 // errors take priority.
-                if(module.TryGetComponent<ActuatorLineOfSightTest>(out var tester))
+                if(module.TryGetComponent<ActuatorModule>(out var actuator) &&
+                   module.TryGetComponent<ActuatorLineOfSightTester>(out var tester))
                 {
-                    draggable.DragCollider.enabled = false;
-                    if(tester.TestBlocked())
+                    actuator.UpdateDynamics();
+                    if(!tester.TestLineOfSight())
                     {
                         draggable.FeedbackTrigger.enabled = true;
                         draggable.FeedbackTrigger.header = "Actuator output is blocked";
                         draggable.ApplyTint(Color.yellow);
                     }
-                    draggable.DragCollider.enabled = true;
                 }
             }
         }

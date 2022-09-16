@@ -116,8 +116,7 @@ public class VehicleCore : MonoBehaviour
         // To validate our design we will just build a vehicle off-screen, then analyse it
         var testCore = Instantiate<VehicleCore>(
             GetComponent<VehicleCore>(),
-            //new Vector3(-10000f, -10000f, -10000),
-            new Vector3(0, 0, -11),
+            new Vector3(-10000f, -10000f, -10000),
             Quaternion.identity
         );
         testCore.Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -152,13 +151,20 @@ public class VehicleCore : MonoBehaviour
             if (module.Collider == null || gridOffset == new Vector2Int(0,0))
                 continue;
 
-            module.Collider.enabled = true;
+            // If the design is valid, then the module must be valid
+            if(feedback.ValidDesign)
+            {
+                feedback.ValidModules.Add(gridOffset);
+                continue;
+            }
 
             // We consider a module to be disjoint if it is not found within the hull polygon.
             // To test this, we will grab a point from the center of the module and perform
             // a point in polygon test with the hull. It is possible that some colliders may
             // have a center point which is outside the collider, so intead we grab the colliders
             // closest point to the center. 
+
+            module.Collider.enabled = true;
             var testPoint = module.Collider.ClosestPoint(module.Collider.bounds.center);
             bool inside = Algorithms.PointInPolygon(testPoint, testCore.Hull);
 

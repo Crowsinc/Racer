@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using Codice.Client.BaseCommands;
+using Assets.Scripts.Utility;
 
 public class DraggableModule : MonoBehaviour
     , IDragHandler, IPointerUpHandler, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
@@ -58,7 +59,6 @@ public class DraggableModule : MonoBehaviour
     /// </summary>
     private float _savedRotation;
 
-
     /// <summary>
     /// The spawn position of the module.
     /// </summary>
@@ -97,6 +97,9 @@ public class DraggableModule : MonoBehaviour
     
     private SpriteRenderer _forceIndicatorRenderer = null;
 
+    private int _moduleLayerMask; // Layer when placed onto player vehicle
+    private int _listLayerMask; // Layer when in the buildmode list
+
     private void Awake()
     {
         // Getting necessary components and game objects
@@ -108,6 +111,12 @@ public class DraggableModule : MonoBehaviour
         _spawnPosition = transform.position;
         _savedPosition = transform.position;
         _savedRotation = 0.0f;
+
+        // Set the draggable module to an 'inert' layer that can't
+        // interact with anything while its in the module list
+        _moduleLayerMask = LayerMask.NameToLayer("Module");
+        _listLayerMask = LayerMask.NameToLayer("Ignore Raycast");
+        Algorithms.SetLayers(gameObject, _listLayerMask);
 
         // Offset from bottom left origin to the centre of the module
         CentreOffset = _vehicleModule.Size / 2.0f;
@@ -259,7 +268,8 @@ public class DraggableModule : MonoBehaviour
                     _forceIndicatorRenderer.enabled = false;
 
                 Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
-
+                
+                Algorithms.SetLayers(gameObject, _moduleLayerMask);
                 transform.parent = _moduleHolder;
             }
 
