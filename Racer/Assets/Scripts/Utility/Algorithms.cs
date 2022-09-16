@@ -76,10 +76,9 @@ namespace Assets.Scripts.Utility
                 var segMin = Vector2.Min(s1, s2);
                 var segMax = Vector2.Max(s1, s2);
 
-                // The point is on the segment, so is inside the polygon
+                // If the point is on the segment, it is inside the polygon
                 if (Collinear(s1, s2, point) && WithinBounds(point, segMin, segMax))
                     return true;
-
                 
                 // Define a plane parallel to the segment and shoot a rightwards 
                 // ray from our point into it. If the ray hits the plane within
@@ -90,6 +89,9 @@ namespace Assets.Scripts.Utility
                 if(plane.Raycast(ray, out float distance))
                 {
                     Vector2 intersectPoint = ray.GetPoint(distance);
+
+                    //If the intersect point is equal to any of the vertices, it is inside the polygon
+
 
                     if (WithinBounds(intersectPoint, segMin, segMax))
                         inside = !inside;

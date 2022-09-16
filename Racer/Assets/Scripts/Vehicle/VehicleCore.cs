@@ -116,7 +116,7 @@ public class VehicleCore : MonoBehaviour
         // To validate our design we will just build a vehicle off-screen, then analyse it
         var testCore = Instantiate<VehicleCore>(
             GetComponent<VehicleCore>(),
-            new Vector3(-10000, -10000, -10000),
+            new Vector3(-10000f, -10000f, -10000),
             Quaternion.identity
         );
         testCore.Rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
@@ -157,9 +157,12 @@ public class VehicleCore : MonoBehaviour
             // To test this, we will grab a point from the center of the module and perform
             // a point in polygon test with the hull. It is possible that some colliders may
             // have a center point which is outside the collider, so intead we grab the colliders
-            // closest point to the center. 
+            // closest point to the center. Additionally, we will test all points on the module's
+            // collider for extra robustness. If at least one of these is inside, then the module
+            // is not disjoint. 
             var testPoint = module.Collider.ClosestPoint(module.Collider.bounds.center);
             bool inside = Algorithms.PointInPolygon(testPoint, testCore.Hull);
+ 
 
             if (inside)
                 feedback.ValidModules.Add(gridOffset);
