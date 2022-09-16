@@ -7,28 +7,6 @@ namespace Assets.Scripts.Utility
 {
     public class Algorithms
     {
-        /// <summary>
-        /// Maximum amount of difference before two floats are considered identical.
-        /// This is required because Unity geometry operations aren't always very
-        /// exact, so slack is required to keep things working as intended. 
-        /// </summary>
-        public static float Slack = 0.1f;
-
-        /// <summary>
-        /// Tests if three points are collinear
-        /// </summary>
-        /// <param name="a"> point a </param>
-        /// <param name="b"> point b </param>
-        /// <param name="c"> point c </param>
-        /// <returns> true if the points are collinear </returns>
-        public static bool Collinear(Vector2 a, Vector2 b, Vector2 c)
-        {
-            // This is a standard collinearity test, which forms vectors from a to b,
-            // and b to c, then checks if their cross product is zero, or close enough.
-            // The Unity geometry aren't exactly precise so some slack is required
-            return Mathf.Abs((c.y - b.y) * (b.x - a.x) - (b.y - a.y) * (c.x - b.x)) <= Slack;
-        }
-
 
         /// <summary>
         /// Tests if a point is within the given bounds
@@ -43,12 +21,28 @@ namespace Assets.Scripts.Utility
         }
 
         /// <summary>
+        /// Tests if a ponit is wtihin the given line segment
+        /// </summary>
+        /// <param name="point"> the point being tested </param>
+        /// <param name="p1"> one end of the line segment </param>
+        /// <param name="p2"> the other end of the line segment </param>
+        /// <param name="slack"> the amount of slack allowed in floating point comparisons </param>
+        /// <returns></returns>
+        public static bool PointInSegment(Vector2 point, Vector2 p1, Vector2 p2, float slack = 0.1f)
+        {
+            // This uses a simple point on segment test, which checks that the vectors from p1-point
+            // and p2-point have the same combined magnitude as the vector from p1 to p2. 
+            return Mathf.Abs((p2 - p1).magnitude - ((p1 - point).magnitude + (p2 - point).magnitude)) < slack;
+        }
+
+        /// <summary>
         /// Tests whether a point is found within a polygon, or on its border
         /// </summary>
         /// <param name="point"> the point in question </param>
         /// <param name="polygon"> the vertices of the polygon in counter-clockwise order </param>
+        /// <param name="slack"> the amount of slack allowed in floating point comparisons </param>
         /// <returns> True if the point is inside or on the polygon border, otherwise false</returns>
-        public static bool PointInPolygon(Vector2 point, List<Vector2> polygon)
+        public static bool PointInPolygon(Vector2 point, List<Vector2> polygon, float slack = 0.1f)
         {
             // Run a simple test to check if the point is within the AABB of the polygon
             Vector2 max = polygon[0], min = polygon[0];
@@ -56,53 +50,39 @@ namespace Assets.Scripts.Utility
             {
                 max = Vector2.Max(max, p);
                 min = Vector2.Min(min, p);
-
-                // If the given point is equal to (or close to) a vertex, then it must be inside
-                // The Unity geometry aren't exactly precise so some slack is required
-                if ((point - p).magnitude < Slack)
-                    return true;
             }
 
             // If outside of the AABB, then the point cannot be inside the polygon
             if (!WithinBounds(point, min, max))
                 return false;
 
-            // Perform a standard ray-intersection point in polygon test
-            bool inside = false;
+            // Perform a simple window number / angle summation test on the polygon. This is by 
+            // far the slowest way of doing a PIP test, but it is numerically stable and easy
+            // to implement. Past testing with the standard ray-intersection or even/odd rule 
+            // algorithm lead to *many* issues due to their lack of numerical stability near
+            // the edges of the polygon, where floating point error is significant.
+            float totalAngle = 0.0f;
+
             var s1 = polygon[^1];
             foreach (var s2 in polygon)
             {
-                var segment = s2 - s1;
-                var segMin = Vector2.Min(s1, s2);
-                var segMax = Vector2.Max(s1, s2);
-
-                // If the point is on the segment, it is inside the polygon
-                if (Collinear(s1, s2, point) && WithinBounds(point, segMin, segMax))
+                // Test if the point is on the segment
+                if (PointInSegment(point, s1, s2, slack))
                     return true;
                 
-                // Define a plane parallel to the segment and shoot a rightwards 
-                // ray from our point into it. If the ray hits the plane within
-                // the segment, then the line intersects the segment. 
-                Plane plane = new Plane(Vector2.Perpendicular(segment), s1);
-                Ray ray = new Ray(point, Vector2.right);
+                var r1 = s1 - point;
+                var r2 = s2 - point;
 
-                if(plane.Raycast(ray, out float distance))
-                {
-                    Vector2 intersectPoint = ray.GetPoint(distance);
-
-                    //If the intersect point is equal to any of the vertices, it is inside the polygon
-
-
-                    if (WithinBounds(intersectPoint, segMin, segMax))
-                        inside = !inside;
-                }
+                totalAngle += Vector2.SignedAngle(r1, r2);
 
                 s1 = s2;
             }
-            return inside;
+
+            // A point is inside if the sum of all signed angles subtended 
+            // by segments of the polygon and test point is greater than 0.
+            return totalAngle > slack;
         }
 
-      
     }
 }
 
