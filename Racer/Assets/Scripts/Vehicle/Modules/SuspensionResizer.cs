@@ -45,6 +45,5 @@ public class SuspensionResizer : MonoBehaviour
                 SliderJoint.jointTranslation * _scaleRatio
             );
         }
-        else SuspensionObject.transform.localScale = _origScale;
     }
 }
