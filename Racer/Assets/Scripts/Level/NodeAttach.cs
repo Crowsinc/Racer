@@ -9,45 +9,45 @@ namespace Level
     {
         public SpriteShapeController spriteShapeController;
         public int index;
-        public bool useNormals = false;
-        public bool runtimeUpdate = false;
+        public bool useNormals;
+        public bool runtimeUpdate;
         [Header("Offset")]
-        public float yOffset = 0.0f;
-        public bool localOffset = false;
-        private Spline spline;
-        private int lastSpritePointCount;
-        private bool lastUseNormals;
-        private Vector3 lastPosition;
+        public float yOffset;
+        public bool localOffset;
+        private Spline _spline;
+        private int _lastSpritePointCount;
+        private bool _lastUseNormals;
+        private Vector3 _lastPosition;
 
-        void Awake()
+        private void Awake()
         {
-            spline = spriteShapeController.spline;
+            _spline = spriteShapeController.spline;
         }
 
 #if UNITY_EDITOR
-        void Update()
+        private void Update()
         {
             if (!EditorApplication.isPlaying || runtimeUpdate)
             {
-                spline = spriteShapeController.spline;
-                if ((spline.GetPointCount() != 0) && (lastSpritePointCount != 0))
+                _spline = spriteShapeController.spline;
+                if ((_spline.GetPointCount() != 0) && (_lastSpritePointCount != 0))
                 {
-                    index = Mathf.Clamp(index, 0, spline.GetPointCount() - 1);
-                    if (spline.GetPointCount() != lastSpritePointCount)
+                    index = Mathf.Clamp(index, 0, _spline.GetPointCount() - 1);
+                    if (_spline.GetPointCount() != _lastSpritePointCount)
                     {
-                        if (spline.GetPosition(index) != lastPosition)
+                        if (_spline.GetPosition(index) != _lastPosition)
                         {
-                            index += spline.GetPointCount() - lastSpritePointCount;
+                            index += _spline.GetPointCount() - _lastSpritePointCount;
                         }
                     }
-                    if ((index <= spline.GetPointCount() - 1) && (index >= 0))
+                    if ((index <= _spline.GetPointCount() - 1) && (index >= 0))
                     {
                         if (useNormals)
                         {
-                            if (spline.GetTangentMode(index) != ShapeTangentMode.Linear)
+                            if (_spline.GetTangentMode(index) != ShapeTangentMode.Linear)
                             {
-                                Vector3 lt = Vector3.Normalize(spline.GetLeftTangent(index) - spline.GetRightTangent(index));
-                                Vector3 rt = Vector3.Normalize(spline.GetLeftTangent(index) - spline.GetRightTangent(index));
+                                Vector3 lt = Vector3.Normalize(_spline.GetLeftTangent(index) - _spline.GetRightTangent(index));
+                                Vector3 rt = Vector3.Normalize(_spline.GetLeftTangent(index) - _spline.GetRightTangent(index));
                                 float a = Angle(Vector3.left, lt);
                                 float b = Angle(lt, rt);
                                 float c = a + (b * 0.5f);
@@ -69,12 +69,12 @@ namespace Level
                         {
                             offsetVector = Vector2.up * yOffset;
                         }
-                        transform.position = spriteShapeController.transform.position + spline.GetPosition(index) + offsetVector;
-                        lastPosition = spline.GetPosition(index);
+                        transform.position = spriteShapeController.transform.position + _spline.GetPosition(index) + offsetVector;
+                        _lastPosition = _spline.GetPosition(index);
                     }
                 }
             }
-            lastSpritePointCount = spline.GetPointCount();
+            _lastSpritePointCount = _spline.GetPointCount();
         }
 
         private float Angle(Vector3 a, Vector3 b)

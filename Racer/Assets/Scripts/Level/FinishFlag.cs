@@ -24,7 +24,7 @@ namespace Level
                 if (!_sc.opponentInstance)
                     return;
 
-                _opponent = _sc.opponentInstance.transform.Find("Vehicle");
+                _opponent = _sc.opponentInstanceTransform;
             }
             if (_opponent.position.x > _sc.raceFinishPoint.x)
             {

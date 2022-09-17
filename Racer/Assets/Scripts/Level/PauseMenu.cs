@@ -5,8 +5,8 @@ namespace Level
 {
     public class PauseMenu : MonoBehaviour
     {
-        private bool _menuOpen = false;
-        private bool _buttonDown = false;
+        private bool _menuOpen;
+        private bool _buttonDown;
         public GameObject pauseMenu;
         private SimulationController _simulationController;
 
@@ -15,7 +15,7 @@ namespace Level
             _simulationController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
         }
 
-        void Update()
+        private void Update()
         {
             //Debug.Log(Input.GetAxisRaw("Cancel"));
             if (Input.GetAxisRaw("Cancel") > 0 && !_buttonDown && !_simulationController.inBuildMode)

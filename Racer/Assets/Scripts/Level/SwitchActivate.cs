@@ -14,14 +14,14 @@ namespace Level
         public Vector2 startPosition;
         public Vector2 finalPosition;
 
-        public float timeToDesitnation;
+        public float timeToDestination;
 
-        private float t;
-        private Vector3 startRot;
-        private Vector3 finalRot;
+        private float _f;
+        private Vector3 _startRot;
+        private Vector3 _finalRot;
 
-        private bool isActivated;
-        private bool stop;
+        private bool _isActivated;
+        private bool _stop;
 
 
         // Start is called before the first frame update
@@ -34,37 +34,39 @@ namespace Level
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (!isActivated) return;
-            if (stop) return;
-            t += Time.deltaTime / timeToDesitnation;
-            item.transform.position = Vector2.Lerp(startPosition, finalPosition, t);
-            item.transform.eulerAngles = Vector3.Lerp(startRot, finalRot, t);
-            if (t >= 1)
-                stop = true;
+            if (!_isActivated) return;
+            if (_stop) return;
+            _f += Time.deltaTime / timeToDestination;
+            item.transform.position = Vector2.Lerp(startPosition, finalPosition, _f);
+            item.transform.eulerAngles = Vector3.Lerp(_startRot, _finalRot, _f);
+            if (_f >= 1)
+                _stop = true;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (isActivated) return;
-            isActivated = true;
-            var switchScale = transform.localScale;
-            transform.localScale = new Vector3(switchScale.x * -1, switchScale.y, switchScale.z);
-            t = 0;
+            if (_isActivated) return;
+            _isActivated = true;
+            var switchTransform = transform;
+            var switchScale = switchTransform.localScale;
+            switchTransform.localScale = new Vector3(switchScale.x * -1, switchScale.y, switchScale.z);
+            _f = 0;
         }
 
         private void Restart()
         {
-            if (isActivated)
+            if (_isActivated)
             {
-                var switchScale = transform.localScale;
-                transform.localScale = new Vector3(switchScale.x * -1, switchScale.y, switchScale.z);
+                var switchTransform = transform;
+                var switchScale = switchTransform.localScale;
+                switchTransform.localScale = new Vector3(switchScale.x * -1, switchScale.y, switchScale.z);
             }
 
-            isActivated = stop = false;
+            _isActivated = _stop = false;
             item.transform.position = startPosition;
-            item.transform.eulerAngles = startRot = new Vector3(0, 0, startRotation);
+            item.transform.eulerAngles = _startRot = new Vector3(0, 0, startRotation);
 
-            finalRot = new Vector3(0, 0, finalRotation);
+            _finalRot = new Vector3(0, 0, finalRotation);
         }
     
     }

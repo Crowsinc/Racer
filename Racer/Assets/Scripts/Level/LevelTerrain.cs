@@ -14,17 +14,17 @@ namespace Level
         [Header("TerrainPhysics")]
         public PhysicsMaterial2D material;
 
-        private int startIndex;
-        private int endIndex;
+        private int _startIndex;
+        private int _endIndex;
 
-        private Dictionary<string, Rigidbody2D> rbs;
+        private Dictionary<string, Rigidbody2D> _rbs;
 
         public void Start()
         {
-            startIndex = startPoint.GetComponent<NodeAttach>().index;
-            endIndex = endPoint.GetComponent<NodeAttach>().index;
+            _startIndex = startPoint.GetComponent<NodeAttach>().index;
+            _endIndex = endPoint.GetComponent<NodeAttach>().index;
 
-            rbs = new Dictionary<string, Rigidbody2D>();
+            _rbs = new Dictionary<string, Rigidbody2D>();
         }
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -34,9 +34,9 @@ namespace Level
             if (parent == null || parent.gameObject.layer != 30) return;
 
             var vehicleName = parent.root.GetInstanceID().ToString();
-            if (!rbs.ContainsKey(vehicleName))
+            if (!_rbs.ContainsKey(vehicleName))
             {
-                rbs[vehicleName] = parent.GetComponent<Rigidbody2D>();
+                _rbs[vehicleName] = parent.GetComponent<Rigidbody2D>();
             }
 
             switch (CheckWhichTerrain(parent.position))
@@ -48,10 +48,10 @@ namespace Level
                     // What happens if vehicle is touching Mud
                     break;
                 case 2:
-                    rbs[vehicleName].AddForce(new Vector2(0, 10000));
+                    _rbs[vehicleName].AddForce(new Vector2(0, 10000));
                     break;
                 case 3:
-                    rbs[vehicleName].AddForce(new Vector2(rbs[vehicleName].velocity.x * 100, 0));
+                    _rbs[vehicleName].AddForce(new Vector2(_rbs[vehicleName].velocity.x * 100, 0));
                     break;
             }
 
@@ -59,7 +59,7 @@ namespace Level
 
         private int CheckWhichTerrain(Vector2 position)
         {
-            for (var i = startIndex; i < endIndex; i++)
+            for (var i = _startIndex; i < _endIndex; i++)
             {
                 if (spriteShapeController.spline.GetPosition(i).x < position.x) continue;
                 return spriteShapeController.spline.GetSpriteIndex(i - 1);
