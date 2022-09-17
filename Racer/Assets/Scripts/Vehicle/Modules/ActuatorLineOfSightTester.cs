@@ -49,7 +49,9 @@ public class ActuatorLineOfSightTester : MonoBehaviour
 
         // Raycast along the actuator's force line to test if any modules are in the way
         RaycastHit2D hit = Physics2D.Raycast(
-            _actuator.ActuationPosition,
+            // Add small offset to position to ensure we start outside of the actuator hull
+            // NOTE: this assumes the actuation position is set correctly.
+            _actuator.ActuationPosition + 0.5f * _actuator.ActuationForce.normalized,
             _actuator.ActuationForce,
             _distance,
             mask
