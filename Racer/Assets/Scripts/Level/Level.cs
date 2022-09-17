@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,20 +12,20 @@ namespace Level
         public GameObject opponentVehicle;
         public float budget;
         public int highScore;
-        public Vector3 gravity = new Vector3(0, -9.81f, 0);
+        public Vector3 gravity = new (0, -9.81f, 0);
     
-        public List<LevelRestrictions> restritions = new List<LevelRestrictions>();
+        public List<LevelRestrictions> restrictions = new();
         public void SetHighScore(int score)
         {
             if (score < highScore) return;
 
             highScore = score;
-            PlayerPrefs.SetInt("LevelHS" + levelId.ToString(), score);
+            PlayerPrefs.SetInt("LevelHS" + levelId, score);
         }
 
         private void OnEnable()
         {
-            highScore = PlayerPrefs.GetInt("LevelHS" + levelId.ToString(), 0);
+            highScore = PlayerPrefs.GetInt("LevelHS" + levelId, 0);
         }
     }
 

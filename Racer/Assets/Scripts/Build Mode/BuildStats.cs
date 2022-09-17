@@ -36,11 +36,11 @@ public class BuildStats : MonoBehaviour
             "Budget: $" + _level.budget + "\n" +
             "Total Vehicle Cost: $" + vehicleConstructor.SumVehicleCost().ToString();
 
-        if (_level.restritions.Count > 0)
+        if (_level.restrictions.Count > 0)
         {
             text.text += "\n\nRestrictions:";
         }
-        foreach (LevelRestrictions restriction in _level.restritions)
+        foreach (LevelRestrictions restriction in _level.restrictions)
         {
             switch (restriction.restrictionType)
             {
