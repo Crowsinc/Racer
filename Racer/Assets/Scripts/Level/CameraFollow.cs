@@ -1,50 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+namespace Level
 {
-    public Transform buildModeCamPos;
-    public Transform Target;
-    public Transform MapStart;
-    public Transform MapEnd;
-
-    private void Awake()
+    public class CameraFollow : MonoBehaviour
     {
-        Target = buildModeCamPos;
-        var map = GameObject.FindGameObjectWithTag("Ground");
-        MapStart = map.transform.Find("Start");
-        MapEnd = map.transform.Find("Flag");
+        public Transform buildModeCamPos;
+        public Transform target;
+        public Transform mapStart;
+        public Transform mapEnd;
+        private Camera _camera;
 
-        // Call update once to initialise in correct position
-        Update();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        var half = (Camera.main.orthographicSize * Camera.main.aspect);
-
-        // NOTE: old lerp system causes very annoying skipping when the vehicle moves too fast
-        transform.position = new Vector3(
-            Target.position.x,
-            Target.position.y,
-            -10f
-        );
-
-        var yPos = transform.position.y;
-        if (transform.position.x - half < MapStart.position.x)
+        private void Awake()
         {
-            if (yPos < MapStart.position.y && Target.position.x < MapStart.position.x)
-                yPos = MapStart.position.y;
-            transform.position = new Vector3(MapStart.position.x + half, yPos, transform.position.z);
-        }
-        else if (Target.position.x + half > MapEnd.position.x)
-        {
-            if (yPos < MapEnd.position.y && Target.position.x > MapEnd.position.x)
-                yPos = MapEnd.position.y;
-            transform.position = new Vector3(MapEnd.position.x - half, yPos, transform.position.z);
+            if(!_camera) 
+                _camera = Camera.main;
+            target = buildModeCamPos;
+            var map = GameObject.FindGameObjectWithTag("Ground");
+            mapStart = map.transform.Find("Start");
+            mapEnd = map.transform.Find("Flag");
+
+            // Call update once to initialise in correct position
+            Update();
         }
 
+        // Update is called once per frame
+        private void Update()
+        {
+            var half = (_camera.orthographicSize * _camera.aspect);
+
+            // NOTE: old lerp system causes very annoying skipping when the vehicle moves too fast
+            var position = target.position;
+            var camTransform = transform;
+            
+            camTransform.position = new Vector3(
+                position.x,
+                position.y,
+                -10f
+            );
+
+            var yPos = camTransform.position.y;
+            if (transform.position.x - half < mapStart.position.x)
+            {
+                if (yPos < mapStart.position.y && target.position.x < mapStart.position.x)
+                    yPos = mapStart.position.y;
+                camTransform.position = new Vector3(mapStart.position.x + half, yPos, transform.position.z);
+            }
+            else if (target.position.x + half > mapEnd.position.x)
+            {
+                if (yPos < mapEnd.position.y && target.position.x > mapEnd.position.x)
+                    yPos = mapEnd.position.y;
+                camTransform.position = new Vector3(mapEnd.position.x - half, yPos, transform.position.z);
+            }
+
+        }
     }
 }

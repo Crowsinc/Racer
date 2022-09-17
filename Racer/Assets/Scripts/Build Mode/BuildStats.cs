@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Level;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class BuildStats : MonoBehaviour
 {
-    private Level _level;
+    private Level.Level _level;
     private VehicleConstructor vehicleConstructor;
     public TextMeshProUGUI text;
     private int _moduleCount;

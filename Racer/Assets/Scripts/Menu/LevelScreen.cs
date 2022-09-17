@@ -9,9 +9,9 @@ public class LevelScreen : MonoBehaviour
     public TMP_Text levelTitle;
     public TMP_Text levelScore;
     public TMP_Text levelDesc;
-    public List<Level> levelCollection = new List<Level>();
+    public List<Level.Level> levelCollection = new List<Level.Level>();
     public Transform terrainRenderer;
-    private Level level;
+    private Level.Level level;
     private GameObject levelPreview;
 
     public void initLevelScreen()
@@ -43,9 +43,9 @@ public class LevelScreen : MonoBehaviour
     }
 
     // Find level in collection that matches id
-    private Level FindLevelById(int id)
+    private Level.Level FindLevelById(int id)
     {
-        foreach (Level level in levelCollection)
+        foreach (Level.Level level in levelCollection)
         {
             if (level.levelId == id)
             {

@@ -1,54 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+namespace Level
 {
-    private bool _menuOpen = false;
-    private bool _buttonDown = false;
-    public GameObject pauseMenu;
-    private SimulationController _simulationController;
-
-    private void Awake()
+    public class PauseMenu : MonoBehaviour
     {
-        _simulationController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
-    }
+        private bool _menuOpen = false;
+        private bool _buttonDown = false;
+        public GameObject pauseMenu;
+        private SimulationController _simulationController;
 
-    void Update()
-    {
-        //Debug.Log(Input.GetAxisRaw("Cancel"));
-        if (Input.GetAxisRaw("Cancel") > 0 && !_buttonDown && !_simulationController.inBuildMode)
+        private void Awake()
         {
-            _buttonDown = true;
-            if (_menuOpen)
-                ClosePauseMenu();
-
-            else
-                OpenPauseMenu();
+            _simulationController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
         }
-        else if (!(Input.GetAxisRaw("Cancel") > 0))
+
+        void Update()
         {
-            _buttonDown = false;
+            //Debug.Log(Input.GetAxisRaw("Cancel"));
+            if (Input.GetAxisRaw("Cancel") > 0 && !_buttonDown && !_simulationController.inBuildMode)
+            {
+                _buttonDown = true;
+                if (_menuOpen)
+                    ClosePauseMenu();
+
+                else
+                    OpenPauseMenu();
+            }
+            else if (!(Input.GetAxisRaw("Cancel") > 0))
+            {
+                _buttonDown = false;
+            }
         }
-    }
 
-    public void ReturnToMenu()
-    {
-        SceneManager.LoadSceneAsync(GameConstants.MAIN_MENU_SCENE_ID);
-    }
+        public void ReturnToMenu()
+        {
+            SceneManager.LoadSceneAsync(GameConstants.MAIN_MENU_SCENE_ID);
+        }
 
-    public void OpenPauseMenu()
-    {
-        Time.timeScale = 0;
-        pauseMenu.SetActive(true);
-        _menuOpen = true;
-    }
+        public void OpenPauseMenu()
+        {
+            Time.timeScale = 0;
+            pauseMenu.SetActive(true);
+            _menuOpen = true;
+        }
 
-    public void ClosePauseMenu()
-    {
-        Time.timeScale = 1;
-        pauseMenu.SetActive(false);
-        _menuOpen = false;
+        public void ClosePauseMenu()
+        {
+            Time.timeScale = 1;
+            pauseMenu.SetActive(false);
+            _menuOpen = false;
+        }
     }
 }

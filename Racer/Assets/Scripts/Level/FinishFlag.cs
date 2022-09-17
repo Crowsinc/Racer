@@ -1,38 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class FinishFlag : MonoBehaviour
+namespace Level
 {
-    private SimulationController sc;
-    private Transform opponent;
-
-    private void Awake()
+    public class FinishFlag : MonoBehaviour
     {
-        sc = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
-        sc.raceFinishPoint = transform.position;
-    }
+        private SimulationController sc;
+        private Transform opponent;
 
-    private void Update()
-    {
-        if (opponent == null)
+        private void Awake()
         {
-            if (sc.opponentInstance == null)
-                return;
-
-            opponent = sc.opponentInstance.transform.Find("Vehicle");
+            sc = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
+            sc.raceFinishPoint = transform.position;
         }
-        if (opponent.position.x > sc.raceFinishPoint.x)
-        {
-            sc.LoseRace();
-        } 
-        else if (sc.playerVehicle.transform.position.x > sc.raceFinishPoint.x)
-        {
-            sc.WinRace();
-        }
-    }
 
-    /*private void OnTriggerEnter2D(Collider2D collision)
+        private void Update()
+        {
+            if (opponent == null)
+            {
+                if (sc.opponentInstance == null)
+                    return;
+
+                opponent = sc.opponentInstance.transform.Find("Vehicle");
+            }
+            if (opponent.position.x > sc.raceFinishPoint.x)
+            {
+                sc.LoseRace();
+            } 
+            else if (sc.playerVehicle.transform.position.x > sc.raceFinishPoint.x)
+            {
+                sc.WinRace();
+            }
+        }
+
+        /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
@@ -43,4 +43,5 @@ public class FinishFlag : MonoBehaviour
             sc.LoseRace();
         }
     }*/
+    }
 }
