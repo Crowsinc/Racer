@@ -43,6 +43,9 @@ public class SimulationController : MonoBehaviour
 
     private float _totalTime;
 
+    public delegate void OnRestart();
+    public OnRestart LevelRestart;
+
     private void Awake()
     {
         cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
@@ -75,6 +78,7 @@ public class SimulationController : MonoBehaviour
         inBuildMode = true;
         _totalTime = 0;
         isFinished = false;
+        LevelRestart?.Invoke();
 
         // Change UI
         buildModeUI.SetActive(true);

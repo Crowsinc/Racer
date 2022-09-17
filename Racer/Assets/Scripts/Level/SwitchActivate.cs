@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,13 +26,10 @@ public class SwitchActivate : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
-    {
-        isActivated = stop = false;
-        item.transform.position = startPosition;
-        item.transform.eulerAngles = startRot = new Vector3(0, 0, startRotation);
 
-        finalRot = new Vector3(0, 0, finalRotation);
+    private void Awake()
+    {
+        GameObject.FindWithTag("GameController").GetComponent<SimulationController>().LevelRestart += Restart;
     }
 
     // Update is called once per frame
@@ -54,6 +52,22 @@ public class SwitchActivate : MonoBehaviour
         transform.localScale = new Vector3(switchScale.x * -1, switchScale.y, switchScale.z);
         t = 0;
     }
+
+    private void Restart()
+    {
+        if (isActivated)
+        {
+            var switchScale = transform.localScale;
+            transform.localScale = new Vector3(switchScale.x * -1, switchScale.y, switchScale.z);
+        }
+
+        isActivated = stop = false;
+        item.transform.position = startPosition;
+        item.transform.eulerAngles = startRot = new Vector3(0, 0, startRotation);
+
+        finalRot = new Vector3(0, 0, finalRotation);
+    }
+    
 }
 
 
