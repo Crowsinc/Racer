@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Codice.CM.WorkspaceServer;
 using UnityEngine;
 
 public class TooltipManager : MonoBehaviour

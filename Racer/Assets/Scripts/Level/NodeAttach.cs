@@ -23,6 +23,7 @@ public class NodeAttach : MonoBehaviour
         spline = spriteShapeController.spline;
     }
 
+    #if UNITY_EDITOR
     void Update()
     {
         if (!EditorApplication.isPlaying || runtimeUpdate)
@@ -91,4 +92,6 @@ public class NodeAttach : MonoBehaviour
         float ty = v.y;
         return new Vector2(cos * tx - sin * ty, sin * tx + cos * ty);
     }
+    
+    #endif
 }
