@@ -1,13 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class SpringActivation : MonoBehaviour
+namespace Vehicle.Modules
 {
-    public ActuatorModule actuator;
-    private void OnTriggerEnter2D(Collider2D collision)
+    public class SpringActivation : MonoBehaviour
     {
-        if (collision.CompareTag("Ground"))
-            actuator.TryActivate(1);
+        public ActuatorModule actuator;
+        public float upForce = 500;
+        
+        private float _mass;
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (_mass == 0f)
+            {   
+                Debug.Log("test");
+                _mass = GetComponentInParent<Rigidbody2D>().mass;
+                actuator.LocalActuationForce = Vector2.down * _mass * upForce;
+            }
+
+            if (!collision.CompareTag("Ground")) return;
+
+            actuator.TryActivate();
+        }
     }
 }

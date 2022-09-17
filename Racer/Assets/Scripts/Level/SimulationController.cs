@@ -50,8 +50,9 @@ namespace Level
 
         private float _totalTime;
 
-        public delegate void OnRestart();
-        public OnRestart LevelRestart;
+        public delegate void SimulationDelegates();
+        public SimulationDelegates LevelRestart;
+        public SimulationDelegates RaceStart;
 
         private void Awake()
         {
@@ -130,6 +131,7 @@ namespace Level
                 Time.timeScale = 1;
                 inBuildMode = false;
                 _cameraFollow.target = playerVehicle.transform;
+                
 
                 // Change UI
                 _vehicleConstructor.HideUIElements();
@@ -160,6 +162,7 @@ namespace Level
                 else
                     Debug.LogError("Player vehicle has no AI");
         
+                RaceStart?.Invoke();
             }
             else {
                 Debug.LogWarning("Player Vehicle Failed Validation");
