@@ -156,6 +156,7 @@ namespace Level
             }
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Halts the simulation and displays the 'Win' UI
         /// </summary>
@@ -177,6 +178,7 @@ namespace Level
             isFinished = true;
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public void LoseRace()
         {
             isFinished = true;

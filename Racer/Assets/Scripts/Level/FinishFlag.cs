@@ -4,44 +4,38 @@ namespace Level
 {
     public class FinishFlag : MonoBehaviour
     {
-        private SimulationController sc;
-        private Transform opponent;
+        private SimulationController _sc;
+        private Transform _opponent;
+
+        private bool _finished;
 
         private void Awake()
         {
-            sc = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
-            sc.raceFinishPoint = transform.position;
+            _finished = false;
+            _sc = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
+            _sc.raceFinishPoint = transform.position;
         }
 
         private void Update()
         {
-            if (opponent == null)
+            if (_finished) return;
+            if (!_opponent)
             {
-                if (sc.opponentInstance == null)
+                if (!_sc.opponentInstance)
                     return;
 
-                opponent = sc.opponentInstance.transform.Find("Vehicle");
+                _opponent = _sc.opponentInstance.transform.Find("Vehicle");
             }
-            if (opponent.position.x > sc.raceFinishPoint.x)
+            if (_opponent.position.x > _sc.raceFinishPoint.x)
             {
-                sc.LoseRace();
+                _sc.LoseRace();
+                _finished = true;
             } 
-            else if (sc.playerVehicle.transform.position.x > sc.raceFinishPoint.x)
+            else if (_sc.playerVehicle.transform.position.x > _sc.raceFinishPoint.x)
             {
-                sc.WinRace();
+                _sc.WinRace();
+                _finished = true;
             }
         }
-
-        /*private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            sc.WinRace();
-        }
-        else if (collision.CompareTag("Opponent"))
-        {
-            sc.LoseRace();
-        }
-    }*/
     }
 }
