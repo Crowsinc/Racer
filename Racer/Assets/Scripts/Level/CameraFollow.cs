@@ -16,8 +16,6 @@ public class CameraFollow : MonoBehaviour
         MapStart = map.transform.Find("Start");
         MapEnd = map.transform.Find("Flag");
 
-        Time.timeScale = 1f;
-
         // Call update once to initialise in correct position
         Update();
     }
@@ -27,10 +25,11 @@ public class CameraFollow : MonoBehaviour
     {
         var half = (Camera.main.orthographicSize * Camera.main.aspect);
 
-        transform.position = Vector3.Lerp(
-            new Vector3(transform.position.x, transform.position.y, -10.0f),
-            new Vector3(Target.position.x, Target.position.y, -10.0f),
-            0.1f
+        // NOTE: old lerp system causes very annoying skipping when the vehicle moves too fast
+        transform.position = new Vector3(
+            Target.position.x,
+            Target.position.y,
+            -10f
         );
 
         var yPos = transform.position.y;

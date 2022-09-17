@@ -4813,6 +4813,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Vehicle Core
       objectReference: {fileID: 0}
+    - target: {fileID: 5486130211880700500, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6691896345945197537, guid: 897078b8f4b2d0944ac8561fa4fb3ba1, type: 3}
       propertyPath: m_Constraints
       value: 7
