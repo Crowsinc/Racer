@@ -17,6 +17,7 @@ MonoBehaviour:
   terrain: {fileID: 3751650358320115858, guid: 4441a7ce423e213448037c01a200e3cd, type: 3}
   opponentVehicle: {fileID: 6945384242340336323, guid: 83b1b27b7aa4eef4bb99b460886cd60d, type: 3}
   budget: 1000
+  highScore: 0
   gravity: {x: 0, y: -9.81, z: 0}
   restritions:
   - restrictionType: 1
@@ -28,3 +29,13 @@ MonoBehaviour:
   - restrictionType: 2
     amount: 1
     module: {fileID: 7059383011597786535, guid: 256e03067f1eccc4b931e177f4c5b967, type: 3}
+  backgrounds:
+  - parallaxDegree: 0.2
+    image: {fileID: 21300000, guid: 89b4e4741b8cbd141b58aca7a7ae8db7, type: 3}
+    layerOrder: -50
+  - parallaxDegree: 0.1
+    image: {fileID: 21300000, guid: 740f6aeb55e20b04f8219e875698290d, type: 3}
+    layerOrder: -40
+  - parallaxDegree: 0
+    image: {fileID: 21300000, guid: c1ad2434e73470d46b568c8fd0b157ad, type: 3}
+    layerOrder: -30

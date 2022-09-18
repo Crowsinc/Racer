@@ -12,20 +12,21 @@ namespace Level
         public GameObject opponentVehicle;
         public float budget;
         public int highScore;
-        public Vector3 gravity = new (0, -9.81f, 0);
-    
-        public List<LevelRestrictions> restrictions = new();
+        public Vector3 gravity = new Vector3(0, -9.81f, 0);
+        public List<LevelRestrictions> restrictions = new List<LevelRestrictions>();
+        public List<ParallaxBackground> backgrounds = new List<ParallaxBackground>();
+
         public void SetHighScore(int score)
         {
             if (score < highScore) return;
 
             highScore = score;
-            PlayerPrefs.SetInt("LevelHS" + levelId, score);
+            PlayerPrefs.SetInt("LevelHS" + levelId.ToString(), score);
         }
 
         private void OnEnable()
         {
-            highScore = PlayerPrefs.GetInt("LevelHS" + levelId, 0);
+            highScore = PlayerPrefs.GetInt("LevelHS" + levelId.ToString(), 0);
         }
     }
 
@@ -50,7 +51,6 @@ namespace Level
                 if (key.Value.Prefab.GetComponent<VehicleModule>().Name == module.Name)
                     moduleCount++;
             }
-
             switch (restrictionType)
             {
                 case RestrictionType.Maximum: return moduleCount <= amount;
@@ -60,5 +60,13 @@ namespace Level
                     return false;
             }
         }
+    }
+
+    [System.Serializable]
+    public class ParallaxBackground
+    {
+        public float parallaxDegree;
+        public Sprite image;
+        public int layerOrder;
     }
 }
