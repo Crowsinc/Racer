@@ -15,11 +15,6 @@ public class LevelScreen : MonoBehaviour
     private Level.Level level;
     private GameObject levelPreview;
 
-    public void Start()
-    {
-        initLevelScreen();
-    }
-
     public void initLevelScreen()
     {
         int levelNum = PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0);
