@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,11 @@ public class LevelScreen : MonoBehaviour
     public Transform terrainRenderer;
     private Level.Level level;
     private GameObject levelPreview;
+
+    public void Start()
+    {
+        initLevelScreen();
+    }
 
     public void initLevelScreen()
     {

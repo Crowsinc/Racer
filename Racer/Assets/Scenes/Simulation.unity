@@ -5814,7 +5814,8 @@ MonoBehaviour:
   raceFinishPoint: {x: 0, y: 0, z: 0}
   inBuildMode: 1
   opponentInstance: {fileID: 0}
-  _levelCompleteScreen: {fileID: 48374961}
+  opponentInstanceTransform: {fileID: 0}
+  levelCompleteScreen: {fileID: 48374961}
 --- !u!114 &986193011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8387,9 +8388,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildModeCamPos: {fileID: 1898344580}
-  Target: {fileID: 0}
-  MapStart: {fileID: 0}
-  MapEnd: {fileID: 0}
+  target: {fileID: 0}
+  mapStart: {fileID: 0}
+  mapEnd: {fileID: 0}
 --- !u!114 &1611231223
 MonoBehaviour:
   m_ObjectHideFlags: 0
