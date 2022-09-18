@@ -18,7 +18,6 @@ public class LevelInitialiser : MonoBehaviour
         Physics2D.gravity = selectedLevel.gravity;
 
         // Initialise parallax backgrounds
-        Transform cam = Camera.main.transform;
         foreach (ParallaxBackground background in selectedLevel.backgrounds)
         {
             PlaceBackground(background, 0);
@@ -35,9 +34,9 @@ public class LevelInitialiser : MonoBehaviour
     private void PlaceBackground(ParallaxBackground background, float offset)
     {
         GameObject bg = Instantiate(backgroundTemplate, Camera.main.transform);
-        bg.transform.localPosition += Vector3.right * offset + Vector3.forward * 10;
+        bg.transform.localPosition = new Vector3(offset, 0, 10);
 
-        Parallax parallax = bg.AddComponent<Parallax>();
+        Parallax parallax = bg.GetComponent<Parallax>();
         parallax.parallaxEffect = background.parallaxDegree;
 
         SpriteRenderer spriteRenderer = bg.GetComponent<SpriteRenderer>();
