@@ -63,7 +63,7 @@ public class LevelScreen : MonoBehaviour
 
     private void CreateLevelPreview()
     {
-        Debug.Log("HMMMM");
+        //Debug.Log("HMMMM");
         levelPreview = Instantiate(level.terrain, new Vector3(-50, -50, 0), Quaternion.identity);   
         Vector3 startPos = levelPreview.transform.Find("Start").localPosition;
         Vector3 endPos = levelPreview.transform.Find("Flag").localPosition;
