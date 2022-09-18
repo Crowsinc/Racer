@@ -14,6 +14,11 @@ public class ActuationEffect : MonoBehaviour
     /// </summary>
     public ActuatorModule ActuatorModule;
 
+    /// <summary>
+    /// The alpha lerp factor
+    /// </summary>
+    public float LerpFactor = 0.1f;
+
     private float _alpha = 0.0f;
 
     // Update is called once per frame
@@ -21,12 +26,18 @@ public class ActuationEffect : MonoBehaviour
     {
         if (Texture != null && ActuatorModule != null)
         {
-            _alpha = Mathf.Lerp(_alpha, ActuatorModule.Proportion, 0.01f);
+            _alpha = Mathf.Lerp(_alpha, ActuatorModule.Proportion, LerpFactor);
 
+            Texture.enabled = true;
             var c = Texture.color;
             c.a = _alpha;
             Texture.color = c;
         }
         else Debug.LogWarning("Actuation effect has no attached texture or actuator module");
+    }
+
+    private void OnValidate()
+    {
+        LerpFactor = Mathf.Clamp01(LerpFactor);
     }
 }
