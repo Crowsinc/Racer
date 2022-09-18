@@ -6,13 +6,12 @@ public class FrameRateLimiter : MonoBehaviour
 {
 
     /// <summary>
-    /// 
+    /// The frame rate to set game to target
     /// </summary>
     public int FrameRate = 60;
 
     private void Awake()
     {
-        QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = FrameRate;
     }
 
