@@ -12,7 +12,13 @@ namespace Level
         private void Awake()
         {
             _finished = false;
-            _sc = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
+            GameObject scripts = GameObject.FindGameObjectWithTag("GameController");
+            if (!scripts)
+            {
+                _finished = true;
+                return;
+            }
+            _sc = scripts.GetComponent<SimulationController>();
             _sc.raceFinishPoint = transform.position;
         }
 

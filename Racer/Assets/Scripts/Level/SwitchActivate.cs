@@ -28,7 +28,13 @@ namespace Level
 
         private void Awake()
         {
-            GameObject.FindWithTag("GameController").GetComponent<SimulationController>().LevelRestart += Restart;
+            GameObject scripts = GameObject.FindWithTag("GameController");
+            if (!scripts)
+            {
+                _isActivated = true;
+                return;
+            }
+            scripts.GetComponent<SimulationController>().LevelRestart += Restart;
         }
 
         // Update is called once per frame
