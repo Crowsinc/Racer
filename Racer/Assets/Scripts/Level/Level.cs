@@ -14,6 +14,7 @@ public class Level : ScriptableObject
     public Vector3 gravity = new Vector3(0, -9.81f, 0);
     
     public List<LevelRestrictions> restritions = new List<LevelRestrictions>();
+    public List<ParallaxBackground> backgrounds = new List<ParallaxBackground>();
     public void SetHighScore(int score)
     {
         if (score < highScore) return;
@@ -59,4 +60,12 @@ public class LevelRestrictions
                 return false;
         }
     }
+}
+
+[System.Serializable]
+public class ParallaxBackground
+{
+    public float parallaxDegree;
+    public Sprite image;
+    public int layerOrder;
 }

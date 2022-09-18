@@ -6,6 +6,7 @@ public class LevelInitialiser : MonoBehaviour
 {
     public Level selectedLevel;
     public List<Level> levelCollection;
+    public GameObject backgroundTemplate;
     void Awake()
     {
         selectedLevel = FindLevelById(PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL));
@@ -15,6 +16,33 @@ public class LevelInitialiser : MonoBehaviour
 
         GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().opponentVehicle = selectedLevel.opponentVehicle;
         Physics2D.gravity = selectedLevel.gravity;
+
+        // Initialise parallax backgrounds
+        Transform cam = Camera.main.transform;
+        foreach (ParallaxBackground background in selectedLevel.backgrounds)
+        {
+            PlaceBackground(background, 0);
+
+            // Create left background
+            PlaceBackground(background, background.image.bounds.size.x);
+
+            // Create right background
+            PlaceBackground(background, -background.image.bounds.size.x);
+
+        }
+    }
+
+    private void PlaceBackground(ParallaxBackground background, float offset)
+    {
+        GameObject bg = Instantiate(backgroundTemplate, Camera.main.transform);
+        bg.transform.localPosition += Vector3.right * offset + Vector3.forward * 10;
+
+        Parallax parallax = bg.AddComponent<Parallax>();
+        parallax.parallaxEffect = background.parallaxDegree;
+
+        SpriteRenderer spriteRenderer = bg.GetComponent<SpriteRenderer>();
+        spriteRenderer.sortingOrder = background.layerOrder;
+        spriteRenderer.sprite = background.image;
     }
 
     // Find level in collection that matches id
