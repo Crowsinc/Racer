@@ -5,7 +5,10 @@ using System;
 
 public class AIController : MonoBehaviour
 {
-    private bool _running = false;
+    /// <summary>
+    /// True if the controller is running the AI, otherwise false
+    /// </summary>
+    public bool Running { get; private set; }
 
     /// <summary>
     /// Whether multiple goals should run at once, or just the highest priority one.
@@ -73,7 +76,6 @@ public class AIController : MonoBehaviour
     /// </summary>
     public Vector2 ProjectedShadow { get; private set; }
 
-
     private int _maxRayDistance = 10000;
     private int _terrainLayerMask = 0;
     private int _raycastLayerMask = 0;
@@ -81,6 +83,7 @@ public class AIController : MonoBehaviour
 
     private void Awake()
     {
+        Running = false;
         Vehicle = GetComponent<VehicleCore>();
         if (Vehicle == null)
             Debug.LogError("AIController is not attached to a vehicle!");
@@ -224,9 +227,9 @@ public class AIController : MonoBehaviour
     /// </summary>
     public void StartSimulating()
     {
-        if (!_running)
+        if (!Running)
             Initialize();
-        _running = true;
+        Running = true;
     }
 
     /// <summary>
@@ -234,13 +237,13 @@ public class AIController : MonoBehaviour
     /// </summary>
     public void StopSimulating()
     {
-        _running = false;
+        Running = false;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!_running || Vehicle.EnergyLevel <= 0) 
+        if (!Running || Vehicle.EnergyLevel <= 0) 
             return;
 
         UpdateSensors();

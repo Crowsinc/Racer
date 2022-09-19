@@ -20,11 +20,25 @@ public class ActuationEffect : MonoBehaviour
     public float LerpFactor = 0.1f;
 
     private float _alpha = 0.0f;
+    private AIController _controller = null;
+
 
     // Update is called once per frame
     void Update()
     {
-        if (Texture != null && ActuatorModule != null)
+        if (Texture == null || ActuatorModule == null)
+        {
+            Debug.LogError("Actuation effect is misconfigured!");
+            return;
+        }
+
+        if (_controller == null)
+        {
+            _controller = GetComponentInParent<AIController>();
+            return;
+        }
+
+        if(_controller.Running)
         {
             _alpha = Mathf.Lerp(_alpha, ActuatorModule.Proportion, LerpFactor);
 
@@ -33,7 +47,6 @@ public class ActuationEffect : MonoBehaviour
             c.a = _alpha;
             Texture.color = c;
         }
-        else Debug.LogWarning("Actuation effect has no attached texture or actuator module");
     }
 
     private void OnValidate()

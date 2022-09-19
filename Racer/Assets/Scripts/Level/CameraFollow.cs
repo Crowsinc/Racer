@@ -23,6 +23,12 @@ namespace Level
             Update();
         }
 
+
+        public void EnterBuildMode()
+        {
+            target = buildModeCamPos;
+        }
+
         // Update is called once per frame
         private void Update()
         {

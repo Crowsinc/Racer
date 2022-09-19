@@ -104,9 +104,11 @@ namespace Level
             resetPrompt.SetActive(false);
             _vehicleConstructor.ShowUIElements();
 
+            // Reset camera position
+            _cameraFollow.EnterBuildMode();
 
             // Resetting player vehicle
-            if(playerVehicle.IsBuilt)
+            if (playerVehicle.IsBuilt)
             {
                 var playerVehicleTransform = playerVehicle.transform;
                 playerVehicleTransform.position = new Vector3(0, 3, 0);
