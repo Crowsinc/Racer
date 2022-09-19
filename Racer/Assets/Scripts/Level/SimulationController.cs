@@ -33,7 +33,9 @@ namespace Level
         [HideInInspector]
         public Vector3 raceFinishPoint;
 
-        [Header("Misc")]
+        [Header("Misc")] 
+        public Transform fuelBar;
+        
         public bool inBuildMode = true;
         public GameObject opponentInstance;
         public Transform opponentInstanceTransform;
@@ -76,6 +78,7 @@ namespace Level
             _totalTime += Time.deltaTime;
             timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString("#.00");
             UpdateProgressBar();
+            updateFuelBar();
         }
 
         /// <summary>
@@ -203,6 +206,7 @@ namespace Level
             var playerProgressBarDistance = Mathf.Min(Mathf.Max((_raceDistance - (raceFinishPoint.x - playerVehicle.transform.position.x)) / _raceDistance, 0), 1);
             var opponentProgressBarDistance = Mathf.Min(Mathf.Max((_raceDistance - (raceFinishPoint.x - opponentInstanceTransform.position.x)) / _raceDistance, 0), 1);
 
+            // Debug.Log("Player progress: " + playerProgressBarDistance.ToString());
             raceProgressBar.transform.localScale = new Vector3(playerProgressBarDistance, 1, 1);
             opponentProgressBar.transform.localScale = new Vector3(opponentProgressBarDistance, 1, 1);
 
@@ -210,6 +214,14 @@ namespace Level
                 opponentProgressBar.transform.SetAsLastSibling();
             else
                 raceProgressBar.transform.SetAsLastSibling();
+        }
+
+        private void updateFuelBar()
+        {
+            var percentage = playerVehicle.EnergyLevel / playerVehicle.EnergyCapacity;
+            fuelBar.transform.localScale = new Vector3(percentage, 1, 1);
+
+            // Debug.Log("Energy: " + playerVehicle.EnergyLevel + ", " + percentage.ToString() + "%");
         }
 
         private int CalculateScore()
