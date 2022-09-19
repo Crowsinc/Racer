@@ -28,17 +28,17 @@ namespace Level
 
         private void Awake()
         {
-            GameObject scripts = GameObject.FindWithTag("GameController");
+            var scripts = GameObject.FindWithTag("GameController");
             if (!scripts)
             {
                 _isActivated = true;
                 return;
             }
-            scripts.GetComponent<SimulationController>().LevelRestart += Restart;
+            scripts.GetComponent<SimulationController>().InBuildMode += Restart;
         }
 
         // Update is called once per frame
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!_isActivated) return;
             if (_stop) return;

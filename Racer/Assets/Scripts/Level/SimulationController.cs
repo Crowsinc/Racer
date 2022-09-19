@@ -54,8 +54,11 @@ namespace Level
         private float _totalTime;
 
         public delegate void SimulationDelegates();
-        public SimulationDelegates LevelRestart;
+        public SimulationDelegates InBuildMode;
         public SimulationDelegates RaceStart;
+        public SimulationDelegates RaceWin;
+        public SimulationDelegates RaceLoose;
+        public SimulationDelegates RaceFinish;
 
         private void Awake()
         {
@@ -78,7 +81,6 @@ namespace Level
             if (_isFinished) return;
             _totalTime += Time.deltaTime;
             timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString("#.00");
-            UpdateProgressBar();
             UpdateFuelBar();
         }
 
@@ -91,7 +93,7 @@ namespace Level
             inBuildMode = true;
             _totalTime = 0;
             _isFinished = false;
-            LevelRestart?.Invoke();
+            InBuildMode?.Invoke();
 
             // Change UI
             buildModeUI.SetActive(true);
@@ -191,6 +193,8 @@ namespace Level
             _playerAI.StopSimulating();
             _opponentAI.StopSimulating();
             _isFinished = true;
+            RaceWin?.Invoke();
+            RaceFinish?.Invoke();
         }
 
         // ReSharper disable Unity.PerformanceAnalysis
@@ -200,27 +204,8 @@ namespace Level
             raceUI.SetActive(false);
             winUI.SetActive(true);
             levelCompleteScreen.initLevelCompleteScreen(false, CalculateScore(), (int)_vehicleConstructor.SumVehicleCost());
-        }
-
-        private void UpdateProgressBar()
-        {
-            var playerProgressBarDistance = Mathf.Min(Mathf.Max((_raceDistance - (raceFinishPoint.x - playerVehicle.transform.position.x)) / _raceDistance, 0), 1);
-            var opponentProgressBarDistance = Mathf.Min(Mathf.Max((_raceDistance - (raceFinishPoint.x - opponentInstanceTransform.position.x)) / _raceDistance, 0), 1);
-
-            // Debug.Log("Player progress: " + playerProgressBarDistance.ToString());
-            raceProgressBar.transform.localScale = new Vector3(playerProgressBarDistance, 1, 1);
-            opponentProgressBar.transform.localScale = new Vector3(opponentProgressBarDistance, 1, 1);
-
-            if (playerProgressBarDistance > opponentProgressBarDistance)
-            {
-                opponentProgressBar.transform.SetSiblingIndex(1);
-                raceProgressBar.transform.SetSiblingIndex(0);
-            }
-            else
-            {
-                raceProgressBar.transform.SetSiblingIndex(1);
-                opponentProgressBar.transform.SetSiblingIndex(0);
-            }
+            RaceLoose?.Invoke();
+            RaceFinish?.Invoke();
         }
 
         private void UpdateFuelBar()
