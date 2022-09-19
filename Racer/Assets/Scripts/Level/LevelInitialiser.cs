@@ -20,7 +20,7 @@ namespace Level
             Physics2D.gravity = selectedLevel.gravity;
 
             // Initialise parallax backgrounds
-            foreach (ParallaxBackground background in selectedLevel.backgrounds)
+            foreach (var background in selectedLevel.backgrounds)
             {
                 PlaceBackground(background, 0);
 
@@ -34,13 +34,14 @@ namespace Level
         }
         private void PlaceBackground(ParallaxBackground background, float offset)
         {
-            GameObject bg = Instantiate(backgroundTemplate, Camera.main.transform);
+            if (Camera.main == null) return;
+            var bg = Instantiate(backgroundTemplate, Camera.main.transform);
             bg.transform.localPosition = new Vector3(offset, 0, 10);
 
-            Parallax parallax = bg.GetComponent<Parallax>();
+            var parallax = bg.GetComponent<Parallax>();
             parallax.parallaxEffect = background.parallaxDegree;
 
-            SpriteRenderer spriteRenderer = bg.GetComponent<SpriteRenderer>();
+            var spriteRenderer = bg.GetComponent<SpriteRenderer>();
             spriteRenderer.sortingOrder = background.layerOrder;
             spriteRenderer.sprite = background.image;
         }

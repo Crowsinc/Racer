@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Level
@@ -9,30 +7,33 @@ namespace Level
         private float _length;
         private float _startPos;
         private Vector3 _initialPos;
-        private GameObject cam;
+        private GameObject _cam;
         public float parallaxEffect;
         private SimulationController _simController;
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            cam = Camera.main.gameObject;
-            _startPos = transform.position.x;
-            _initialPos = transform.position;
+            if (Camera.main != null) _cam = Camera.main.gameObject;
+            var pos = transform.position;
+            _startPos = pos.x;
+            _initialPos = pos;
             _length = GetComponent<SpriteRenderer>().sprite.bounds.size.x;
             _simController = GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>();
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             if (_simController.inBuildMode)
             {
                 transform.position = _initialPos;
                 return;
             }
-            float offset = cam.transform.position.x * (1 - parallaxEffect);
-            float dist = cam.transform.position.x * parallaxEffect;
+
+            var camPos = _cam.transform.position;
+            var offset = camPos.x * (1 - parallaxEffect);
+            var dist = camPos.x * parallaxEffect;
             transform.position = new Vector3(_startPos + dist, transform.position.y, transform.position.z);
 
             if (offset > _startPos + _length)

@@ -78,7 +78,7 @@ namespace Level
             _totalTime += Time.deltaTime;
             timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString("#.00");
             UpdateProgressBar();
-            updateFuelBar();
+            UpdateFuelBar();
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace Level
             }
         }
 
-        private void updateFuelBar()
+        private void UpdateFuelBar()
         {
             var percentage = playerVehicle.EnergyLevel / playerVehicle.EnergyCapacity;
             fuelBar.transform.localScale = new Vector3(percentage, 1, 1);
