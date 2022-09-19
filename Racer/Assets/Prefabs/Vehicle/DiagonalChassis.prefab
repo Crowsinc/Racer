@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Diagonal Chassis
   Cost: 20
-  EnergyCapacity: 10
+  EnergyCapacity: 0
   Mass: 10
   Description: A diagonal block to reduce air drag when pointed towards where the
     vehicle is heading. This works by reducing the effective surface area!

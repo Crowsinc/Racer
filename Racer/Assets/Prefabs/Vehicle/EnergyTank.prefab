@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Standard Tank
   Cost: 60
-  EnergyCapacity: 10
+  EnergyCapacity: 180
   Mass: 30
   Description: A tank that stores energy. Grab these to have your actuators running
     longer!

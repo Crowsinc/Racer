@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Y Chassis
   Cost: 20
-  EnergyCapacity: 10
+  EnergyCapacity: 0
   Mass: 30
   Description: An Y chassis block. Attach things to your vehicle body with this!
   Size: {x: 1, y: 2}

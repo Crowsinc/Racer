@@ -161,7 +161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Heavy Weight
   Cost: 60
-  EnergyCapacity: 50
+  EnergyCapacity: 0
   Mass: 50
   Description: A heavier chassis block. Use this to manipulate your vehicle's centre
     of gravity, or make it heavier!

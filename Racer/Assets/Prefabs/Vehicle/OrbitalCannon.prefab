@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Orbital Cannon
   Cost: 60
-  EnergyCapacity: 0
+  EnergyCapacity: 100
   Mass: 500
   Description: A massive thruster... what more could you want
   Size: {x: 3, y: 2}
@@ -154,10 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -2000, y: 0}
+  LocalActuationForce: {x: -10000, y: 0}
   LocalIdleForce: {x: 0, y: 0}
   LocalActuationPosition: {x: 0.5, y: 1.1}
-  ActivationCost: 1
+  ActivationCost: 100
   IdleCost: 0
   ProportionalControl: 0
   AIControllable: 1

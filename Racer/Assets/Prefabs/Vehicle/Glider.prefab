@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Glider
   Cost: 20
-  EnergyCapacity: 40
+  EnergyCapacity: 0
   Mass: 1
   Description: A glider that increases drag in a direction by increasing the effective
     surface area!

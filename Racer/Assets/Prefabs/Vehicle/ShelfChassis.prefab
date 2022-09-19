@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Shelf Chassis
   Cost: 20
-  EnergyCapacity: 10
+  EnergyCapacity: 0
   Mass: 5
   Description: 'A shelf block that allows modules to be placed on top while allowing
     for extra clearance. '

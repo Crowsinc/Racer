@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Large Tank
   Cost: 40
-  EnergyCapacity: 10
+  EnergyCapacity: 400
   Mass: 60
   Description: A large tank that stores energy. Grab these to have your actuators
     running longer!

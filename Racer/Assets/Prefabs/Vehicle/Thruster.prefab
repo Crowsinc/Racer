@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Booster
   Cost: 60
-  EnergyCapacity: 0
+  EnergyCapacity: 5
   Mass: 20
   Description: An average thruster. Cost effective, but not overly powerful.
   Size: {x: 1, y: 1}
@@ -154,10 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -150, y: 0}
+  LocalActuationForce: {x: -1000, y: 0}
   LocalIdleForce: {x: 0, y: 0}
   LocalActuationPosition: {x: 0.3, y: 0.5}
-  ActivationCost: 1
+  ActivationCost: 5
   IdleCost: 0
   ProportionalControl: 1
   AIControllable: 1

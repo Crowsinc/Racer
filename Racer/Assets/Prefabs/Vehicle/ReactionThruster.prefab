@@ -133,7 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Reaction Thruster
   Cost: 30
-  EnergyCapacity: 0
+  EnergyCapacity: 2
   Mass: 4
   Description: A small thruster designed to help rotate things
   Size: {x: 1, y: 1}
@@ -152,10 +152,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -40, y: -40}
+  LocalActuationForce: {x: -100, y: -40}
   LocalIdleForce: {x: 0, y: 0}
   LocalActuationPosition: {x: 0.82, y: 0.37}
-  ActivationCost: 1
+  ActivationCost: 2
   IdleCost: 0
   ProportionalControl: 1
   AIControllable: 1

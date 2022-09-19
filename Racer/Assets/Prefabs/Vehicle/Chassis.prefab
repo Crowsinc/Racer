@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Chassis
   Cost: 20
-  EnergyCapacity: 10
+  EnergyCapacity: 0
   Mass: 20
   Description: An average chassis block. Build your vehicle body with this!
   Size: {x: 1, y: 1}
