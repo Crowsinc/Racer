@@ -211,9 +211,15 @@ namespace Level
             opponentProgressBar.transform.localScale = new Vector3(opponentProgressBarDistance, 1, 1);
 
             if (playerProgressBarDistance > opponentProgressBarDistance)
-                opponentProgressBar.transform.SetAsLastSibling();
+            {
+                opponentProgressBar.transform.SetSiblingIndex(1);
+                raceProgressBar.transform.SetSiblingIndex(0);
+            }
             else
-                raceProgressBar.transform.SetAsLastSibling();
+            {
+                raceProgressBar.transform.SetSiblingIndex(1);
+                opponentProgressBar.transform.SetSiblingIndex(0);
+            }
         }
 
         private void updateFuelBar()
