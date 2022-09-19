@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Flat Tank
-  Cost: 80
+  Cost: 70
   EnergyCapacity: 10
   Mass: 1
   Description: A flat tank that stores energy. Grab these to have your actuators

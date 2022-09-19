@@ -50,7 +50,7 @@ MonoBehaviour:
   Name: Shelf Chassis
   Cost: 20
   EnergyCapacity: 10
-  Mass: 5
+  Mass: 1
   Description: 'A shelf block that allows modules to be placed on top while allowing
     for extra clearance. '
   Size: {x: 1, y: 1}

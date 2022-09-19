@@ -165,9 +165,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Energy Barrel
-  Cost: 80
+  Cost: 60
   EnergyCapacity: 10
-  Mass: 1
+  Mass: 8
   Description: A small canister that stores energy
   Size: {x: 1, y: 1}
   Collider: {fileID: 253760818386473884}
