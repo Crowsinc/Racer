@@ -1,11 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModuleCollection : MonoBehaviour
+namespace Build_Mode
 {
-    public List<GameObject> wheels;
-    public List<GameObject> chassis;
-    public List<GameObject> energy;
-    public List<GameObject> actuators;
+    public class ModuleCollection : MonoBehaviour
+    {
+        public List<GameObject> wheels;
+        public List<GameObject> chassis;
+        public List<GameObject> energy;
+        public List<GameObject> actuators;
+    }
 }

@@ -1,58 +1,57 @@
-using System.Collections;
-using System.Collections.Generic;
 using Level;
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
-public class BuildStats : MonoBehaviour
+namespace Build_Mode
 {
-    private Level.Level _level;
-    private VehicleConstructor vehicleConstructor;
-    public TextMeshProUGUI text;
-    private int _moduleCount;
-
-    void Start()
+    public class BuildStats : MonoBehaviour
     {
-        LevelInitialiser _levelInitialiser = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelInitialiser>();
-        _level = _levelInitialiser.selectedLevel;
-        vehicleConstructor = _levelInitialiser.GetComponent<VehicleConstructor>();
-        UpdateStats();
-    }
+        private Level.Level _level;
+        private VehicleConstructor _vehicleConstructor;
+        public TextMeshProUGUI text;
+        private int _moduleCount;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (_moduleCount != vehicleConstructor.ModuleCount())
+        private void Start()
         {
+            var levelInitialiser = GameObject.FindGameObjectWithTag("GameController").GetComponent<LevelInitialiser>();
+            _level = levelInitialiser.selectedLevel;
+            _vehicleConstructor = levelInitialiser.GetComponent<VehicleConstructor>();
             UpdateStats();
-            _moduleCount = vehicleConstructor.ModuleCount();
         }
-    }
 
-    private void UpdateStats()
-    {
-        text.text = _level.levelName + "\n" +
-            "Budget: $" + _level.budget + "\n" +
-            "Total Vehicle Cost: $" + vehicleConstructor.SumVehicleCost().ToString();
-
-        if (_level.restrictions.Count > 0)
+        // Update is called once per frame
+        private void Update()
         {
-            text.text += "\n\nRestrictions:";
+            if (_moduleCount == _vehicleConstructor.ModuleCount()) return;
+            
+            UpdateStats();
+            _moduleCount = _vehicleConstructor.ModuleCount();
         }
-        foreach (LevelRestrictions restriction in _level.restrictions)
+
+        private void UpdateStats()
         {
-            switch (restriction.restrictionType)
+            text.text = _level.levelName + "\n" +
+                        "Budget: $" + _level.budget + "\n" +
+                        "Total Vehicle Cost: $" + _vehicleConstructor.SumVehicleCost();
+
+            if (_level.restrictions.Count > 0)
             {
-                case LevelRestrictions.RestrictionType.EqualTo:
-                    text.text += "\nExcatly " + restriction.amount + " " + restriction.module.Name;
-                    break;
-                case LevelRestrictions.RestrictionType.Maximum:
-                    text.text += "\nNo more than " + restriction.amount + " " + restriction.module.Name;
-                    break;
-                case LevelRestrictions.RestrictionType.Minimum:
-                    text.text += "\nAt least " + restriction.amount + " " + restriction.module.Name;
-                    break;
+                text.text += "\n\nRestrictions:";
+            }
+            foreach (LevelRestrictions restriction in _level.restrictions)
+            {
+                switch (restriction.restrictionType)
+                {
+                    case LevelRestrictions.RestrictionType.EqualTo:
+                        text.text += "\nExactly " + restriction.amount + " " + restriction.module.Name;
+                        break;
+                    case LevelRestrictions.RestrictionType.Maximum:
+                        text.text += "\nNo more than " + restriction.amount + " " + restriction.module.Name;
+                        break;
+                    case LevelRestrictions.RestrictionType.Minimum:
+                        text.text += "\nAt least " + restriction.amount + " " + restriction.module.Name;
+                        break;
+                }
             }
         }
     }

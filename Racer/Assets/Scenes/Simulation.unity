@@ -3182,7 +3182,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 773162645}
         m_TargetAssemblyTypeName: BuildModeUIController, RacerScripts
-        m_MethodName: toggleControls
+        m_MethodName: ToggleControls
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3995,7 +3995,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 773162645}
         m_TargetAssemblyTypeName: BuildModeUIController, RacerScripts
-        m_MethodName: toggleControls
+        m_MethodName: ToggleControls
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
