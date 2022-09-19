@@ -232,7 +232,7 @@ namespace Level
 
         private int CalculateScore()
         {
-            return ((int)_totalTime);
+            return  (int)(playerVehicle.EnergyLevel / _vehicleConstructor.SumVehicleCost() * _totalTime * 100000);
         }
     }
 }
