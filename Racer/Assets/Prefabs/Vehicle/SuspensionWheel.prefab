@@ -401,7 +401,7 @@ MonoBehaviour:
   Name: Suspension Wheel
   Cost: 80
   EnergyCapacity: 0
-  Mass: 4
+  Mass: 15
   Description: A wheel with suspension, for those bumpy roads. Somewhat expensive,
     but worth it!
   Size: {x: 1, y: 2}

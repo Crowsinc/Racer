@@ -183,7 +183,7 @@ MonoBehaviour:
   Name: 
   Cost: 0
   EnergyCapacity: 50
-  Mass: 1
+  Mass: 5
   Description: 
   Size: {x: 1, y: 1}
   Collider: {fileID: 8494678887704816148}

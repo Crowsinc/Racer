@@ -398,7 +398,7 @@ MonoBehaviour:
   Name: Short Suspension Wheel
   Cost: 40
   EnergyCapacity: 0
-  Mass: 2
+  Mass: 7
   Description: A wheel with short suspension, for those bumpy roads. Somewhat expensive,
     but worth it!
   Size: {x: 1, y: 1}

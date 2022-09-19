@@ -399,7 +399,7 @@ MonoBehaviour:
   Name: Large Wheel
   Cost: 30
   EnergyCapacity: 0
-  Mass: 2
+  Mass: 10
   Description: A large and cheap wheel, with no suspension.
   Size: {x: 1, y: 2}
   Collider: {fileID: 820710009571491240}

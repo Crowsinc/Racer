@@ -236,7 +236,7 @@ MonoBehaviour:
   Name: Suspension Sled
   Cost: 80
   EnergyCapacity: 0
-  Mass: 12
+  Mass: 25
   Description: A sled, best used on ice
   Size: {x: 2, y: 1}
   Collider: {fileID: 3822257534998658516}

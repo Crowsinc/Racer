@@ -134,7 +134,7 @@ MonoBehaviour:
   Name: Reaction Thruster
   Cost: 30
   EnergyCapacity: 0
-  Mass: 1
+  Mass: 4
   Description: A small thruster designed to help rotate things
   Size: {x: 1, y: 1}
   Collider: {fileID: 1263783717170365403}
@@ -175,6 +175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Texture: {fileID: 1171447812353665673}
   ActuatorModule: {fileID: 4704317077709287435}
+  LerpFactor: 0.1
 --- !u!1 &2008394192195240479
 GameObject:
   m_ObjectHideFlags: 0

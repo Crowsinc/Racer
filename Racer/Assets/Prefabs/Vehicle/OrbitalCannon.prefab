@@ -136,7 +136,7 @@ MonoBehaviour:
   Name: Orbital Cannon
   Cost: 60
   EnergyCapacity: 0
-  Mass: 1
+  Mass: 500
   Description: A massive thruster... what more could you want
   Size: {x: 3, y: 2}
   Collider: {fileID: 8593807441364394485}

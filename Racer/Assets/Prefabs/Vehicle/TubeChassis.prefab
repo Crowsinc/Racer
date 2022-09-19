@@ -48,7 +48,7 @@ MonoBehaviour:
   Name: Tube Chassis
   Cost: 20
   EnergyCapacity: 10
-  Mass: 5
+  Mass: 35
   Description: An average chassis block. Build your vehicle body with this!
   Size: {x: 2, y: 1}
   Collider: {fileID: 3511728778689212273}

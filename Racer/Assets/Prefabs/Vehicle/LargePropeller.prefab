@@ -169,7 +169,7 @@ MonoBehaviour:
   Name: Propeller
   Cost: 60
   EnergyCapacity: 0
-  Mass: 3
+  Mass: 10
   Description: 'An expensive, but strong propellor. Uses a lot of fuel and cannot
     be fully turned off. '
   Size: {x: 1, y: 3}

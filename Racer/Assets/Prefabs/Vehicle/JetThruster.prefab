@@ -387,7 +387,7 @@ MonoBehaviour:
   Name: Jet
   Cost: 120
   EnergyCapacity: 0
-  Mass: 10
+  Mass: 80
   Description: A powerful thruster. Uses a fair amount of fuel.
   Size: {x: 3, y: 1}
   Collider: {fileID: 2638166094455142260}
@@ -428,6 +428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Texture: {fileID: 8025370612100488333}
   ActuatorModule: {fileID: 7011759647688323487}
+  LerpFactor: 0.1
 --- !u!114 &2074376203408913161
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -49,7 +49,7 @@ MonoBehaviour:
   Name: Chassis
   Cost: 20
   EnergyCapacity: 10
-  Mass: 2
+  Mass: 20
   Description: An average chassis block. Build your vehicle body with this!
   Size: {x: 1, y: 1}
   Collider: {fileID: 3382732491998691383}
