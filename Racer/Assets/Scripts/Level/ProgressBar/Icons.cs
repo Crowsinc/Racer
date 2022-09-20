@@ -23,7 +23,7 @@ namespace Level.ProgressBar
         private void Update()
         {
             _transform.position = new Vector3(
-                progressBar.position.x + progressBar.localScale.x * progressImage.sizeDelta.x * 1.295f,
+                progressBar.position.x + progressBar.localScale.x * progressImage.sizeDelta.x,
                 _yPosition, _zPosition);
         }
     }

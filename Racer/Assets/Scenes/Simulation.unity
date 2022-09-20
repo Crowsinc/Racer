@@ -5176,6 +5176,7 @@ GameObject:
   - component: {fileID: 810524412}
   - component: {fileID: 810524414}
   - component: {fileID: 810524413}
+  - component: {fileID: 810524415}
   m_Layer: 5
   m_Name: Progress Bar
   m_TagString: Untagged
@@ -5244,6 +5245,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 810524411}
   m_CullTransparentMesh: 1
+--- !u!114 &810524415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 810524411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dd05f947eacd3d4e8c32e0c09cbb9ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  raceProgressBar: {fileID: 1817601886}
+  opponentProgressBar: {fileID: 2008298540}
 --- !u!1 &872055264
 GameObject:
   m_ObjectHideFlags: 0
