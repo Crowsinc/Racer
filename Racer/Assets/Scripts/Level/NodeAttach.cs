@@ -19,12 +19,12 @@ namespace Level
         private bool _lastUseNormals;
         private Vector3 _lastPosition;
 
+
         private void Awake()
         {
             _spline = spriteShapeController.spline;
         }
 
-#if UNITY_EDITOR
         private void Update()
         {
             if (!EditorApplication.isPlaying || runtimeUpdate)
@@ -93,7 +93,5 @@ namespace Level
             float ty = v.y;
             return new Vector2(cos * tx - sin * ty, sin * tx + cos * ty);
         }
-    
-#endif
     }
 }

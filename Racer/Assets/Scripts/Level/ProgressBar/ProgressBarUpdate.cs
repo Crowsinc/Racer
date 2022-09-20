@@ -16,13 +16,14 @@ namespace Level.ProgressBar
         private bool _startBar;
         private SimulationController _sc;
 
-        private void Awake()
+        private void Start()
         {
             var scripts = GameObject.FindWithTag("GameController");
 
             _sc = scripts.GetComponent<SimulationController>();
             _sc.RaceStart += StartBar;
             _sc.RaceFinish += StopBar;
+            _sc.InBuildMode += StartBar;
         }
 
         private void Update()
