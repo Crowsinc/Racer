@@ -1622,7 +1622,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!60 &5196213415615940354
@@ -1882,7 +1882,7 @@ SpriteRenderer:
   m_Size: {x: 0.46, y: 0.46}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &7162391410427344402
@@ -1911,6 +1911,7 @@ GameObject:
   - component: {fileID: 6172784919825134390}
   - component: {fileID: 7457757313807942447}
   - component: {fileID: 1310531553245686257}
+  - component: {fileID: 6213972700115160136}
   m_Layer: 21
   m_Name: Vehicle
   m_TagString: Untagged
@@ -2519,6 +2520,19 @@ PolygonCollider2D:
       - {x: 0, y: 0}
       - {x: 1, y: 0}
       - {x: 1, y: 1}
+--- !u!114 &6213972700115160136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7162391410427344402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734745623a0a57344951c93748309704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  opponentAlpha: 0.5
 --- !u!1 &7969988733696120425
 GameObject:
   m_ObjectHideFlags: 0
