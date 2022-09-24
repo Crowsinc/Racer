@@ -82,11 +82,6 @@ namespace Build_Mode
         public Vector3 DragOffset { get; private set; }
 
         /// <summary>
-        /// The color tint applied to modules when they are in an error state
-        /// </summary>
-        public Color errorTintColor = new Color(1.0f, 0, 0, 0.5f);
-
-        /// <summary>
         /// The box collider used to drag the module around
         /// </summary>
         public BoxCollider2D dragCollider;

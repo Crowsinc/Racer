@@ -234,7 +234,7 @@ namespace Build_Mode
                         {
                             draggable.feedbackTrigger.enabled = true;
                             draggable.feedbackTrigger.header = "Actuator output is blocked";
-                            draggable.ApplyTint(Color.yellow);
+                            draggable.ApplyTint(Color.red);
                         }
                     }
                 }
@@ -247,7 +247,11 @@ namespace Build_Mode
                 
                 draggable.feedbackTrigger.enabled = true;
                 draggable.feedbackTrigger.header = "Module is not connected";
-                draggable.ApplyTint(Color.red);
+
+                Color disjointColour = Color.white;
+                disjointColour.a = 0.5f;
+                
+                draggable.ApplyTint(disjointColour);
             }
         }
 
