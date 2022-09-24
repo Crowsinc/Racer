@@ -52,7 +52,7 @@ public class PropellerEffect : MonoBehaviour
         }
 
         _ticks++;
-        if (_controller.Running && _ticks % TickTime == 0)
+        if (_controller.Running && _controller.Vehicle.EnergyLevel > 0 && _ticks % TickTime == 0)
         {
             Propeller1.color = _state ? _minAlpha : _maxAlpha;
             Propeller2.color = _state ? _maxAlpha : _minAlpha;
