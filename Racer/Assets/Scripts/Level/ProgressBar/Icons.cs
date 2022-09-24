@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Level.ProgressBar
 {
     public class Icons : MonoBehaviour
     {
-        public RectTransform progressBar;
+        public RectTransform progressBar; 
         public RectTransform progressImage;
 
         private float _yPosition;
@@ -15,6 +16,7 @@ namespace Level.ProgressBar
         private void Start()
         {
             _transform = transform;
+            
             var position = _transform.position;
             _yPosition = position.y;
             _zPosition = position.z;
@@ -23,8 +25,13 @@ namespace Level.ProgressBar
         private void Update()
         {
             _transform.position = new Vector3(
-                progressBar.position.x + progressBar.localScale.x * progressImage.sizeDelta.x,
-                _yPosition, _zPosition);
+                // Progress image position is taken from its centre, so the difference between the 
+                // progress bar and image position is the size of half the bar. Adding two halves
+                // to the progress bar position then gives us the current end position of the bar. 
+                progressBar.position.x + 2 * (progressImage.position.x - progressBar.position.x),
+                _yPosition,
+                _zPosition
+            );
         }
     }
 }

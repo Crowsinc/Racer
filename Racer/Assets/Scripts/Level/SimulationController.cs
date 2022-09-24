@@ -26,7 +26,7 @@ namespace Level
         public GameObject winUI;
 
         [Header("Progress Bar")]
-        public Transform raceProgressBar;
+        public Transform playerProgressBar;
         public Transform opponentProgressBar;
         
         [HideInInspector]

@@ -4,7 +4,7 @@ namespace Level.ProgressBar
 {
     public class ProgressBarUpdate : MonoBehaviour
     {
-        public Transform raceProgressBar;
+        public Transform playerProgressBar;
         public Transform opponentProgressBar;
 
         private float _raceDistance;
@@ -33,17 +33,17 @@ namespace Level.ProgressBar
             var opponentProgressBarDistance = Mathf.Min(Mathf.Max((_raceDistance - (_raceFinishPoint.x - _opponentVehicle.position.x)) / _raceDistance, 0), 1);
 
             // Debug.Log("Player progress: " + playerProgressBarDistance.ToString());
-            raceProgressBar.transform.localScale = new Vector3(playerProgressBarDistance, 1, 1);
+            playerProgressBar.transform.localScale = new Vector3(playerProgressBarDistance, 1, 1);
             opponentProgressBar.transform.localScale = new Vector3(opponentProgressBarDistance, 1, 1);
 
             if (playerProgressBarDistance > opponentProgressBarDistance)
             {
                 opponentProgressBar.transform.SetSiblingIndex(1);
-                raceProgressBar.transform.SetSiblingIndex(0);
+                playerProgressBar.transform.SetSiblingIndex(0);
             }
             else
             {
-                raceProgressBar.transform.SetSiblingIndex(1);
+                playerProgressBar.transform.SetSiblingIndex(1);
                 opponentProgressBar.transform.SetSiblingIndex(0);
             }
         }
