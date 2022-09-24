@@ -157,7 +157,7 @@ public class ActuatorModule : MonoBehaviour
     /// <returns>
     /// True if the actuator was successfuly activated, false if the actuator failed to run.
     /// </returns>
-    public bool TryActivate(float proportion = 1.0f, bool forced = false)
+    public bool TryActivate(float proportion = 1.0f, bool forced = true)
     {
         if (Disabled)
             return false;

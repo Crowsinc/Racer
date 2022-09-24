@@ -12,15 +12,16 @@ namespace Vehicle.Modules
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (_mass == 0f)
-            {   
-                Debug.Log("test");
-                _mass = GetComponentInParent<Rigidbody2D>().mass;
-                actuator.LocalActuationForce = Vector2.down * _mass * upForce;
-            }
-
             if (!collision.CompareTag("Ground")) return;
 
+            // Initialize spring force based on vehicle mass on first collision
+            if (_mass == 0f) 
+            {   
+                _mass = GetComponentInParent<Rigidbody2D>().mass;
+                actuator.LocalActuationForce = Vector2.down * _mass * upForce;
+                actuator.UpdateDynamics();
+            }
+            
             actuator.TryActivate();
         }
     }
