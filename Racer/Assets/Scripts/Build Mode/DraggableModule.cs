@@ -199,10 +199,10 @@ namespace Build_Mode
 
             //Numeric stats on left panel
             _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text =
-                $"{_vehicleModule.Mass}kg\n" +
-                $"{_vehicleModule.EnergyCapacity} J\n" +
-                $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)} N\n" +
                 $"{_vehicleModule.Size.x.ToString()}x{_vehicleModule.Size.y.ToString()}\n" +
+                $"{_vehicleModule.Mass}kg\n" +
+                $"{(TryGetComponent(out ActuatorModule actuator) ? actuator.LocalActuationForce.magnitude : 0)} N\n" +
+                $"{_vehicleModule.EnergyCapacity} J\n" +
                 $"{(TryGetComponent(out ActuatorModule actuator2) ? actuator2.IdleCost.ToString() : "0")} J/sec\n" +
                 $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : "0")} J/sec\n";
 
