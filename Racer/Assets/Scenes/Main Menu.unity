@@ -12059,6 +12059,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tooltip Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5727449148363063085, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.a
+      value: 0.8509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449148363063085, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449148363063085, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449148363063085, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449149609578773, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.a
+      value: 0.8509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449149609578773, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449149609578773, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.32941177
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727449149609578773, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.32941177
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c70fe6d89e45f94aba4d9cbe7a34ef5, type: 3}
 --- !u!1001 &6700112984191094579

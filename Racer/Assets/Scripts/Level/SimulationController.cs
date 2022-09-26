@@ -33,6 +33,8 @@ namespace Level
         public GameObject opponentVehicle;
         [HideInInspector]
         public Vector3 raceFinishPoint;
+        [HideInInspector]
+        public bool validDesign;
 
         [Header("Misc")] 
         public Transform fuelBar;
@@ -130,7 +132,7 @@ namespace Level
         public void StartRace()
         {
             // Check that design meets cost and module restrictions, and is valid
-            var validDesign = _level.budget >= _vehicleConstructor.SumVehicleCost();
+            // var validDesign = _level.budget >= _vehicleConstructor.SumVehicleCost();
             //validDesign &= _vehicleConstructor.ValidateRestrictions(_level.restrictions);
             validDesign &= playerVehicle.TryBuildStructure(_vehicleConstructor.GetDesign());
 
