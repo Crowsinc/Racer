@@ -11,22 +11,22 @@ namespace Level
         public GameObject terrain;
         public GameObject opponentVehicle;
         public float budget;
-        public int highScore;
+        public float bestTime;
         public Vector3 gravity = new Vector3(0, -9.81f, 0);
         public List<LevelRestrictions> restrictions = new List<LevelRestrictions>();
         public List<ParallaxBackground> backgrounds = new List<ParallaxBackground>();
 
-        public void SetHighScore(int score)
+        public void SetNewTime(float time)
         {
-            if (score < highScore) return;
+            if (time > bestTime && bestTime != 0) return;
 
-            highScore = score;
-            PlayerPrefs.SetInt("LevelHS" + levelId.ToString(), score);
+            bestTime = time;
+            PlayerPrefs.SetFloat("LevelHS" + levelId.ToString(), time);
         }
 
         private void OnEnable()
         {
-            highScore = PlayerPrefs.GetInt("LevelHS" + levelId.ToString(), 0);
+            bestTime = PlayerPrefs.GetFloat("LevelHS" + levelId.ToString(), 0);
         }
     }
 

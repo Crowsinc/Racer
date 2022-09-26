@@ -15,10 +15,10 @@ public class LevelCompleteScreen : MonoBehaviour
         
     }
     
-    public void initLevelCompleteScreen(bool passed, int time, int cost)
+    public void initLevelCompleteScreen(bool passed, float time, int cost)
     {
         levelCompleteStats.text = "Stats: \n \n" +
-                                 $"Time: {time}\n" +
+                                 $"Time: {Timer.TimeToString(time)}\n" +
                                  $"Cost: {cost}";
             
         if (passed)

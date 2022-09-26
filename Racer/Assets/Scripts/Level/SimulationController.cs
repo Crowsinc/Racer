@@ -51,7 +51,7 @@ namespace Level
         private AIController _playerAI;
         private AIController _opponentAI;
 
-        private float _totalTime;
+        private Timer time;
 
         public delegate void SimulationDelegates();
         public SimulationDelegates InBuildMode;
@@ -65,7 +65,7 @@ namespace Level
             _cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
             _vehicleConstructor = GetComponent<VehicleConstructor>();
             _vehicleConstructor.vehicleCore = playerVehicle;
-            _totalTime = 0;
+            time = new Timer();
             Time.timeScale = 1;
         }
 
@@ -79,8 +79,8 @@ namespace Level
         {
             if (inBuildMode) return;
             if (_isFinished) return;
-            _totalTime += Time.deltaTime;
-            timer.text = (Mathf.Round(_totalTime * 100) / 100.0).ToString("#.00");
+            time.Tick(Time.deltaTime);
+            timer.text = Timer.TimeToString(time.GetTime());
             UpdateFuelBar();
         }
 
@@ -91,7 +91,7 @@ namespace Level
         {
             Time.timeScale = 0;
             inBuildMode = true;
-            _totalTime = 0;
+            time.Reset();
             _isFinished = false;
             InBuildMode?.Invoke();
 
@@ -186,7 +186,7 @@ namespace Level
         {
             foreach (var level in GetComponent<LevelInitialiser>().levelCollection.Where(level => PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL) == level.levelId))
             {
-                level.SetHighScore(Mathf.RoundToInt(CalculateScore()));
+                level.SetNewTime(CalculateScore());
             }
             raceUI.SetActive(false);
             winUI.SetActive(true);
@@ -218,10 +218,10 @@ namespace Level
             // Debug.Log("Energy: " + playerVehicle.EnergyLevel + ", " + percentage.ToString() + "%");
         }
 
-        private int CalculateScore()
+        private float CalculateScore()
         {
             //return  (int)(playerVehicle.EnergyLevel / (_vehicleConstructor.SumVehicleCost() * _totalTime) * 100000);
-            return (int)_totalTime;
+            return time.GetTime();
         }
     }
 }

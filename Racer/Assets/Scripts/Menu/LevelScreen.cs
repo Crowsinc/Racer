@@ -27,10 +27,10 @@ public class LevelScreen : MonoBehaviour
         level = FindLevelById(levelNum);
         
         //This method works better because there is a default assignable value even though level.highScore is reachable
-        int score = PlayerPrefs.GetInt("LevelHS" + levelNum.ToString(), 0);
+        var score = PlayerPrefs.GetFloat("LevelHS" + levelNum.ToString(), 0);
         if (score > 0)
         {
-            levelScore.text = "Stats:\n \n Best Time: \n" + score + "\n \n Lowest Cost:\n $800";
+            levelScore.text = "Stats:\n \n Best Time: \n" + Timer.TimeToString(score) + "\n \n Lowest Cost:\n $800";
         }
         else
         {
