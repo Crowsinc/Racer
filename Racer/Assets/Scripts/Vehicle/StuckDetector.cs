@@ -19,7 +19,7 @@ public class StuckDetector : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (_simulationController.inBuildMode)
+        if (_simulationController.inBuildMode || !_simulationController.countdownFinish)
             return;
         movementChanges.Add(Vector3.Distance(prevPosition, transform.position));
         if (movementChanges.Count > 150)

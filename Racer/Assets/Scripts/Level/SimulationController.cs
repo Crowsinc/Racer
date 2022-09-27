@@ -24,6 +24,7 @@ namespace Level
         public GameObject pauseUI;
         public GameObject resetPrompt;
         public GameObject winUI;
+        public GameObject countdownUI;
 
         [Header("Progress Bar")]
         public Transform playerProgressBar;
@@ -46,6 +47,7 @@ namespace Level
         
         private Level _level;
         private bool _isFinished;
+        public bool countdownFinish;
         private CameraFollow _cameraFollow;
         private float _raceDistance;
         
@@ -54,6 +56,7 @@ namespace Level
         private AIController _opponentAI;
 
         private Timer time;
+        private float count;
 
         public PolygonCollider2D mapCollider;
 
@@ -87,6 +90,14 @@ namespace Level
         {
             if (inBuildMode) return;
             if (_isFinished) return;
+            if (!countdownFinish)
+            {
+                count += Time.deltaTime;
+                if (count > 4)
+                    return;
+                countdownUI.transform.GetChild(Mathf.FloorToInt(count)).gameObject.SetActive(true);
+                return;
+            }
             time.Tick(Time.deltaTime);
             timer.text = Timer.TimeToString(time.GetTime());
             UpdateFuelBar();
@@ -100,8 +111,10 @@ namespace Level
             inBuildMode = true;
             time.Reset();
             _isFinished = false;
+            countdownFinish = false;
             InBuildMode?.Invoke();
             mapCollider.enabled = false;
+            count = 0;
 
             // Change UI
             buildModeUI.SetActive(true);
@@ -110,6 +123,7 @@ namespace Level
             raceUI.SetActive(false);
             pauseUI.SetActive(false);
             resetPrompt.SetActive(false);
+            countdownUI.SetActive(false);
             _vehicleConstructor.ShowUIElements();
 
             // Reset camera position
@@ -154,7 +168,13 @@ namespace Level
                 buildModeUI.SetActive(false);
                 buildModeGrid.SetActive(false);
                 buildModeModuleHolder.SetActive(false);
-                raceUI.SetActive(true);
+                countdownUI.SetActive(true);
+                
+                // Reset countdown UI
+                for (var i = 0; i < countdownUI.transform.childCount; i++)
+                {
+                    countdownUI.transform.GetChild(i).gameObject.SetActive(false);
+                }
 
                 _raceDistance = Vector3.Distance(playerVehicle.transform.position, raceFinishPoint);
 
@@ -166,19 +186,9 @@ namespace Level
                 // Unfreeze player vehicle
                 playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
-                // Start the AI simulation
-                _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
-                if (_opponentAI != null)
-                    _opponentAI.StartSimulating();
-                else
-                    Debug.LogError("Opponent vehicle has no AI");
+                Invoke(nameof(Unfreeze), 4.0f);
 
-                if (playerVehicle.gameObject.TryGetComponent(out _playerAI))
-                    _playerAI.StartSimulating();
-                else
-                    Debug.LogError("Player vehicle has no AI");
-        
-                RaceStart?.Invoke();
+                
             }
             else {
                 Debug.LogWarning("Player Vehicle Failed Validation");
@@ -231,6 +241,26 @@ namespace Level
         {
             //return  (int)(playerVehicle.EnergyLevel / (_vehicleConstructor.SumVehicleCost() * _totalTime) * 100000);
             return time.GetTime();
+        }
+
+        private void Unfreeze()
+        {
+            countdownFinish = true;
+            // Start the AI simulation
+            _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
+            if (_opponentAI != null)
+                _opponentAI.StartSimulating();
+            else
+                Debug.LogError("Opponent vehicle has no AI");
+
+            if (playerVehicle.gameObject.TryGetComponent(out _playerAI))
+                _playerAI.StartSimulating();
+            else
+                Debug.LogError("Player vehicle has no AI");
+
+            countdownUI.SetActive(false);
+            raceUI.SetActive(true);
+            RaceStart?.Invoke();
         }
     }
 }

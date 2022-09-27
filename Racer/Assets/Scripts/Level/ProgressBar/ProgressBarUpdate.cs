@@ -24,6 +24,7 @@ namespace Level.ProgressBar
             _sc.RaceStart += StartBar;
             _sc.RaceFinish += StopBar;
             _sc.InBuildMode += StartBar;
+            StartBar();
         }
 
         private void Update()
