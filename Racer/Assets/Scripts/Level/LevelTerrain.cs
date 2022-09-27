@@ -19,7 +19,7 @@ namespace Level
 
         private Dictionary<string, Rigidbody2D> _rbs;
 
-        public void Start()
+        public void Awake()
         {
             _startIndex = startPoint.GetComponent<NodeAttach>().index;
             _endIndex = endPoint.GetComponent<NodeAttach>().index;
@@ -71,6 +71,27 @@ namespace Level
         private void OnCollisionEnter2D(Collision2D collision)
         {
             collision.collider.sharedMaterial = material;
+        }
+
+        public List<int> GetImpedimentList()
+        {
+            _startIndex = startPoint.GetComponent<NodeAttach>().index;
+            _endIndex = endPoint.GetComponent<NodeAttach>().index;
+            var list = new List<int>();
+            for (var i = _startIndex; i < _endIndex; i++)
+            {
+                var newImpediment = spriteShapeController.spline.GetSpriteIndex(i);
+                if (newImpediment == 0)
+                    continue;
+
+                newImpediment -= 1;
+                if (!list.Contains(newImpediment))
+                {
+                    list.Add(newImpediment);
+                }
+            }
+
+            return list;
         }
     }
 }

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.U2D;
+using Level;
+
 public class LevelScreen : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -12,12 +15,17 @@ public class LevelScreen : MonoBehaviour
     public TMP_Text levelDesc;
     public List<Level.Level> levelCollection = new List<Level.Level>();
     public Transform terrainRenderer;
+    public GameObject impedimentList;
+
     private Level.Level level;
     private GameObject levelPreview;
 
     private void Start()
     {
-        initLevelScreen();
+        // Calling initLevelScreen() causes the first chosen map to be created twice,
+        // Going back would delete only one map, the other was loaded forever.
+
+        // initLevelScreen();
     }
 
     public void initLevelScreen()
@@ -40,6 +48,7 @@ public class LevelScreen : MonoBehaviour
         //Can add description to level screen here
         levelDesc.text = "Level Description goes here. We can include the lore of the level, etc!";
         CreateLevelPreview();
+        SetImpedimentList();
     }
     
     public void LoadGameScene()
@@ -63,12 +72,21 @@ public class LevelScreen : MonoBehaviour
 
     private void CreateLevelPreview()
     {
-        //Debug.Log("HMMMM");
+        // Debug.Log("HMMMM");
         levelPreview = Instantiate(level.terrain, new Vector3(-50, -50, 0), Quaternion.identity);   
         Vector3 startPos = levelPreview.transform.Find("Start").localPosition;
         Vector3 endPos = levelPreview.transform.Find("Flag").localPosition;
         terrainRenderer.position = new Vector3(-50 + startPos.x + endPos.x / 2, -50, -10);
         terrainRenderer.GetComponent<Camera>().orthographicSize = endPos.x / 2;
+    }
+
+    private void SetImpedimentList()
+    {
+        var impediments = level.terrain.GetComponent<LevelTerrain>().GetImpedimentList();
+        for (var i = 0; i < impedimentList.transform.childCount; i++)
+        {
+            impedimentList.transform.GetChild(i).gameObject.SetActive(impediments.Contains(i));
+        }
     }
 
     public void RemoveLevelPreview()
