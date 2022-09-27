@@ -12,8 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a242634dc8c5b4a93e07be465b240a, type: 3}
   m_Name: Level2
   m_EditorClassIdentifier: 
+  levelName: Rocky Steps
   levelId: 2
-  terrain: {fileID: 3751650358320115858, guid: 39bd1f6a17656a44b97bddd65e3d527d, type: 3}
-  opponentVehicle: {fileID: 6945384242340336323, guid: 83b1b27b7aa4eef4bb99b460886cd60d, type: 3}
-  budget: 1000
+  terrain: {fileID: 3751650358320115858, guid: 91ab52420fb7ed34fa2b86111f077d3a, type: 3}
+  opponentVehicle: {fileID: 289938577762191399, guid: 86a42a8c7f1025248ba2fce7d9139c55, type: 3}
+  budget: 500
+  bestTime: 0
   gravity: {x: 0, y: -9.81, z: 0}
+  restrictions: []
+  backgrounds:
+  - parallaxDegree: 0.8
+    image: {fileID: 21300000, guid: 9730734aaa92ac843bae96fa27e435d9, type: 3}
+    layerOrder: -50
+  - parallaxDegree: 0.2
+    image: {fileID: 21300000, guid: 9aefc0c487f7d5b44ac69d0a32112567, type: 3}
+    layerOrder: -40
+  - parallaxDegree: 0.1
+    image: {fileID: 21300000, guid: 772d94940073aa34f9250fafcca35af9, type: 3}
+    layerOrder: -30
