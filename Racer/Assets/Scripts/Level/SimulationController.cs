@@ -189,6 +189,7 @@ namespace Level
             foreach (var level in GetComponent<LevelInitialiser>().levelCollection.Where(level => PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL) == level.levelId))
             {
                 level.SetNewTime(CalculateScore());
+                level.SetNewCost((int)_vehicleConstructor.SumVehicleCost());
             }
             raceUI.SetActive(false);
             winUI.SetActive(true);

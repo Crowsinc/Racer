@@ -12,6 +12,7 @@ namespace Level
         public GameObject opponentVehicle;
         public float budget;
         public float bestTime;
+        public int bestCost;
         public Vector3 gravity = new Vector3(0, -9.81f, 0);
         public List<LevelRestrictions> restrictions = new List<LevelRestrictions>();
         public List<ParallaxBackground> backgrounds = new List<ParallaxBackground>();
@@ -24,9 +25,18 @@ namespace Level
             PlayerPrefs.SetFloat("LevelHS" + levelId.ToString(), time);
         }
 
+        public void SetNewCost(int cost)
+        {
+            if (cost > bestCost && bestCost != (int)budget) return;
+
+            bestCost = cost;
+            PlayerPrefs.SetInt("LevelBC" + levelId, cost);
+        }
+
         private void OnEnable()
         {
-            bestTime = PlayerPrefs.GetFloat("LevelHS" + levelId.ToString(), 0);
+            bestTime = PlayerPrefs.GetFloat("LevelHS" + levelId, 0);
+            bestCost = PlayerPrefs.GetInt("LevelBC" + levelId, (int)budget);
         }
     }
 
