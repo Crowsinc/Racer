@@ -68,6 +68,7 @@ namespace Level
             _vehicleConstructor = GetComponent<VehicleConstructor>();
             _vehicleConstructor.vehicleCore = playerVehicle;
             time = new Timer();
+
             Time.timeScale = 1;
         }
 
@@ -91,7 +92,6 @@ namespace Level
         /// </summary>
         public void EnterBuildMode()
         {
-            Time.timeScale = 0;
             inBuildMode = true;
             time.Reset();
             _isFinished = false;
@@ -117,6 +117,7 @@ namespace Level
                 playerVehicleTransform.rotation = Quaternion.identity;
 
                 Rigidbody2D rb = playerVehicle.GetComponent<Rigidbody2D>();
+                rb.constraints = RigidbodyConstraints2D.FreezeAll;
                 rb.velocity = Vector2.zero;
                 rb.angularVelocity = 0;
 
@@ -138,7 +139,6 @@ namespace Level
 
             if (validDesign)
             {
-                Time.timeScale = 1;
                 inBuildMode = false;
                 _cameraFollow.target = playerVehicle.transform;
                 
