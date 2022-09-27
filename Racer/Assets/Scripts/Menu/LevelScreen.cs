@@ -25,7 +25,7 @@ public class LevelScreen : MonoBehaviour
         // Calling initLevelScreen() causes the first chosen map to be created twice,
         // Going back would delete only one map, the other was loaded forever.
 
-        // initLevelScreen();
+        initLevelScreen();
     }
 
     public void initLevelScreen()
