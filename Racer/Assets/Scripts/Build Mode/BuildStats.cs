@@ -48,6 +48,7 @@ namespace Build_Mode
                     if (!valid)
                     {
                         text.text += "\n<color=red>";
+                        text.text += "<b>";
                     }
                     else
                     {
@@ -68,6 +69,8 @@ namespace Build_Mode
                     }
                     if (valid)
                         text.text += "</s>";
+                    else
+                        text.text += "</b>";
                     text.text += "</color>";
 
                     _sc.validDesign &= valid;
