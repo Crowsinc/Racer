@@ -55,6 +55,8 @@ namespace Level
 
         private Timer time;
 
+        public PolygonCollider2D mapCollider;
+
         public delegate void SimulationDelegates();
         public SimulationDelegates InBuildMode;
         public SimulationDelegates RaceStart;
@@ -67,6 +69,7 @@ namespace Level
             _cameraFollow = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>();
             _vehicleConstructor = GetComponent<VehicleConstructor>();
             _vehicleConstructor.vehicleCore = playerVehicle;
+            
             time = new Timer();
 
             Time.timeScale = 1;
@@ -74,7 +77,9 @@ namespace Level
 
         private void Start()
         {
-            _level = gameObject.GetComponent<LevelInitialiser>().selectedLevel;
+            var lvl = gameObject.GetComponent<LevelInitialiser>();
+            _level = lvl.selectedLevel;
+            mapCollider = lvl.currentLevel.GetComponent<PolygonCollider2D>();
             EnterBuildMode();
         }
 
@@ -96,6 +101,7 @@ namespace Level
             time.Reset();
             _isFinished = false;
             InBuildMode?.Invoke();
+            mapCollider.enabled = false;
 
             // Change UI
             buildModeUI.SetActive(true);
@@ -141,7 +147,7 @@ namespace Level
             {
                 inBuildMode = false;
                 _cameraFollow.target = playerVehicle.transform;
-                
+                mapCollider.enabled = true;
 
                 // Change UI
                 _vehicleConstructor.HideUIElements();

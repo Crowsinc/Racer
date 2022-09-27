@@ -2759,7 +2759,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &450717717
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6046,6 +6046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedLevel: {fileID: 0}
+  currentLevel: {fileID: 0}
   levelCollection:
   - {fileID: 11400000, guid: 8e71e03bfb7baeb4bbb6e5635ce7a51c, type: 2}
   - {fileID: 11400000, guid: fdacf25207aedd543a552db3df921565, type: 2}
@@ -6102,6 +6103,7 @@ MonoBehaviour:
   opponentInstance: {fileID: 0}
   opponentInstanceTransform: {fileID: 0}
   levelCompleteScreen: {fileID: 48374961}
+  mapCollider: {fileID: 0}
 --- !u!114 &986193011
 MonoBehaviour:
   m_ObjectHideFlags: 0

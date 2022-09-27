@@ -7,6 +7,7 @@ namespace Level
     public class LevelInitialiser : MonoBehaviour
     {
         public Level selectedLevel;
+        public GameObject currentLevel;
         public List<Level> levelCollection;
         public GameObject backgroundTemplate;
 
@@ -14,7 +15,7 @@ namespace Level
         {
             selectedLevel = FindLevelById(PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL));
             // Creating terrain
-            Instantiate(selectedLevel.terrain, Vector3.zero, Quaternion.identity);
+            currentLevel = Instantiate(selectedLevel.terrain, Vector3.zero, Quaternion.identity);
 
             GameObject.FindGameObjectWithTag("GameController").GetComponent<SimulationController>().opponentVehicle = selectedLevel.opponentVehicle;
             Physics2D.gravity = selectedLevel.gravity;
