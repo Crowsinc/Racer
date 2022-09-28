@@ -39,11 +39,8 @@ namespace Build_Mode
 
             // Add the vehicle core to the occupancy list so that nothing can ever overlap it. 
             _occupancy[new Vector2Int(0, 0)] = vehicleCore.gameObject;
-
             _cogIndicator = Instantiate(COGIndicatorPrefab, new Vector3(-1000, -1000, 0), Quaternion.identity);
         }
-
-
 
         /// <summary>
         /// Transforms the given module's position and rotation to a grid location 
@@ -219,8 +216,9 @@ namespace Build_Mode
             var feedback = vehicleCore.ValidateDesign(GetDesign());
             Debug.Log(feedback.ValidDesign ? "Design Valid: Yes" : "Design Valid: No");
 
-            // Move centre of mass prefab
-            _cogIndicator.transform.position = feedback.LocalCentreOfMass + _coreWorldPos;
+            // Move centre of mass prefab once its initialized
+            if(_cogIndicator != null)
+                _cogIndicator.transform.position = feedback.LocalCentreOfMass + _coreWorldPos;
 
             if (VehicleMassText.TryGetComponent<TextMeshProUGUI>(out var massElement))
             {
