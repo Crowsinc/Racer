@@ -124,7 +124,10 @@ namespace Level
             pauseUI.SetActive(false);
             resetPrompt.SetActive(false);
             countdownUI.SetActive(false);
+
+            // Update feedback UI
             _vehicleConstructor.ShowUIElements();
+            _vehicleConstructor.ValidateDesign(); 
 
             // Reset camera position
             _cameraFollow.EnterBuildMode();

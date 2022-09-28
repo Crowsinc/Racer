@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Level;
+using TMPro;
 using UnityEngine;
 
 namespace Build_Mode
@@ -14,6 +15,16 @@ namespace Build_Mode
         /// </summary>
         public GameObject COGIndicatorPrefab;
         private GameObject _cogIndicator;
+
+        /// <summary>
+        /// The UI text element to receive the vehicle's total mass
+        /// </summary>
+        public GameObject VehicleMassText;
+        
+        /// <summary>
+        /// The UI text element to receive the vehicle's energy capacity
+        /// </summary>
+        public GameObject VehicleEnergyCapacityText;
 
         public VehicleCore vehicleCore;
         private Vector2Int _coreWorldPos;
@@ -211,8 +222,20 @@ namespace Build_Mode
             // Move centre of mass prefab
             _cogIndicator.transform.position = feedback.LocalCentreOfMass + _coreWorldPos;
 
+            if (VehicleMassText.TryGetComponent<TextMeshProUGUI>(out var massElement))
+            {
+                massElement.text = feedback.TotalMass.ToString() + "kg";
+            }
+            else Debug.LogError("Vehicle constructor vehicle mass object not set");
+            
+            if (VehicleEnergyCapacityText.TryGetComponent<TextMeshProUGUI>(out var energyElement))
+            {
+                energyElement.text = feedback.TotalEnergyCapacity.ToString() + "J";
+            }
+            else Debug.LogError("Vehicle constructor vehicle energy capacity object not set");
+
             // Remove error feedback from valid modules
-            foreach(var offset in feedback.ValidModules)
+            foreach (var offset in feedback.ValidModules)
             {
                 var module = _occupancy[offset];
 
