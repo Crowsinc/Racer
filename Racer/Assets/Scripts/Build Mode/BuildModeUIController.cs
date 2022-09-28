@@ -36,9 +36,9 @@ namespace Build_Mode
         private void Start()
         {
             // Create menu modules
-            CreateMenuModule(wheelsHolder.transform, _moduleCollection.wheels);
-            CreateMenuModule(energyHolder.transform, _moduleCollection.energy);
             CreateMenuModule(chassisHolder.transform, _moduleCollection.chassis);
+            CreateMenuModule(energyHolder.transform, _moduleCollection.energy);
+            CreateMenuModule(wheelsHolder.transform, _moduleCollection.wheels);
             CreateMenuModule(actuatorHolder.transform, _moduleCollection.actuators);
         }
 
