@@ -45,12 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Cone Chassis
+  Name: Cone
   Cost: 20
   EnergyCapacity: 0
   Mass: 10
-  Description: A cone block to reduce air drag when pointed towards where the vehicle
-    is heading. This works by reducing the effective surface area!
+  Description: A pointed block with reduced aerodynamic drag, also gives your vehicle
+    some character.
   Size: {x: 1, y: 1}
   Collider: {fileID: 6107418606073091335}
   Attachments: []

@@ -168,8 +168,7 @@ MonoBehaviour:
   Cost: 40
   EnergyCapacity: 400
   Mass: 60
-  Description: A large tank that stores energy. Grab these to have your actuators
-    running longer!
+  Description: An extra large tank that stores energy.
   Size: {x: 2, y: 2}
   Collider: {fileID: 253760818386473884}
   Attachments: []

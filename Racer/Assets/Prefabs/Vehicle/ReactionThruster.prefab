@@ -253,7 +253,7 @@ MonoBehaviour:
   Cost: 30
   EnergyCapacity: 2
   Mass: 4
-  Description: A small thruster designed to help rotate things
+  Description: A diagonal thruster designed to produce rotational forces.
   Size: {x: 1, y: 1}
   Collider: {fileID: 5994387181587360415}
   Attachments: []

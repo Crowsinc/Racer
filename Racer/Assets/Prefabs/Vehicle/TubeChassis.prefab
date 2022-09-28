@@ -45,12 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Tube Chassis
+  Name: Tube
   Cost: 20
   EnergyCapacity: 0
   Mass: 35
-  Description: A long chassis block. Im sure you can come up with a use for itwith
-    this!
+  Description: A long structural block. Great for long vehicles!
   Size: {x: 2, y: 1}
   Collider: {fileID: 4471933482593324810}
   Attachments: []

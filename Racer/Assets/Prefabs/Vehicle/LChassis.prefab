@@ -51,7 +51,7 @@ MonoBehaviour:
   Cost: 20
   EnergyCapacity: 0
   Mass: 30
-  Description: An L chassis block. Attach things to your vehicle body with this!
+  Description: An L-shaped structural block, for those who like to get creative!
   Size: {x: 1, y: 2}
   Collider: {fileID: 5551628174741748941}
   Attachments: []

@@ -179,8 +179,8 @@ MonoBehaviour:
   Cost: 60
   EnergyCapacity: 0
   Mass: 50
-  Description: A set of weights. Use these to manipulate your vehicle's centre of
-    gravity or make it heavier!
+  Description: A set of heavy weights. Use these to manipulate your vehicle's centre
+    of gravity or make it heavier!
   Size: {x: 1, y: 1}
   Collider: {fileID: 3636241699236171304}
   Attachments: []

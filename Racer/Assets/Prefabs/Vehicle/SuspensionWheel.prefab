@@ -395,11 +395,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Suspension Wheel
+  Name: Large Suspension Wheel
   Cost: 80
   EnergyCapacity: 0
   Mass: 15
-  Description: A wheel with suspension, for those bumpy roads. Somewhat expensive,
+  Description: A large wheel with suspension, for those bumpy roads. Somewhat expensive,
     but worth it!
   Size: {x: 1, y: 2}
   Collider: {fileID: 6534677245057508709}

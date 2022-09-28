@@ -29,6 +29,7 @@ public class VehicleModule : MonoBehaviour
     /// <summary>
     /// The description of this module to show in the tooltip
     /// </summary>
+    [TextArea(15,20)]
     public string Description = "";
 
     /// <summary>

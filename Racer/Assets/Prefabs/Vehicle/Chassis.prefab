@@ -46,11 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Chassis
+  Name: Wood Block
   Cost: 20
   EnergyCapacity: 0
   Mass: 20
-  Description: An average chassis block. Build your vehicle body with this!
+  Description: A basic structural block, useful for building your vehicle!
   Size: {x: 1, y: 1}
   Collider: {fileID: 3382732491998691383}
   Attachments: []

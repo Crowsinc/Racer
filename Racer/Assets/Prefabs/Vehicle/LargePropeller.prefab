@@ -218,12 +218,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Propeller
+  Name: Helicopter Propeller
   Cost: 60
   EnergyCapacity: 5
   Mass: 10
-  Description: 'An expensive, but strong propellor. Uses a lot of fuel and cannot
-    be fully turned off. '
+  Description: A large propeller. Uses a lot of fuel and cannot be shut off.
   Size: {x: 1, y: 3}
   Collider: {fileID: 8918917842448196127}
   Attachments: []

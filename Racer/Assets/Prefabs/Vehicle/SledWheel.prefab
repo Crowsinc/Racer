@@ -237,7 +237,7 @@ MonoBehaviour:
   Cost: 80
   EnergyCapacity: 0
   Mass: 25
-  Description: A sled, best used on ice
+  Description: A sled with sophisticated suspension, watch out for friction!
   Size: {x: 2, y: 1}
   Collider: {fileID: 3822257534998658516}
   Attachments:

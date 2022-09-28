@@ -46,12 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bba282cd11cb0d4db8ed352aa243a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Shelf Chassis
+  Name: Shelf
   Cost: 20
   EnergyCapacity: 0
   Mass: 5
-  Description: 'A shelf block that allows modules to be placed on top while allowing
-    for extra clearance. '
+  Description: 'A structural shelf block that allows modules to be placed on top
+    while allowing for extra clearance. '
   Size: {x: 1, y: 1}
   Collider: {fileID: 1659625555878498168}
   Attachments: []

@@ -137,7 +137,7 @@ MonoBehaviour:
   Cost: 60
   EnergyCapacity: 100
   Mass: 500
-  Description: A massive thruster... what more could you want
+  Description: A massive thruster... what more could you want!
   Size: {x: 3, y: 2}
   Collider: {fileID: 8593807441364394485}
   Attachments: []
