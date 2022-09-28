@@ -24,8 +24,11 @@ public class LevelScreen : MonoBehaviour
     {
         // Calling initLevelScreen() causes the first chosen map to be created twice,
         // Going back would delete only one map, the other was loaded forever.
-
-        initLevelScreen();
+        if (PlayerPrefs.GetInt(GameConstants.LOAD_LEVEL_SCREEN, 0) == 1)
+        {
+            PlayerPrefs.SetInt(GameConstants.LOAD_LEVEL_SCREEN, 0);
+            initLevelScreen();
+        }
     }
 
     public void initLevelScreen()

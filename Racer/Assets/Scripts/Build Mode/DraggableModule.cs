@@ -97,6 +97,8 @@ namespace Build_Mode
         private int _moduleLayerMask; // Layer when placed onto player vehicle
         private int _listLayerMask; // Layer when in the buildmode list
 
+        public ButtonSounds buttonSounds;
+        
         private void Awake()
         {
             // Getting necessary components and game objects
@@ -235,6 +237,9 @@ namespace Build_Mode
             _dragging = false;
             DragOffset = Vector3.zero;
 
+            //Play a button sound
+            buttonSounds.PlayButtonSound();
+            
             // Clamp the module's position to the grid
             transform.position = VehicleConstructor.ClampToGrid(transform.position);
 

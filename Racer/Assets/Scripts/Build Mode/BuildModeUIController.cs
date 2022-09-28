@@ -12,7 +12,8 @@ namespace Build_Mode
         public GameObject actuatorHolder;
         public GameObject controlsPanel;
         public GameObject controlsButton;
-
+        public ButtonSounds buttonSounds;
+        
         public GameObject forceIndicatorPrefab;
 
         public RectTransform initialPlacement; // Rect in UI space for the initial placement
@@ -70,6 +71,7 @@ namespace Build_Mode
                 var draggable = menuModuleObject.AddComponent<DraggableModule>();
                 draggable.originalPrefab = moduleObject;
                 draggable.forceIndicatorPrefab = forceIndicatorPrefab;
+                draggable.buttonSounds = buttonSounds;
 
                 // TODO: disable vehicle module functions
                 menuModuleObject.GetComponent<VehicleModule>().Freeze();

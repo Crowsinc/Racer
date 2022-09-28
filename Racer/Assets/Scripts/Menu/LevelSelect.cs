@@ -16,8 +16,7 @@ public class LevelSelect : MonoBehaviour
         {
             //If the LOAD LEVEL SCREEN is 1, that means we are coming back from the simulation screen and need to load
             //the level selection screen AND the level screen for the next selected level.
-            //We also need to reset the flag.
-            PlayerPrefs.SetInt(GameConstants.LOAD_LEVEL_SCREEN, 0);
+            //We also need to reset the flag after.
             OpenLevelScreen();
         }
     }
