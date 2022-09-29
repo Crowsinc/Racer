@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Build_Mode
 {
@@ -11,7 +12,7 @@ namespace Build_Mode
         public GameObject chassisHolder;
         public GameObject actuatorHolder;
         public GameObject controlsPanel;
-        public GameObject controlsButton;
+        public Button controlsButton;
         public ButtonSounds buttonSounds;
         
         public GameObject forceIndicatorPrefab;
@@ -106,9 +107,18 @@ namespace Build_Mode
         /// </summary>
         public void ToggleControls()
         {
-            controlsPanel.SetActive(!controlsPanel.activeSelf);
+            if (!controlsPanel.activeSelf)
+            {
+                controlsPanel.SetActive(true);
+                controlsButton.interactable = false;
+            }
+            else
+            {
+                controlsPanel.SetActive(false);
+                controlsButton.interactable = true;
+            }
 
-            controlsButton.SetActive(!controlsButton.activeSelf);
+            
         }
 
         /// <summary>

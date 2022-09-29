@@ -5404,7 +5404,7 @@ MonoBehaviour:
   chassisHolder: {fileID: 1533115367}
   actuatorHolder: {fileID: 335126142}
   controlsPanel: {fileID: 502999735}
-  controlsButton: {fileID: 570381352}
+  controlsButton: {fileID: 570381357}
   buttonSounds: {fileID: 1510112682}
   forceIndicatorPrefab: {fileID: 6405938184008447771, guid: b8ba2b0f1bf090a44845606302ecf1f7, type: 3}
   initialPlacement: {fileID: 293466724}
