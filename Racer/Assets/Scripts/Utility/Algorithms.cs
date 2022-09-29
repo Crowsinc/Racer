@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Utility
 {
@@ -13,11 +14,12 @@ namespace Assets.Scripts.Utility
         /// </summary>
         /// <param name="point">the point to test</param>
         /// <param name="min">the minimum point of the bound</param>
-        /// <param name="max">the maximu point of the bound</param>
+        /// <param name="max">the maximum point of the bound</param>
         /// <returns>true if within bounds, otherwise false</returns>
-        public static bool WithinBounds(Vector2 point, Vector2 min, Vector2 max)
+        public static bool WithinBounds(Vector2 point, Vector2 min, Vector2 max, float slack = 0.1f)
         {
-            return !(point.x > max.x || point.x < min.x || point.y > max.y || point.y < min.y);
+            Assert.IsTrue(min.x <= max.x && min.y <= max.y);
+            return !(point.x > max.x + slack || point.x < min.x - slack|| point.y > max.y + slack || point.y < min.y - slack);
         }
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace Assets.Scripts.Utility
         /// <param name="p2"> the other end of the line segment </param>
         /// <param name="slack"> the amount of slack allowed in floating point comparisons </param>
         /// <returns></returns>
-        public static bool PointInSegment(Vector2 point, Vector2 p1, Vector2 p2, float slack = 0.1f)
+        public static bool PointInSegment(Vector2 point, Vector2 p1, Vector2 p2, float slack = 0.001f)
         {
             // This uses a simple point on segment test, which checks that the vectors from p1-point
             // and p2-point have the same combined magnitude as the vector from p1 to p2. 
