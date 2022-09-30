@@ -225,33 +225,12 @@ public class VehicleCore : MonoBehaviour
                 // however the provided offset is still for the bottom left. If the rotated size of the module
                 // is negative, this means that the origin point switched to the opposite side of the module's
                 // cells, so we should add the size back as an offset
-                var rotatedSize = VehicleModule.RotateSize(module.Size, rotationQuat);
-                Vector3 originOffset = new Vector2(
-                    Mathf.Abs(Mathf.Min(rotatedSize.x, 0)),
-                    Mathf.Abs(Mathf.Min(rotatedSize.y, 0))
-                );
-                instance.transform.position += originOffset;
+                instance.transform.position += (Vector3)FindModuleOriginOffset(module);
 
 
                 totalEnergyCapacity += module.EnergyCapacity;
                 totalMass += module.Mass;
-            
-                // We take the objects mass from the centroid of all colliders.
-                // NOTE: the origin offset hasn't had time to propogate to the colliders
-                // yet, so we need to add it ourselves to the centroids. 
-                Collider2D[] colliders = {module.Collider};
-                if(module.Attachments.Count > 0)
-                    colliders = module.gameObject.GetComponentsInChildren<Collider2D>();
-
-                if (colliders.Length > 0)
-                {
-                    Vector2 moduleCentre = Vector2.zero;
-                    foreach (var c in colliders)
-                        moduleCentre += (Vector2)(c.bounds.center + originOffset);
-                    moduleCentre /= colliders.Length;
-
-                    centreOfMass += module.Mass * (moduleCentre - (Vector2)transform.position);
-                }
+                centreOfMass += module.Mass * FindModuleCenterOfMassOffset(module);
 
                 RegisterModule(module);
             }
@@ -291,11 +270,44 @@ public class VehicleCore : MonoBehaviour
         return validated;
     }
 
+    private Vector2 FindModuleOriginOffset(VehicleModule module)
+    {
+        var rotatedSize = VehicleModule.RotateSize(module.Size, module.transform.rotation);
+        Vector3 originOffset = new Vector2(
+            Mathf.Abs(Mathf.Min(rotatedSize.x, 0)),
+            Mathf.Abs(Mathf.Min(rotatedSize.y, 0))
+        );
+        return originOffset;
+    }
+
+    private Vector2 FindModuleCenterOfMassOffset(VehicleModule module)
+    {
+        
+        // We take the objects mass from the centroid of all colliders.
+        // NOTE: the origin offset hasn't had time to propogate to the colliders
+        // yet, so we need to add it ourselves to the centroids. 
+        Collider2D[] colliders = { module.Collider };
+        if (module.Attachments.Count > 0)
+            colliders = module.gameObject.GetComponentsInChildren<Collider2D>();
+
+        if (colliders.Length > 0)
+        {
+            Vector3 originOffset = FindModuleOriginOffset(module);
+
+            Vector2 moduleCentre = Vector2.zero;
+            foreach (var c in colliders)
+                moduleCentre += (Vector2)(c.bounds.center + originOffset);
+            moduleCentre /= colliders.Length;
+
+            return moduleCentre - (Vector2)transform.position;
+        }
+        return Vector2.zero;
+    }
 
     /// <summary>
     /// Self-analysis of rigidbody properties, colliders, actuators and attachments.
     /// </summary>
-    private void Discover()
+    public void Discover()
     {
         Modules.Clear();
         Actuators.Clear();
@@ -312,8 +324,8 @@ public class VehicleCore : MonoBehaviour
             Vector2 offset = module.transform.position - transform.position;
 
             totalEnergyCapacity += module.EnergyCapacity;
-            centreOfMass += module.Mass * offset;
             totalMass += module.Mass;
+            centreOfMass += module.Mass * FindModuleCenterOfMassOffset(module);
 
             RegisterModule(module);
         }
@@ -568,6 +580,59 @@ public class VehicleCore : MonoBehaviour
             Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
     }
 
+    public static Vector2 CalculateAerodynamicDrag(float dragCoefficient, Vector2 velocity, List<Vector2> hull)
+    {
+        // Calculate aerodynamic drag
+        // The aerodynamic drag formula is:
+        // Fd = 0.5 * rho * v^2 * C * A,
+        // where:
+        //   rho = air density
+        //   v = relative velocity
+        //   C = drag coefficient
+        //   A = drag area
+        //
+        // Unity's linear drag equation, v = v * (1 - drag), is too simple to 
+        // implement proper aerodynamic drag, which is proportional to the square
+        // of the velocity. So instead we set the rigidbody linear drag to 0 and
+        // apply our own drag force. This will be a simplified version which acts 
+        // on the centre of mass and removes air density.The drag coefficient will 
+        // be a vehicle parameter set during game balancing to introduce the correct
+        // game feel. The drag area will be approximated on fly for each hull segment.
+        //
+        // Hull segments which are perpendicular to the vehicle velocity will have their
+        // full area considered, while those which are parralel or on the opposite side
+        // of the vehicle will be ignored. Note that we care about the opposite velocity
+        // of the drag for the vector dot product, which is why we are using the vehicle
+        // velocity.
+
+        // Velocity of vehicle, assuming zero wind speed.
+        var velocityDir = velocity.normalized;
+        var velocitySqr = velocityDir * velocity.sqrMagnitude;
+
+        // Find drag area
+        float dragArea = 0.0f;
+        Vector2 prevPoint = hull[^1];
+        foreach (Vector2 currPoint in hull)
+        {
+            // The hull is in counter-clockwise order but we want the segment
+            // to be clockwise so that Vector2.perpendicular() gives us the
+            // outer facing normals of the vehicle hull.
+            var segment = prevPoint - currPoint;
+            var outerNormal = Vector2.Perpendicular(segment).normalized;
+
+            // The amount of drag area applied will scale based on how parallel the normal of
+            // the segment is to the velocity direction. If they are parallel (angle = 0), then
+            // the full drag area is added. If they are perpendicular or an obtuse angle, then
+            // zero drag area is added. 
+            dragArea += segment.magnitude * (1.0f - Mathf.Clamp01(Vector2.Angle(outerNormal, velocityDir) / 90.0f));
+
+            prevPoint = currPoint;
+        }
+
+        // NOTE: we invert the force direction here, to make it drag (-0.5f)
+        return -0.5f * dragCoefficient * dragArea * velocitySqr;
+    }
+
     void Awake()
     {
         Hull = new List<Vector2>();
@@ -597,62 +662,12 @@ public class VehicleCore : MonoBehaviour
             // Update the vehicle hull
             UpdateHull();
 
-            // Calculate aerodynamic drag
-            // The aerodynamic drag formula is:
-            // Fd = 0.5 * rho * v^2 * C * A,
-            // where:
-            //   rho = air density
-            //   v = relative velocity
-            //   C = drag coefficient
-            //   A = drag area
-            //
-            // Unity's linear drag equation, v = v * (1 - drag), is too simple to 
-            // implement proper aerodynamic drag, which is proportional to the square
-            // of the velocity. So instead we set the rigidbody linear drag to 0 and
-            // apply our own drag force. This will be a simplified version which acts 
-            // on the centre of mass and removes air density.The drag coefficient will 
-            // be a vehicle parameter set during game balancing to introduce the correct
-            // game feel. The drag area will be approximated on fly for each hull segment via:
-            //
-            // drag area = sum(segment area * clamp(1.0 - dot(segment normal, vehicle velocity), 0, 1))
-            //
-            // Hull segments which are perpendicular to the vehicle velocity will have their
-            // full area considered, while those which are parralel or on the opposite side
-            // of the vehicle will be ignored. Note that we care about the opposite velocity
-            // of the drag for the vector dot product, which is why we are using the vehicle
-            // velocity.
-
-            // Velocity of vehicle, assuming zero wind speed.
-            var velocityDir = Rigidbody.velocity.normalized;
-            var velocitySqr = velocityDir * Rigidbody.velocity.sqrMagnitude;
-
-            // Find drag area
-            float dragArea = 0.0f;
-            Vector2 prevPoint = Hull[^1];
-            foreach (Vector2 currPoint in Hull)
-            {
-                // The hull is in counter-clockwise order but we want the segment
-                // to be clockwise so that Vector2.perpendicular() gives us the
-                // outer facing normals of the vehicle hull.
-                var segment = prevPoint - currPoint;
-                var outerNormal = Vector2.Perpendicular(segment).normalized;
-
-                // The amount of drag area applied will scale based on how parallel the normal of
-                // the segment is to the velocity direction. If they are parallel (angle = 0), then
-                // the full drag area is added. If they are perpendicular or an obtuse angle, then
-                // zero drag area is added. 
-                dragArea += segment.magnitude * (1.0f - Mathf.Clamp01(Vector2.Angle(outerNormal, velocityDir) / 90.0f));
-
-                prevPoint = currPoint;
-
-                Debug.DrawRay(currPoint, segment, Color.yellow);
-            }
-
-            // NOTE: we invert the force direction here, to make it drag (-0.5f)
-            var aerodynamicDragForce = -0.5f * AerodynamicDragCoefficient * dragArea * velocitySqr;
-
             Rigidbody.drag = 0.0f;
-            Rigidbody.AddForce(aerodynamicDragForce);
+            Rigidbody.AddForce(CalculateAerodynamicDrag(
+                AerodynamicDragCoefficient,
+                Rigidbody.velocity,
+                Hull
+            ));
 
         }
     }

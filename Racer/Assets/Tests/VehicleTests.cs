@@ -7,8 +7,9 @@ using UnityEngine.TestTools;
 using Assets.Scripts.Utility;
 using UnityEditor;
 using UnityEngine.TextCore.Text;
+using UnityEngine.Assertions.Must;
 
-public class VehicleCoreTests
+public class VehicleTests
 {
 
     private GameObject _vehicle = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Vehicle/Vehicle.prefab");
@@ -36,26 +37,64 @@ public class VehicleCoreTests
     private GameObject _wheel = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Vehicle/Wheel.prefab");
     private GameObject _largeWheel = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Vehicle/LargeWheel.prefab");
     private GameObject _sled = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Vehicle/SledWheel.prefab");
-
+    
     [Test]
     public void TestValidationFeedback()
-    {
-        //TODO: test the ValidateVehicle function
-    }
-
-
-    [Test]
-    public void TestDisjoint() // WARNING - TAKES A LONG TIME TO RUN
     {
         var vehicle = GameObject.Instantiate(_vehicle, Vector3.zero, Quaternion.identity);
         var core = vehicle.GetComponent<VehicleCore>();
         Assert.IsNotNull(core);
 
-        //TODO: document this whole function...
+        // Test that the design validation matches the structure creation
+        
+        // Create basic disjoint design to test that the validity testing matches
+        Dictionary<Vector2Int, ModuleSchematic> design = new();
+        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(_chassis));
+        design.Add(new Vector2Int(-3, 0), new ModuleSchematic(_chassis));
+        design.Add(new Vector2Int(-5, 0), new ModuleSchematic(_tank));
 
-        // These flags represent an expected connection point of a module
-        // The value increases in a counter clockwise rotation order, so
-        // 3 rotations of top is the same as right e.g. t << 3. 
+        var feedback = core.ValidateDesign(design);
+        Assert.IsTrue(feedback.ValidDesign == core.TryBuildStructure(design));
+        foreach (var disjointModule in feedback.DisjointModules)
+            Assert.IsTrue(design.ContainsKey(disjointModule));
+
+        // Make the design valid, then test that all properties match
+        design.Add(new Vector2Int(-1,0), new ModuleSchematic(_chassis));
+
+        feedback = core.ValidateDesign(design);
+        Assert.IsTrue(feedback.ValidDesign == core.TryBuildStructure(design));
+        Assert.IsTrue(feedback.TotalEnergyCapacity == core.EnergyCapacity);
+        Assert.IsTrue(feedback.LocalCentreOfMass == core.Rigidbody.centerOfMass);
+        Assert.IsTrue(feedback.TotalMass == core.Rigidbody.mass);
+        Assert.IsTrue(feedback.DisjointModules.Count == 0);
+        foreach (var validModule in feedback.ValidModules)
+            Assert.IsTrue(design.ContainsKey(validModule));
+
+        GameObject.Destroy(vehicle);
+    }
+
+    [Test]
+    public void TestDisjoint() // WARNING - CAN TAKE A LONG TIME TO RUN
+    {
+        var vehicle = GameObject.Instantiate(_vehicle, Vector3.zero, Quaternion.identity);
+        var core = vehicle.GetComponent<VehicleCore>();
+        Assert.IsNotNull(core);
+
+        // Test the connection points between all modules, while also testing the
+        // vehicle core's disjoint module detection. To do this we will create
+        // a vehicle with the following design:
+        //
+        //  MNx   
+        //
+        // Where x is the vehicle core, N is module 1, and M is module 2. M and N
+        // will be cycled out for each possible combination of modules. N is tested
+        // for its ability to join to the flat vehicle core block, while M is tested
+        // for its ability to join to the left side of the N module. 
+
+        // These flags represent the expected connection points of a module
+        // The flags are listed in counter clockwise order, so that a positive
+        // 90 degree rotation can be reflected in the bit flags with a left shift.
+        // Some extra logic is needed to make sure the rotation is cyclic. 
         const uint t = 0b1 << 0; // Top
         const uint l = 0b1 << 1; // Left
         const uint b = 0b1 << 2; // Bottom
@@ -89,7 +128,7 @@ public class VehicleCoreTests
         foreach (var (m1, c1) in modules)
         {
             var p1 = m1.GetComponent<VehicleModule>();
-
+            
             foreach (var (m2, c2) in modules)
             {
                 var p2 = m2.GetComponent<VehicleModule>();
@@ -104,15 +143,15 @@ public class VehicleCoreTests
                         Vector2 m1Size = VehicleModule.RotateSize(p1.Size, rotation1);
                         Vector2 m2Size = VehicleModule.RotateSize(p2.Size, rotation2);
 
-                        int m1Radius = (int)Mathf.Ceil((Mathf.Abs(m1Size.y) - 1.0f) / 2.0f);
-                        int m2Radius = (int)Mathf.Ceil((Mathf.Abs(m2Size.y) - 1.0f) / 2.0f);
-
                         // Its possible the modules may only connect at a specific y-height
-                        // so test every possible y offset, to make sure at least one works.
-                        bool m1Tested = false, m2Tested = false;
-                        for (int dy1 = -m1Radius; dy1 <= m1Radius; dy1++)
+                        // so test every possible connective y offset, to make sure at least one works.
+                        int m1Shift = (int)Mathf.Ceil((Mathf.Abs(m1Size.y) - 1.0f) / 2.0f);
+                        int m2Shift = (int)Mathf.Ceil((Mathf.Abs(m2Size.y) - 1.0f) / 2.0f);
+
+                        bool m1Connected = false, m2Connected = false;
+                        for (int dy1 = -m1Shift; dy1 <= m1Shift; dy1++)
                         {
-                            for (int dy2 = -m2Radius; dy2 <= m2Radius; dy2++)
+                            for (int dy2 = -m2Shift; dy2 <= m2Shift; dy2++)
                             {
                                 Dictionary<Vector2Int, ModuleSchematic> design = new();
 
@@ -133,19 +172,19 @@ public class VehicleCoreTests
                                 foreach (var jointPos in feedback.ValidModules)
                                 {
                                     if (jointPos == m1Pos)
-                                        m1Tested |= true;
+                                        m1Connected |= true;
                                     if (jointPos == m2Pos)
-                                        m2Tested |= true;
+                                        m2Connected |= true;
                                 }
 
-                                if (m1Tested && m2Tested)
+                                if (m1Connected && m2Connected)
                                     break;
                             }
-                            if (m1Tested && m2Tested)
+                            if (m1Connected && m2Connected)
                                 break;
                         }
 
-                        // Rotate the connector flags to get the correct connection points
+                        // Rotate the connector flags to get the rotated connection points
                         var rc1 = (c1 << r1) | (c1 >> (4 - r1));
                         var rc2 = (c2 << r2) | (c2 >> (4 - r2));
 
@@ -154,12 +193,14 @@ public class VehicleCoreTests
                         bool m1Expected = (rc1 & r) != 0;
                         bool m2Expected = ((rc2 & r) != 0) && ((rc1 & l) != 0) && m1Expected;
 
-                        Assert.IsTrue(m1Expected == m1Tested, $"{p1.Name} ({r1 * 90} deg) failed to connect to the vehicle as expected");
-                        Assert.IsTrue(m2Expected == m2Tested, $"{p2.Name} ({r2 * 90} deg) failed to connect to {p1.Name} ({r1 * 90} deg) as expected");
+                        Assert.IsTrue(m1Expected == m1Connected, $"{p1.Name} ({r1 * 90} deg) failed to connect to the vehicle as expected");
+                        Assert.IsTrue(m2Expected == m2Connected, $"{p2.Name} ({r2 * 90} deg) failed to connect to {p1.Name} ({r1 * 90} deg) as expected");
                     }
                 }
             }
         }
+
+        GameObject.Destroy(vehicle);
     }
 
 
@@ -183,8 +224,18 @@ public class VehicleCoreTests
                        + _barrel.GetComponent<VehicleModule>().EnergyCapacity
                        + _flat.GetComponent<VehicleModule>().EnergyCapacity;
 
-        var feedback = core.ValidateDesign(design);
-        Assert.IsTrue(feedback.TotalEnergyCapacity == expected);
+        Assert.IsTrue(core.TryBuildStructure(design));
+        Assert.IsTrue(core.EnergyCapacity == expected);
+        Assert.IsTrue(core.EnergyLevel == core.EnergyCapacity);
+
+        // Test energy reset
+        core.EnergyLevel = -1;
+        Assert.IsTrue(core.EnergyLevel == 0);
+        
+        core.ResetVehicle();
+        Assert.IsTrue(core.EnergyLevel == core.EnergyCapacity);
+
+        GameObject.Destroy(vehicle);
     }
 
 
@@ -238,7 +289,9 @@ public class VehicleCoreTests
                     + 4 * _suspension.GetComponent<VehicleModule>().Mass;
 
         Assert.IsTrue(feedback.TotalMass == expectedMass);
-        Assert.IsTrue(Mathf.Abs((feedback.LocalCentreOfMass - new Vector2(0.5f, 0.5f)).magnitude) < 0.1f);
+        Assert.IsTrue(Mathf.Abs((feedback.LocalCentreOfMass - expectedCOM).magnitude) < 0.1f);
+
+        GameObject.Destroy(vehicle);
     }
 
 
@@ -298,6 +351,8 @@ public class VehicleCoreTests
         Assert.IsTrue(Algorithms.PointInPolygon(new Vector2(-2.0f, 2.0f), core.LocalHull));
         Assert.IsTrue(Algorithms.PointInPolygon(new Vector2(-2.0f, 1.0f), core.LocalHull));
         Assert.IsTrue(Algorithms.PointInPolygon(new Vector2(-1.0f, 0.0f), core.LocalHull));
+
+        GameObject.Destroy(vehicle);
     }
 
 
@@ -308,14 +363,73 @@ public class VehicleCoreTests
         var core = vehicle.GetComponent<VehicleCore>();
         Assert.IsNotNull(core);
 
-        // Test that the 
+        // Test the resulting aero dynamic drag of different blocks. The actual values
+        // themselves don't matter, we are testing that the logic works as expected.
+        // We will test the aerodynamic drag with normalized velocity directions of
+        // right, top, and their diagonal mixture; then test that the drags differ
+        // in order as expected. We will also test that the coefficient properly
+        // acts as a flat multiplier. 
+
+        // Make an L shaped vehicle from a basic set of blocks.
+        // - The right and left tests should be equal but opposite,
+        // - The top test should have a vertical drag of 1.0
+        // - The right test should have a horizontal drag of 1.5 
+        // - The right test should be the worst, followed by the digaonal test, followed by the top
+        Dictionary<Vector2Int, ModuleSchematic> design = new();
+        design.Add(new Vector2Int(-1, 0), new ModuleSchematic(_chassis));
+        design.Add(new Vector2Int(-1, 1), new ModuleSchematic(_chassis));
+        design.Add(new Vector2Int(-1, 2), new ModuleSchematic(_chassis));
+        Assert.IsTrue(core.TryBuildStructure(design));
+
+        var flatTop = VehicleCore.CalculateAerodynamicDrag(1, Vector2.up, core.Hull);
+        var flatRight = VehicleCore.CalculateAerodynamicDrag(1, Vector2.right, core.Hull);
+        var flatLeft = VehicleCore.CalculateAerodynamicDrag(1, Vector2.left, core.Hull);
+        var flatDiag = VehicleCore.CalculateAerodynamicDrag(1, (Vector2.right + Vector2.up).normalized, core.Hull);
+
+        Assert.IsTrue(flatRight == -flatLeft);
+        Assert.IsTrue(flatTop.x == 0 && Mathf.Abs(flatTop.y + 1.0f) < 0.01f);
+        Assert.IsTrue(flatRight.y == 0 && Mathf.Abs(flatRight.x + 1.5f) < 0.01f);
+        Assert.IsTrue(flatRight.magnitude > flatDiag.magnitude);
+        Assert.IsTrue(flatDiag.magnitude > flatTop.magnitude);
 
 
+        // Test the improved aerodynamics of a diagonal block.
+        // - The right test should be lower than the left, due to the diagonal.
+        // - The top test should be lower than the top flat test, despite having the same horizontal footprint.
+        design.Clear();
+        design.Add(new Vector2Int(1, 0), new ModuleSchematic(_diagonal));
+        Assert.IsTrue(core.TryBuildStructure(design));
 
+        var diagTop = VehicleCore.CalculateAerodynamicDrag(1, Vector2.up, core.Hull);
+        var diagRight = VehicleCore.CalculateAerodynamicDrag(1, Vector2.right, core.Hull);
+        var diagLeft = VehicleCore.CalculateAerodynamicDrag(1, Vector2.left, core.Hull);
 
+        Assert.IsTrue(diagRight.magnitude < diagLeft.magnitude);
+        Assert.IsTrue(diagTop.magnitude < flatTop.magnitude);
 
+        // Test the improved aerodynamics of a cone block.
+        // - The right test should be lower than the left, due to the cone.
+        // - The right test should be lower than the diagonal's right test
+        // - The top test should be lower than the top diagonal test
+        design.Clear();
+        design.Add(new Vector2Int(1, 0), new ModuleSchematic(_cone));
+        Assert.IsTrue(core.TryBuildStructure(design));
 
-        //TODO:...
+        var coneTop = VehicleCore.CalculateAerodynamicDrag(1, Vector2.up, core.Hull);
+        var coneRight = VehicleCore.CalculateAerodynamicDrag(1, Vector2.right, core.Hull);
+        var coneLeft = VehicleCore.CalculateAerodynamicDrag(1, Vector2.left, core.Hull);
+
+        Assert.IsTrue(coneRight.magnitude < coneLeft.magnitude);
+        Assert.IsTrue(coneRight.magnitude < diagRight.magnitude);
+        Assert.IsTrue(coneTop.magnitude < flatTop.magnitude);
+
+        // Test coefficient multiplier
+        Assert.IsTrue(
+            VehicleCore.CalculateAerodynamicDrag(2, Vector2.right, core.Hull) ==
+            2 * VehicleCore.CalculateAerodynamicDrag(1, Vector2.right, core.Hull)
+        );
+
+        GameObject.Destroy(vehicle);
     }
 
     [Test]
@@ -325,63 +439,57 @@ public class VehicleCoreTests
         var core = vehicle.GetComponent<VehicleCore>();
         Assert.IsNotNull(core);
 
+        // Create a basic vehicle design
+        Dictionary<Vector2Int, ModuleSchematic> design = new();
+        design.Add(new Vector2Int(1, 0), new ModuleSchematic(_chassis));
+        design.Add(new Vector2Int(-2, 0), new ModuleSchematic(_tank));
+        design.Add(new Vector2Int(0, 1), new ModuleSchematic(_rocket));
+        design.Add(new Vector2Int(-3, 0), new ModuleSchematic(_propeller, 180));
+        design.Add(new Vector2Int(2, 0), new ModuleSchematic(_thruster, 180));
+        design.Add(new Vector2Int(-1, -1), new ModuleSchematic(_thruster, 90));
+        design.Add(new Vector2Int(1, -1), new ModuleSchematic(_largeWheel));
+        design.Add(new Vector2Int(-2, -1), new ModuleSchematic(_suspension));
+        Assert.IsTrue(core.TryBuildStructure(design));
 
-
-
-
-
-
-        //TODO:...
-    }
-
-
-    [Test]
-    public void TestLineOfSight()
-    {
-        var vehicle = GameObject.Instantiate(_vehicle, Vector3.zero, Quaternion.identity);
-        var core = vehicle.GetComponent<VehicleCore>();
+        // Clone the vehicle and pre-generate it, testing that both vehicles still match
+        var clone = GameObject.Instantiate(vehicle, Vector3.zero, Quaternion.identity);
+        var cloneCore = clone.GetComponent<VehicleCore>();
         Assert.IsNotNull(core);
 
+        cloneCore.Discover();
 
+        // Match properties
+        Assert.IsTrue(core.EnergyCapacity == cloneCore.EnergyCapacity);
+        Assert.IsTrue(core.EnergyLevel == cloneCore.EnergyLevel);
+        Assert.IsTrue(core.Rigidbody.mass == cloneCore.Rigidbody.mass);
+        Assert.IsTrue(Mathf.Abs(core.Rigidbody.centerOfMass.x - cloneCore.Rigidbody.centerOfMass.x) < 0.1f);
+        Assert.IsTrue(Mathf.Abs(core.Rigidbody.centerOfMass.y - cloneCore.Rigidbody.centerOfMass.y) < 0.1f);
 
+        // Match hulls
+        Assert.IsTrue(core.LocalHull.Count == cloneCore.LocalHull.Count);
+        for(int i = 0; i < core.LocalHull.Count; i++)
+            Assert.IsTrue(core.LocalHull[i] == cloneCore.LocalHull[i]);
 
+        // Match actuators
+        Assert.IsTrue(core.Actuators.Count == cloneCore.Actuators.Count);
+        for (int i = 0; i < core.Actuators.Count; i++)
+        {
+            Assert.IsTrue(core.Actuators[i].name == cloneCore.Actuators[i].name);
+            Assert.IsTrue(core.Actuators[i].ActuationForce == cloneCore.Actuators[i].ActuationForce);
+            Assert.IsTrue(core.Actuators[i].ActuationPosition == cloneCore.Actuators[i].ActuationPosition);
+        }
 
+        // Match attachments
+        Assert.IsTrue(core.Attachments.Count == core.Attachments.Count);
+        for (int i = 0; i < core.Attachments.Count; i++)
+        {
+            Assert.IsTrue(core.Attachments[i].name == cloneCore.Attachments[i].name);
+            Assert.IsTrue(core.Attachments[i].position == cloneCore.Attachments[i].position);
+            Assert.IsTrue(core.Attachments[i].rotation == cloneCore.Attachments[i].rotation);
+        }
 
-
-        //TODO:...
-    }
-
-    [Test]
-    public void TestActuatorDynamics()
-    {
-        var vehicle = GameObject.Instantiate(_vehicle, Vector3.zero, Quaternion.identity);
-        var core = vehicle.GetComponent<VehicleCore>();
-        Assert.IsNotNull(core);
-
-
-
-
-
-
-
-        //TODO:...
-    }
-
-
-    [Test]
-    public void TestActuatorActivation()
-    {
-        var vehicle = GameObject.Instantiate(_vehicle, Vector3.zero, Quaternion.identity);
-        var core = vehicle.GetComponent<VehicleCore>();
-        Assert.IsNotNull(core);
-
-
-
-
-
-
-
-        //TODO:...
+        GameObject.Destroy(vehicle);
+        GameObject.Destroy(clone);
     }
 
 }

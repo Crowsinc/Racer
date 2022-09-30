@@ -20,10 +20,10 @@ public class GeometryTests
         Assert.IsTrue(Algorithms.WithinBounds(new Vector2(0.5f, 0.5f), min, max));
         
         // Slightly outside borders
-        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(-0.01f, 0), min, max));
-        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(0, -0.01f), min, max));
-        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(1.01f, 0), min, max));
-        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(0, 1.01f), min, max));
+        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(-0.1f, 0), min, max, 0.05f));
+        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(0, -0.1f), min, max, 0.05f));
+        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(1.1f, 0), min, max, 0.05f));
+        Assert.IsFalse(Algorithms.WithinBounds(new Vector2(0, 1.1f), min, max, 0.05f));
     }
 
     [Test]
