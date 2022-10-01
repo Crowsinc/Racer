@@ -50,7 +50,7 @@ public class ActuatorTests
         // Create two rockets, one horizontal and one vertical,
         // with no blockage. They should not be disabled by the LOS test. 
         Dictionary<Vector2Int, ModuleSchematic> design = new();
-        design.Add(new Vector2Int(0, 1), new ModuleSchematic(_rocket));
+        design.Add(new Vector2Int(-1, 1), new ModuleSchematic(_rocket));
         design.Add(new Vector2Int(-5, 4), new ModuleSchematic(_rocket, 90));
 
         // NOTE: The design is disjoint, but it doesn't matter here
