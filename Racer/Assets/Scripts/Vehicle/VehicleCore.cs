@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 
 public class VehicleCore : MonoBehaviour
@@ -573,6 +574,9 @@ public class VehicleCore : MonoBehaviour
         return paths[0];
     }
 
+    /// <summary>
+    /// Updates the positioning of the vehicle's hull in the world.
+    /// </summary>
     private void UpdateHull()
     {
         Hull.Clear();
@@ -580,6 +584,19 @@ public class VehicleCore : MonoBehaviour
             Hull.Add((Vector2)transform.TransformPoint(LocalHull[i]));
     }
 
+    /// <summary>
+    /// Calculates an aerodynamic drag for the vehicle.
+    /// </summary>
+    /// <param name="dragCoefficient"> 
+    /// The drag coefficient to use, higher values lead to higher drag, must be a positive number.
+    /// </param>
+    /// <param name="velocity"> 
+    /// The current velocity that the drag will oppose.  
+    /// </param>
+    /// <param name="hull">
+    /// A counter-clockwise list of vertices that represent the vehicle's hull in the world. 
+    /// </param>
+    /// <returns></returns>
     public static Vector2 CalculateAerodynamicDrag(float dragCoefficient, Vector2 velocity, List<Vector2> hull)
     {
         // Calculate aerodynamic drag
@@ -604,6 +621,8 @@ public class VehicleCore : MonoBehaviour
         // of the vehicle will be ignored. Note that we care about the opposite velocity
         // of the drag for the vector dot product, which is why we are using the vehicle
         // velocity.
+
+        Assert.IsTrue(dragCoefficient >= 0);
 
         // Velocity of vehicle, assuming zero wind speed.
         var velocityDir = velocity.normalized;

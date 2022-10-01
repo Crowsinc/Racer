@@ -228,10 +228,13 @@ public class VehicleTests
         Assert.IsTrue(core.EnergyCapacity == expected);
         Assert.IsTrue(core.EnergyLevel == core.EnergyCapacity);
 
-        // Test energy reset
+        // Test energy clamping
+        core.EnergyLevel = core.EnergyCapacity + 100;
+        Assert.IsTrue(core.EnergyLevel == core.EnergyCapacity);
         core.EnergyLevel = -1;
         Assert.IsTrue(core.EnergyLevel == 0);
-        
+
+        // Test vehicle reset
         core.ResetVehicle();
         Assert.IsTrue(core.EnergyLevel == core.EnergyCapacity);
 

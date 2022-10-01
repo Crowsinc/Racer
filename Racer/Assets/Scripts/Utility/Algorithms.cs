@@ -16,7 +16,7 @@ namespace Assets.Scripts.Utility
         /// <param name="min">the minimum point of the bound</param>
         /// <param name="max">the maximum point of the bound</param>
         /// <returns>true if within bounds, otherwise false</returns>
-        public static bool WithinBounds(Vector2 point, Vector2 min, Vector2 max, float slack = 0.1f)
+        public static bool WithinBounds(Vector2 point, Vector2 min, Vector2 max, float slack = 0.05f)
         {
             Assert.IsTrue(min.x <= max.x && min.y <= max.y);
             return !(point.x > max.x + slack || point.x < min.x - slack|| point.y > max.y + slack || point.y < min.y - slack);
