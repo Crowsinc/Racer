@@ -450,8 +450,8 @@ public class VehicleTests
         design.Add(new Vector2Int(-3, 0), new ModuleSchematic(_propeller, 180));
         design.Add(new Vector2Int(2, 0), new ModuleSchematic(_thruster, 180));
         design.Add(new Vector2Int(-1, -1), new ModuleSchematic(_thruster, 90));
-        design.Add(new Vector2Int(1, -1), new ModuleSchematic(_largeWheel));
-        design.Add(new Vector2Int(-2, -1), new ModuleSchematic(_suspension));
+        design.Add(new Vector2Int(1, -2), new ModuleSchematic(_largeWheel));
+        design.Add(new Vector2Int(-2, -2), new ModuleSchematic(_suspension));
         Assert.IsTrue(core.TryBuildStructure(design));
 
         // Clone the vehicle and pre-generate it, testing that both vehicles still match
