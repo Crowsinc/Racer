@@ -65,6 +65,7 @@ namespace Level
         public delegate void SimulationDelegates();
         public SimulationDelegates InBuildMode;
         public SimulationDelegates RaceStart;
+        public SimulationDelegates RaceCountdown;
         public SimulationDelegates RaceWin;
         public SimulationDelegates RaceLoose;
         public SimulationDelegates RaceFinish;
@@ -167,6 +168,7 @@ namespace Level
                 inBuildMode = false;
                 _cameraFollow.target = playerVehicle.transform;
                 mapCollider.enabled = true;
+                RaceCountdown?.Invoke();
 
                 // Change UI
                 _vehicleConstructor.HideUIElements();

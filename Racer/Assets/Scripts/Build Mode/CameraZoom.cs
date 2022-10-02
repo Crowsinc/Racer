@@ -17,7 +17,9 @@ public class CameraZoom : MonoBehaviour
     {
         _unZoom = false;
         _camera = Camera.main;
-        gameObject.GetComponent<SimulationController>().InBuildMode += Zoom;
+        var sc = gameObject.GetComponent<SimulationController>();
+        sc.InBuildMode += Zoom;
+        sc.RaceCountdown += UnZoom;
     }
 
     public void UnZoom()
