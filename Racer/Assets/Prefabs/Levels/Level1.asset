@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   levelName: Grasslands
+  levelDescription: A calm grasslands with rolling hills; a perfect introduction
+    for building your own vehicles!
   levelId: 1
   terrain: {fileID: 3751650358320115858, guid: 4441a7ce423e213448037c01a200e3cd, type: 3}
   opponentVehicle: {fileID: 289938577762191399, guid: 86a42a8c7f1025248ba2fce7d9139c55, type: 3}
   budget: 250
-  bestTime: 2.28
-  bestCost: 90
+  bestTime: 2.44
+  bestCost: 250
   gravity: {x: 0, y: -9.81, z: 0}
   restrictions: []
   backgrounds:

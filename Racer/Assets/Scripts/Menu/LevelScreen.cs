@@ -51,7 +51,7 @@ public class LevelScreen : MonoBehaviour
         }
         
         //Can add description to level screen here
-        levelDesc.text = "Level Description goes here. We can include the lore of the level, etc!";
+        levelDesc.text = level.levelDescription;
         CreateLevelPreview();
         SetImpedimentList();
     }

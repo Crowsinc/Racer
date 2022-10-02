@@ -7,6 +7,10 @@ namespace Level
     public class Level : ScriptableObject
     {
         public string levelName;
+
+        [TextArea(15, 20)]
+        public string levelDescription;
+
         public int levelId;
         public GameObject terrain;
         public GameObject opponentVehicle;
