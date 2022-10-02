@@ -24,6 +24,10 @@ namespace Level
 
         private void Update()
         {
+            if (_sc.inBuildMode)
+            {
+                _finished = false;
+            }
             if (_finished) return;
             if (!_opponent)
             {
