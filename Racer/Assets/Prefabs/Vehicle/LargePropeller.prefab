@@ -239,7 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5ef471503dce4984634331fa43e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LocalActuationForce: {x: -1200, y: 0}
+  LocalActuationForce: {x: -800, y: 0}
   LocalIdleForce: {x: -50, y: 0}
   LocalActuationPosition: {x: 0.5, y: 1.5}
   ActivationCost: 5

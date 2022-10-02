@@ -41,17 +41,25 @@ namespace Level
 
             switch (CheckWhichTerrain(parent.position))
             {
+                // Grass
                 case 0:
-                    // What happens if vehicle is touching Grass
+                    material.friction = 0.6f;
                     break;
+                // Mud
                 case 1:
-                    // What happens if vehicle is touching Mud
+                    material.friction = 0.8f;
                     break;
+                // Bouncy Gel
                 case 2:
                     _rbs[vehicleName].AddForce(new Vector2(0, 10000));
                     break;
+                // Speedy Gel
                 case 3:
                     _rbs[vehicleName].AddForce(new Vector2(_rbs[vehicleName].velocity.x * 100, 0));
+                    break;
+                // Snow
+                case 4:
+                    material.friction = 1;
                     break;
             }
 
