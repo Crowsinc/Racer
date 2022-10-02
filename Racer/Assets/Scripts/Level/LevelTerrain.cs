@@ -14,6 +14,11 @@ namespace Level
         [Header("TerrainPhysics")]
         public PhysicsMaterial2D material;
 
+        [Header("Particle Materials")]
+        public List<Material> terrainMaterials = new List<Material>();
+
+        public GameObject particleEffect;
+
         private int _startIndex;
         private int _endIndex;
 
@@ -37,6 +42,18 @@ namespace Level
             if (!_rbs.ContainsKey(vehicleName))
             {
                 _rbs[vehicleName] = parent.GetComponent<Rigidbody2D>();
+            }
+
+            // Get points of collision
+            ContactPoint2D[] contactPoints = collision.contacts;
+            if (_rbs[vehicleName].velocity.x > 1)
+            {
+                foreach (ContactPoint2D point in contactPoints)
+                {
+                    GameObject newParticle = Instantiate(particleEffect, new Vector3(point.point.x, point.point.y), Quaternion.Euler(-52.9f, -90, 90));
+                    Debug.Log(terrainMaterials[CheckWhichTerrain(point.point)].name);
+                    newParticle.GetComponent<ParticleSystemRenderer>().material = terrainMaterials[CheckWhichTerrain(point.point)];
+                }
             }
 
             switch (CheckWhichTerrain(parent.position))

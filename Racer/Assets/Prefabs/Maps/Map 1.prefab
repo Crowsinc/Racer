@@ -451,6 +451,13 @@ MonoBehaviour:
   startPoint: {fileID: 8173277997249453932}
   endPoint: {fileID: 1190693670795351690}
   material: {fileID: 6200000, guid: 61b9165f492faf24dabe610fc45635b9, type: 2}
+  terrainMaterials:
+  - {fileID: 2100000, guid: 715c19ecf4c73054d8202da7ab62895b, type: 2}
+  - {fileID: 2100000, guid: 68b5ecfca4805be4681d3ae86157f0c0, type: 2}
+  - {fileID: 2100000, guid: de3513d71d366ab4f9d1e687baf5d018, type: 2}
+  - {fileID: 2100000, guid: b91ac8c01a200204d9799d90c604f4f7, type: 2}
+  - {fileID: 2100000, guid: 7fea6127a11018341b0f94546e33dd92, type: 2}
+  particleEffect: {fileID: 3020828298294619157, guid: b97e4d7229b22894b9c116e458687bf6, type: 3}
 --- !u!1 &8173277997249453932
 GameObject:
   m_ObjectHideFlags: 0
