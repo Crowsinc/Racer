@@ -1476,6 +1476,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 986193014}
+        m_TargetAssemblyTypeName: CameraZoom, RacerScripts
+        m_MethodName: UnZoom
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &128573206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6733,6 +6745,7 @@ GameObject:
   - component: {fileID: 986193011}
   - component: {fileID: 986193012}
   - component: {fileID: 986193013}
+  - component: {fileID: 986193014}
   m_Layer: 0
   m_Name: Scripts
   m_TagString: GameController
@@ -6882,6 +6895,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1802570291}
+--- !u!114 &986193014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986193007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7022c2da72fc70f4297d9ea2c6fed2f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unZoomSize: 10
+  zoomSize: 5
+  unZoomTime: 0.5
 --- !u!1 &1019928877
 GameObject:
   m_ObjectHideFlags: 0
@@ -9724,7 +9752,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

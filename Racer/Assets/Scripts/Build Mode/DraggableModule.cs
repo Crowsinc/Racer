@@ -142,13 +142,16 @@ namespace Build_Mode
             {
                 var rotation = Mathf.Rad2Deg * Mathf.Atan2(actuator.LocalActuationForce.y, actuator.LocalActuationForce.x);
 
-                if(forceIndicatorObject == null && forceIndicatorPrefab != null)
+                if (forceIndicatorObject == null && forceIndicatorPrefab != null)
+                {
                     forceIndicatorObject = Instantiate(
                         forceIndicatorPrefab,
-                        actuator.LocalActuationPosition + (Vector2)actuator.transform.position,
+                        (actuator.LocalActuationPosition / 2) + (Vector2) actuator.transform.position,
                         Quaternion.Euler(0, 0, rotation),
                         gameObject.transform
                     );
+                    forceIndicatorObject.transform.localScale /= 2;
+                }
 
                 _forceIndicatorRenderer = forceIndicatorObject.GetComponentInChildren<SpriteRenderer>();
                 _forceIndicatorRenderer.enabled = false;
@@ -268,7 +271,8 @@ namespace Build_Mode
                     if (_forceIndicatorRenderer != null)
                         _forceIndicatorRenderer.enabled = false;
 
-                    Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+                    var newModule = Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+                    newModule.transform.localScale /= 2;
                 
                     Algorithms.SetLayers(gameObject, _moduleLayerMask);
                     transform.parent = _moduleHolder;
@@ -298,6 +302,9 @@ namespace Build_Mode
             transform.position = _savedPosition;
             transform.rotation = Quaternion.Euler(0, 0, _savedRotation);
             ResetTint();
+
+            if (!_placed)
+                transform.localScale /= 2;
 
             _vehicleConstructor.ValidateDesign();
         }
@@ -349,7 +356,8 @@ namespace Build_Mode
                 if (_forceIndicatorRenderer)
                     _forceIndicatorRenderer.enabled = false;
 
-                Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+                var newModule = Instantiate(gameObject, _spawnPosition, Quaternion.identity, transform.parent);
+                newModule.transform.localScale /= 2;
             }
             else _vehicleConstructor.RemoveModule(_placedGridPos, _vehicleModule.Size, _savedRotation);
 
@@ -380,6 +388,14 @@ namespace Build_Mode
         public void OnPointerDown(PointerEventData eventData) 
         {
             var worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            worldPosition.z = 0;
+
+            if (!_placed)
+            {
+                transform.localScale *= 2;
+                transform.position -= worldPosition - transform.position;
+            }
+
             DragOffset = worldPosition - transform.position;
         }
 

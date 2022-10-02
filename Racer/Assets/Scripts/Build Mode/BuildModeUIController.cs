@@ -53,20 +53,22 @@ namespace Build_Mode
             _moduleYDisplacement = initialPlacement.position.y;
             foreach (var moduleObject in modulesList)
             {
+                var scale = Camera.main.scaledPixelHeight / 20;
                 var module = moduleObject.GetComponent<VehicleModule>();
 
                 // Calculate y displacement from half of the module's height
-                _moduleYDisplacement -= module.Size.y * (Camera.main.scaledPixelHeight / 20);
+                _moduleYDisplacement -= module.Size.y * scale;
 
                 // Instantiate menu module into world space from canvas space
                 var spawnPoint = new Vector3(initialPlacement.position.x, _moduleYDisplacement, 0);
                 var menuModuleObject = Instantiate(moduleObject, Camera.main.ScreenToWorldPoint(spawnPoint), Quaternion.identity, moduleHolder);
+                menuModuleObject.transform.localScale /= 2;
 
                 // Translate object so that its on the correct plane and is centered in the list
-                menuModuleObject.transform.Translate(-module.Size.x / 2.0f, 0, -menuModuleObject.transform.position.z);
+                menuModuleObject.transform.Translate(-module.Size.x / 4.0f, 0, -menuModuleObject.transform.position.z);
 
                 // Adding small gap for next module
-                _moduleYDisplacement -= Camera.main.scaledPixelHeight / 20;
+                _moduleYDisplacement -= scale;
 
                 // Add menu module component
                 var draggable = menuModuleObject.AddComponent<DraggableModule>();
