@@ -237,7 +237,7 @@ namespace Level
         private void UpdateFuelBar()
         {
             var percentage = playerVehicle.EnergyLevel / playerVehicle.EnergyCapacity;
-            fuelBar.transform.localScale = new Vector3(percentage, 1, 1);
+            fuelBar.transform.localScale = new Vector3(1, percentage, 1);
 
             // Debug.Log("Energy: " + playerVehicle.EnergyLevel + ", " + percentage.ToString() + "%");
         }
