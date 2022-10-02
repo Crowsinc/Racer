@@ -20,7 +20,10 @@ public class StuckDetector : MonoBehaviour
     void FixedUpdate()
     {
         if (_simulationController.inBuildMode || !_simulationController.countdownFinish)
-            return;
+        {
+            resetPrompt.SetActive(false);
+        }
+
         movementChanges.Add(Vector3.Distance(prevPosition, transform.position));
         if (movementChanges.Count > 150)
         {
