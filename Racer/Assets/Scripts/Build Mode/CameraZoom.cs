@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Level;
 using UnityEngine;
 
 public class CameraZoom : MonoBehaviour
@@ -16,11 +17,17 @@ public class CameraZoom : MonoBehaviour
     {
         _unZoom = false;
         _camera = Camera.main;
+        gameObject.GetComponent<SimulationController>().InBuildMode += Zoom;
     }
 
     public void UnZoom()
     {
         _unZoom = true;
+    }
+
+    private void Zoom()
+    {
+        _camera.orthographicSize = zoomSize;
     }
 
     public void Update()
