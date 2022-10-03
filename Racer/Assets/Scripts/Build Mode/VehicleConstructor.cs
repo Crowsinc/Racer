@@ -26,6 +26,11 @@ namespace Build_Mode
         /// </summary>
         public GameObject VehicleEnergyCapacityText;
 
+        /// <summary>
+        /// The UI text element to receive the vehicle's total cost
+        /// </summary>
+        public GameObject VehicleCostText;
+
         public VehicleCore vehicleCore;
         private Vector2Int _coreWorldPos;
 
@@ -231,6 +236,13 @@ namespace Build_Mode
                 energyElement.text = feedback.TotalEnergyCapacity.ToString() + "J";
             }
             else Debug.LogError("Vehicle constructor vehicle energy capacity object not set");
+
+
+            if (VehicleCostText.TryGetComponent<TextMeshProUGUI>(out var costElement))
+            {
+                costElement.text = "$" + SumVehicleCost().ToString();
+            }
+            else Debug.LogError("Vehicle constructor vehicle cost object not set");
 
             // Remove error feedback from valid modules
             foreach (var offset in feedback.ValidModules)

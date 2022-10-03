@@ -46,12 +46,8 @@ namespace Build_Mode
         private void UpdateStats()
         {
             var cost = _vehicleConstructor.SumVehicleCost();
-            text.text = _level.levelName + "\n" +
-                        "Budget: $" + _level.budget + "\n" +
-                        "Total Vehicle Cost: $" + cost;
-            
-            text.text += "\n\nRestrictions:";
-
+           
+            text.text = "Restrictions:";
             // Shows visuals of whether vehicle is below budget
             var belowBudget = cost <= _level.budget;
             

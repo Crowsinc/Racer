@@ -12,7 +12,7 @@ namespace Build_Mode
         public GameObject chassisHolder;
         public GameObject actuatorHolder;
         public GameObject controlsPanel;
-        public Button controlsButton;
+        public Toggle controlsButton;
         public ButtonSounds buttonSounds;
         
         public GameObject forceIndicatorPrefab;
@@ -109,18 +109,10 @@ namespace Build_Mode
         /// </summary>
         public void ToggleControls()
         {
-            if (!controlsPanel.activeSelf)
-            {
+            if (controlsButton.isOn)
                 controlsPanel.SetActive(true);
-                controlsButton.interactable = false;
-            }
             else
-            {
                 controlsPanel.SetActive(false);
-                controlsButton.interactable = true;
-            }
-
-            
         }
 
         /// <summary>

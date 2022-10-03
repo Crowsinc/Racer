@@ -27,6 +27,7 @@ namespace Level
         public GameObject resetPrompt;
         public GameObject winUI;
         public GameObject countdownUI;
+        public GameObject buildModeBackground;
 
         [Header("Progress Bar")]
         public Transform playerProgressBar;
@@ -127,6 +128,7 @@ namespace Level
             pauseUI.SetActive(false);
             resetPrompt.SetActive(false);
             countdownUI.SetActive(false);
+            buildModeBackground.SetActive(true);
 
             // Update feedback UI
             _vehicleConstructor.ShowUIElements();
@@ -176,7 +178,8 @@ namespace Level
                 buildModeGrid.SetActive(false);
                 buildModeModuleHolder.SetActive(false);
                 countdownUI.SetActive(true);
-                
+                buildModeBackground.SetActive(false);
+
                 // Reset countdown UI
                 for (var i = 0; i < countdownUI.transform.childCount; i++)
                 {
