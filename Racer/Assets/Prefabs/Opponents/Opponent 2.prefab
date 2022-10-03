@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7151937717699720390}
   - component: {fileID: 6438634829588708470}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 3437309458019496756}
   - component: {fileID: 289462262482013493}
   - component: {fileID: 5920185967613275815}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Coil
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +207,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5384657005287631423}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -240,7 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2378662057854135804}
   - component: {fileID: 5872176137795240997}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,7 +324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2560729175735001610}
   - component: {fileID: 9156568539617359183}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: TubeChassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2860687716954709828}
   - component: {fileID: 1892571300861517539}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 5444198557440930409}
   - component: {fileID: 7708018024047382364}
   - component: {fileID: 4772754470882282694}
-  m_Layer: 30
+  m_Layer: 21
   m_Name: Vehicle Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -576,7 +576,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3406389918565072310}
   - component: {fileID: 3878349244282428358}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -660,7 +660,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2250213569365277221}
   - component: {fileID: 7457064295512820308}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: LargeWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 6423808411998502161}
   - component: {fileID: 2961211010621370998}
   - component: {fileID: 8016709339895567591}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -866,7 +866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 414893843453677101}
   - component: {fileID: 5550885414037520296}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -951,7 +951,7 @@ GameObject:
   - component: {fileID: 6469934084874692690}
   - component: {fileID: 3964564935074636147}
   - component: {fileID: 3701766268667713935}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3624026202136469236}
   - component: {fileID: 5241760895692661849}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1161,7 +1161,7 @@ GameObject:
   - component: {fileID: 3173107787852542610}
   - component: {fileID: 3052534050523098205}
   - component: {fileID: 2882158932149499720}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Spring(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1277,7 +1277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2464062812222835483}
   - component: {fileID: 9157311269691249503}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Hub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1361,7 +1361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1361761772370831771}
   - component: {fileID: 2699043762796187750}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1445,7 +1445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3052124395269330837}
   - component: {fileID: 5994668148892223112}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: DiagonalChassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1500,7 +1500,7 @@ GameObject:
   - component: {fileID: 4373692775263886856}
   - component: {fileID: 3702174182076805376}
   - component: {fileID: 1477529477581249085}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1618,7 +1618,7 @@ GameObject:
   - component: {fileID: 687098675296235951}
   - component: {fileID: 6023077109115313297}
   - component: {fileID: 6257209867397116228}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1764,7 +1764,7 @@ GameObject:
   - component: {fileID: 5272332290516354064}
   - component: {fileID: 5348648109004062399}
   - component: {fileID: 8415166230155135892}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1879,7 +1879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3993996670790127675}
   - component: {fileID: 818541974949624310}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1963,7 +1963,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3896959840270835058}
   - component: {fileID: 7095270275261343699}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2049,7 +2049,7 @@ GameObject:
   - component: {fileID: 8005784657570818796}
   - component: {fileID: 7901909504303978299}
   - component: {fileID: 5107316696319379395}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2148,7 +2148,7 @@ GameObject:
   - component: {fileID: 585645950755737991}
   - component: {fileID: 4427245930964910891}
   - component: {fileID: 3879713086370271339}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2244,7 +2244,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4025958127126988637}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Opponent 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2277,7 +2277,7 @@ GameObject:
   m_Component:
   - component: {fileID: 13336874474011115}
   - component: {fileID: 6825910237309928838}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2361,7 +2361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3181395408355431092}
   - component: {fileID: 2021415877421199537}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: BottomBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2446,7 +2446,7 @@ GameObject:
   - component: {fileID: 5759016865803128566}
   - component: {fileID: 7996900108739883684}
   - component: {fileID: 2585469689177624079}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Casing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2581,7 +2581,7 @@ GameObject:
   - component: {fileID: 3957918838938907118}
   - component: {fileID: 524942907443146151}
   - component: {fileID: 6440916898331437512}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: ShelfChassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2668,7 +2668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5254436670644776892}
   - component: {fileID: 7905181541025803837}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: HeavyChassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2725,7 +2725,7 @@ GameObject:
   - component: {fileID: 6734128556947915875}
   - component: {fileID: 8559973209624193320}
   - component: {fileID: 8104565458054243304}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2822,7 +2822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7307217648513297578}
   - component: {fileID: 6002058752893441501}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2906,7 +2906,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4361525260181245722}
   - component: {fileID: 1791028468530803858}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: LargeWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2967,7 +2967,7 @@ GameObject:
   - component: {fileID: 8126530470597205221}
   - component: {fileID: 575659330355031272}
   - component: {fileID: 2314350835441875840}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3115,7 +3115,7 @@ GameObject:
   - component: {fileID: 1920943275465687012}
   - component: {fileID: 5803486274415365122}
   - component: {fileID: 7775913643577846596}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Propeller(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3248,7 +3248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3775799793893455917}
   - component: {fileID: 5571286844933924963}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: TopBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3335,7 +3335,7 @@ GameObject:
   - component: {fileID: 207362539626454783}
   - component: {fileID: 1929617436662695091}
   - component: {fileID: 5715313378598039439}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Thruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3462,7 +3462,7 @@ GameObject:
   - component: {fileID: 3917714741135785928}
   - component: {fileID: 6547871628933972268}
   - component: {fileID: 830358742192208236}
-  m_Layer: 30
+  m_Layer: 21
   m_Name: Vehicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4658,7 +4658,7 @@ GameObject:
   - component: {fileID: 4804538492725322202}
   - component: {fileID: 8676099727042487477}
   - component: {fileID: 8183021770602175147}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4770,7 +4770,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4644923617711081616}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4803,7 +4803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3998394562502659837}
   - component: {fileID: 1404254205758170454}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4887,7 +4887,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7366210415103909589}
   - component: {fileID: 7429443124194342874}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: LargeWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4944,7 +4944,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7865004879505358797}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4978,7 +4978,7 @@ GameObject:
   - component: {fileID: 67473134078110496}
   - component: {fileID: 7265999227967228396}
   - component: {fileID: 8367277580004224424}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5093,7 +5093,7 @@ GameObject:
   - component: {fileID: 7497832162699809646}
   - component: {fileID: 7408331553498379785}
   - component: {fileID: 372435500050380853}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5208,7 +5208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3647042399315169103}
   - component: {fileID: 232152304984614544}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5292,7 +5292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 910538011927574232}
   - component: {fileID: 2379983411098734153}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: LargeWheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5351,7 +5351,7 @@ GameObject:
   - component: {fileID: 7945817309274675320}
   - component: {fileID: 9205899328705287170}
   - component: {fileID: 6542430453821507244}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5465,7 +5465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7534681953304290159}
   - component: {fileID: 5772615839261894956}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5552,7 +5552,7 @@ GameObject:
   - component: {fileID: 7479662525726414401}
   - component: {fileID: 4574841055842362956}
   - component: {fileID: 3085789342530977099}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: RocketThruster(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5655,7 +5655,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4558757688778324400}
   - component: {fileID: 4503346940759788065}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Flames
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5739,7 +5739,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1227520017852890520}
   - component: {fileID: 4706832709075385629}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: DiagonalChassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5794,7 +5794,7 @@ GameObject:
   - component: {fileID: 2409865855731999407}
   - component: {fileID: 6510209088666755674}
   - component: {fileID: 4782224467822979054}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5923,7 +5923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8223418819010952784}
   - component: {fileID: 7530718831017213683}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Rod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6007,7 +6007,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8036828312189125564}
   - component: {fileID: 5305300838335749949}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6092,7 +6092,7 @@ GameObject:
   - component: {fileID: 8373910390384228122}
   - component: {fileID: 5878319614198155407}
   - component: {fileID: 2654274573416576526}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6210,7 +6210,7 @@ GameObject:
   - component: {fileID: 8830353158798003664}
   - component: {fileID: 1018450463876460799}
   - component: {fileID: 3433993065297297302}
-  m_Layer: 31
+  m_Layer: 21
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
