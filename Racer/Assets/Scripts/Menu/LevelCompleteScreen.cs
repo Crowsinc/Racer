@@ -38,7 +38,15 @@ public class LevelCompleteScreen : MonoBehaviour
         
         levelCompleteTitle.text = "Level Complete!";
         retryButton.SetActive(false);
-        nextLevelButton.SetActive(true);
+        if (PlayerPrefs.GetInt(GameConstants.PPKEY_SELECTED_LEVEL, 0) == 2)
+        {
+            nextLevelButton.SetActive(false);
+        }
+        else
+        {
+            nextLevelButton.SetActive(true); 
+        }
+        
         //Debug.Log("Passed");
     }
 

@@ -28,29 +28,29 @@ public class Options : MonoBehaviour
     {
 	    fullscreenTog.isOn = Screen.fullScreen;
 
-	    int i = 0;
-	    bool resFound = false;
-	    while (i < resolutions.Count && resFound == false)
-	    {
-		    if (Screen.width == resolutions[i].horizontal && Screen.height == resolutions[i].vertical)
-		    {
-			    selectedRes = i;
-			    resFound = true;
-			    refreshLabel();
-		    }
-		    i += 1;
-	    }
-
-	    if (!resFound)
-	    {
-		    ResItem newRes = new ResItem();
-		    newRes.horizontal = Screen.width;
-		    newRes.vertical = Screen.height;
-		    
-		    resolutions.Add(newRes);
-		    selectedRes = resolutions.Count - 1;
-		    refreshLabel();
-	    }
+	    // int i = 0;
+	    // bool resFound = false;
+	    // while (i < resolutions.Count && resFound == false)
+	    // {
+		   //  if (Screen.width == resolutions[i].horizontal && Screen.height == resolutions[i].vertical)
+		   //  {
+			  //   selectedRes = i;
+			  //   resFound = true;
+			  //   refreshLabel();
+		   //  }
+		   //  i += 1;
+	    // }
+	    //
+	    // if (!resFound)
+	    // {
+		   //  ResItem newRes = new ResItem();
+		   //  newRes.horizontal = Screen.width;
+		   //  newRes.vertical = Screen.height;
+		   //  
+		   //  resolutions.Add(newRes);
+		   //  selectedRes = resolutions.Count - 1;
+		   //  refreshLabel();
+	    // }
 
 	    float vol = 0f;
 	    Mixer.GetFloat("MasterVol", out vol);
