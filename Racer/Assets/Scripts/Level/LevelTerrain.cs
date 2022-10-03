@@ -36,7 +36,7 @@ namespace Level
         {
             var parent = collision.transform.root.Find("Vehicle");
             // Return if collided object is not a vehicle
-            if (parent == null || parent.gameObject.layer != 30) return;
+            if (parent == null || (parent.gameObject.layer != 30 && parent.gameObject.layer != 21)) return;
 
             var vehicleName = parent.root.GetInstanceID().ToString();
             if (!_rbs.ContainsKey(vehicleName))
