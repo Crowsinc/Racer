@@ -240,7 +240,7 @@ namespace Build_Mode
 
             if (VehicleCostText.TryGetComponent<TextMeshProUGUI>(out var costElement))
             {
-                costElement.text = "$" + SumVehicleCost().ToString();
+                costElement.text = "<color=yellow>$" + SumVehicleCost().ToString() + "</color>";
             }
             else Debug.LogError("Vehicle constructor vehicle cost object not set");
 

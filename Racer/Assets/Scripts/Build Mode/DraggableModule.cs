@@ -188,18 +188,15 @@ namespace Build_Mode
         public void OnPointerEnter(PointerEventData eventData)
         {
             _hover = true;
-            if (_placed || _dragging) return;
-            
-            //Numeric stats
-            // _simulationController.moduleStatsDisplay.transform.parent.gameObject.SetActive(true);
-            // _simulationController.moduleStatsDisplay.GetComponent<TextMeshProUGUI>().text = ;
+            //if (_placed || _dragging) return;
+            if (_dragging) return;
 
             //Title for left panel
             _simulationController.moduleNameDisplay.GetComponent<TextMeshProUGUI>().text = _vehicleModule.Name;
 
             //Text stats on left panel
             _simulationController.moduleInfoDisplay.transform.parent.gameObject.SetActive(true);
-            _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = "Cost:\n\n" + _vehicleModule.Description;
+            _simulationController.moduleInfoDisplay.GetComponent<TextMeshProUGUI>().text = "Cost:\n" + _vehicleModule.Description;
 
             //Numeric stats on left panel
             _simulationController.moduleExtraStatsDisplay.GetComponent<TextMeshProUGUI>().text =
@@ -211,7 +208,7 @@ namespace Build_Mode
                 $"{(TryGetComponent(out ActuatorModule actuator3) ? actuator3.ActivationCost.ToString() : "0")} J/sec\n";
 
             _simulationController.moduleCostDisplay.GetComponent<TextMeshProUGUI>().text =
-                $"${_vehicleModule.Cost.ToString()}";
+                $"<color=yellow>${_vehicleModule.Cost.ToString()}</color>";
         }
 
 

@@ -17,12 +17,15 @@ MonoBehaviour:
     worldwide!
   levelId: 2
   terrain: {fileID: 3751650358320115858, guid: 91ab52420fb7ed34fa2b86111f077d3a, type: 3}
-  opponentVehicle: {fileID: 8899105686529342006, guid: 406024c2b8203c04bb3dc187dfccd8bd, type: 3}
+  opponentVehicle: {fileID: 4025958127126988636, guid: ec8524918b470424896c75a274bbc20a, type: 3}
   budget: 500
-  bestTime: 3.24
-  bestCost: 310
+  bestTime: 14.62
+  bestCost: 370
   gravity: {x: 0, y: -9.81, z: 0}
-  restrictions: []
+  restrictions:
+  - restrictionType: 1
+    amount: 1
+    module: {fileID: 6760783270837197127, guid: a799b3cccfa1b3445a85c93abde30f06, type: 3}
   backgrounds:
   - parallaxDegree: 0.8
     image: {fileID: 21300000, guid: 9730734aaa92ac843bae96fa27e435d9, type: 3}
