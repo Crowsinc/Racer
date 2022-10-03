@@ -8,6 +8,7 @@ namespace Level
         private Transform _opponent;
 
         private bool _finished;
+        private bool _inMainMenu;
 
         private void Awake()
         {
@@ -15,7 +16,7 @@ namespace Level
             GameObject scripts = GameObject.FindGameObjectWithTag("GameController");
             if (!scripts)
             {
-                _finished = true;
+                _inMainMenu = true;
                 return;
             }
             _sc = scripts.GetComponent<SimulationController>();
@@ -24,6 +25,11 @@ namespace Level
 
         private void Update()
         {
+            if (_inMainMenu)
+            {
+                return;
+            }
+
             if (_sc.inBuildMode)
             {
                 _finished = false;
