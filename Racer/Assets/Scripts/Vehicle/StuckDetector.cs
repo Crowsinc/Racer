@@ -19,7 +19,9 @@ public class StuckDetector : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (_simulationController.inBuildMode || !_simulationController.countdownFinish)
+        if (!_simulationController.countdownFinish)
+            return;
+        if (_simulationController.inBuildMode)
         {
             resetPrompt.SetActive(false);
         }
