@@ -190,8 +190,9 @@ namespace Level
                 opponentInstance.layer = LayerMask.NameToLayer("Opponent Vehicle");
                 opponentInstanceTransform = opponentInstance.transform.Find("Vehicle");
             
-                // Unfreeze player vehicle
-                playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                // Freeze player and opponent x coord, so they can't move until countdown is done
+                playerVehicle.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX;
+                opponentInstanceTransform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX;
 
                 Invoke(nameof(Unfreeze), 4.0f);
 
@@ -253,6 +254,7 @@ namespace Level
         private void Unfreeze()
         {
             countdownFinish = true;
+
             // Start the AI simulation
             _opponentAI = opponentInstance.GetComponentInChildren<AIController>();
             if (_opponentAI != null)
@@ -264,6 +266,10 @@ namespace Level
                 _playerAI.StartSimulating();
             else
                 Debug.LogError("Player vehicle has no AI");
+
+            // Unfreeze vehicles
+            _playerAI.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            _opponentAI.gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
 
             countdownUI.SetActive(false);
             raceUI.SetActive(true);

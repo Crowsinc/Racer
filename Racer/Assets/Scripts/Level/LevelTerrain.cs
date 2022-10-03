@@ -51,7 +51,7 @@ namespace Level
                 foreach (ContactPoint2D point in contactPoints)
                 {
                     GameObject newParticle = Instantiate(particleEffect, new Vector3(point.point.x, point.point.y), Quaternion.Euler(-52.9f, -90, 90));
-                    Debug.Log(terrainMaterials[CheckWhichTerrain(point.point)].name);
+                    //Debug.Log(terrainMaterials[CheckWhichTerrain(point.point)].name);
                     newParticle.GetComponent<ParticleSystemRenderer>().material = terrainMaterials[CheckWhichTerrain(point.point)];
                 }
             }

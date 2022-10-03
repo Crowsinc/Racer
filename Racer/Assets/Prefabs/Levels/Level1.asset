@@ -17,10 +17,10 @@ MonoBehaviour:
     for building your own vehicles!
   levelId: 1
   terrain: {fileID: 3751650358320115858, guid: 4441a7ce423e213448037c01a200e3cd, type: 3}
-  opponentVehicle: {fileID: 289938577762191399, guid: 86a42a8c7f1025248ba2fce7d9139c55, type: 3}
+  opponentVehicle: {fileID: 6737639773236472600, guid: 5c537d482292ed1448f9f36b32a33ae7, type: 3}
   budget: 250
   bestTime: 2.44
-  bestCost: 250
+  bestCost: 240
   gravity: {x: 0, y: -9.81, z: 0}
   restrictions: []
   backgrounds:

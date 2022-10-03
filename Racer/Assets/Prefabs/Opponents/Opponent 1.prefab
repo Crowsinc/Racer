@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6379947175861298652}
   - component: {fileID: 9033412487905628052}
   - component: {fileID: 8805595885741989522}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1646054866874428959}
   - component: {fileID: 1209519898893441428}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 1828625506254801941}
   - component: {fileID: 200332542941859108}
   - component: {fileID: 8562719807209273191}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -357,7 +357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5524983733347922518}
   - component: {fileID: 1060556725212822833}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Hub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2215679580530537385}
   - component: {fileID: 6753047752589155333}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Energy Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +525,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2398773991596761208}
   - component: {fileID: 6528097142488303430}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Wheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 3531324896597851236}
   - component: {fileID: 6737639773693864496}
   - component: {fileID: 4912852611358737420}
-  m_Layer: 30
+  m_Layer: 20
   m_Name: Vehicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,8 +604,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4243265229207344429}
-  m_LocalRotation: {x: -0, y: -0, z: 0.0006055714, w: 0.9999998}
-  m_LocalPosition: {x: 0.0062114615, y: 1.2823706, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -785,7 +785,7 @@ GameObject:
   - component: {fileID: 1500627164036867203}
   - component: {fileID: 4782105245736260309}
   - component: {fileID: 7789540815398481701}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -902,7 +902,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 688365808362922771}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Energy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -936,7 +936,7 @@ GameObject:
   - component: {fileID: 4180472955767553348}
   - component: {fileID: 529074027640242680}
   - component: {fileID: 9209851736861538619}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -987,7 +987,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4437591858398960567}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 6743002052808472743}
   - component: {fileID: 7525209468705204155}
   - component: {fileID: 8674076479763511538}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1106,7 +1106,7 @@ GameObject:
   - component: {fileID: 6480732135408578810}
   - component: {fileID: 818517928812614911}
   - component: {fileID: 7926020539839117194}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Propeller(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1240,7 +1240,7 @@ GameObject:
   - component: {fileID: 7949014778681420342}
   - component: {fileID: 8205249363355536215}
   - component: {fileID: 8566501833279005623}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1358,7 +1358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2186742341560969590}
   - component: {fileID: 5746779250105712829}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1442,7 +1442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1837675311942271376}
   - component: {fileID: 2960676143907325406}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Wheel(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1499,7 +1499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2681469961898577592}
   - component: {fileID: 4318107360747000398}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Energy Tank Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1583,7 +1583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2499460139692055066}
   - component: {fileID: 7062708713081460498}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: TopBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1666,7 +1666,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6737639773236472601}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Opponent 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1699,7 +1699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2451885726634010583}
   - component: {fileID: 8904305280719670555}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: BottomBlade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1783,7 +1783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 578901062435891177}
   - component: {fileID: 6761441599878576580}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1867,7 +1867,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3086408598467046219}
   - component: {fileID: 6157932214632143408}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: DiagonalChassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1922,7 +1922,7 @@ GameObject:
   - component: {fileID: 2437108777245744685}
   - component: {fileID: 47170933683315480}
   - component: {fileID: 2910397230535237762}
-  m_Layer: 30
+  m_Layer: 20
   m_Name: Vehicle Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2037,7 +2037,7 @@ GameObject:
   - component: {fileID: 1776020312990212498}
   - component: {fileID: 5119828397008657027}
   - component: {fileID: 2859931964030211554}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: EnergyTank(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2089,7 +2089,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7927586073278067533}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -2134,7 +2134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 893931689289100511}
   - component: {fileID: 2461255614620840963}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Axle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2219,7 +2219,7 @@ GameObject:
   - component: {fileID: 5235480188228085814}
   - component: {fileID: 8570535810682781377}
   - component: {fileID: 5469846282782237413}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis(Clone)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2270,7 +2270,7 @@ PolygonCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8597871711942172392}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -2305,7 +2305,7 @@ GameObject:
   - component: {fileID: 6507840256176216317}
   - component: {fileID: 6957736688879434134}
   - component: {fileID: 8945391996079426793}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2450,7 +2450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1749413943664855332}
   - component: {fileID: 14080219676075488}
-  m_Layer: 31
+  m_Layer: 20
   m_Name: Chassis Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -150,7 +150,6 @@ namespace Build_Mode
                         Quaternion.Euler(0, 0, rotation),
                         gameObject.transform
                     );
-                    forceIndicatorObject.transform.localScale /= 2;
                 }
 
                 _forceIndicatorRenderer = forceIndicatorObject.GetComponentInChildren<SpriteRenderer>();
