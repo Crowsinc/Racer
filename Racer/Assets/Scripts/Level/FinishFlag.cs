@@ -28,6 +28,7 @@ namespace Level
             {
                 _finished = false;
             }
+
             if (_finished) return;
             if (!_opponent)
             {
